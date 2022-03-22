@@ -1,4 +1,4 @@
-package pPolynomes
+package polynome
 
 import (
 	"fmt"
