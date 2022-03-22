@@ -1,13 +1,16 @@
 package main
 
-import "strconv"
+import (
+	"fmt"
+	"strconv"
+)
 
 type Polynome struct {
 	Older  int
-	Coeffs []int
+	Coeffs []float64
 }
 
-func (p *Polynome) MakePol(coeffs []int) {
+func (p *Polynome) MakePol(coeffs []float64) {
 	p.Coeffs = coeffs
 	p.Older = len(coeffs) - 1
 }
@@ -16,34 +19,26 @@ func (p *Polynome) ToString() string {
 	var str string
 	x := "x"
 	if p.Older == 0 {
-		return strconv.Itoa(p.Coeffs[0])
+		return fmt.Sprint(p.Coeffs[0])
 	} else {
-		for i := 0; i < len(p.Coeffs)-2; i++ {
+		for i := 0; i < len(p.Coeffs); i++ {
 			if p.Coeffs[i] > 0 {
-				str += "+" + strconv.Itoa(p.Coeffs[i]) + x + "^" + strconv.Itoa(p.Older-i)
+				str += "+" + fmt.Sprint(p.Coeffs[i]) + x + "^" + strconv.Itoa(p.Older-i)
 			} else if p.Coeffs[i] == 0 {
 
 			} else if p.Coeffs[i] < 0 {
-				str += strconv.Itoa(p.Coeffs[i]) + x + "^" + strconv.Itoa(p.Older-i)
+				str += fmt.Sprint(p.Coeffs[i]) + x + "^" + strconv.Itoa(p.Older-i)
 			}
-		}
-		if p.Coeffs[len(p.Coeffs)-2] > 0 {
-			str += "+" + strconv.Itoa(p.Coeffs[len(p.Coeffs)-2]) + x
-		} else if p.Coeffs[len(p.Coeffs)-2] < 0 {
-			str += strconv.Itoa(p.Coeffs[len(p.Coeffs)-2]) + x
-		}
-		if p.Coeffs[len(p.Coeffs)-1] > 0 {
-			str += "+" + strconv.Itoa(p.Coeffs[len(p.Coeffs)-1])
-		} else if p.Coeffs[len(p.Coeffs)-1] < 0 {
-			str += strconv.Itoa(p.Coeffs[len(p.Coeffs)-1])
+
 		}
 	}
 	return str
 }
 
+//Сложение многочленов
 func AdditionPol(p1 Polynome, p2 Polynome) Polynome {
 	var ans Polynome
-	var arr []int
+	var arr []float64
 	var lenDiffs int
 	if p1.Older == p2.Older {
 		ans.Older = p1.Older
@@ -80,9 +75,10 @@ func AdditionPol(p1 Polynome, p2 Polynome) Polynome {
 	return ans
 }
 
+//Вычитание многочленов
 func SubtractionPol(from Polynome, what Polynome) Polynome {
 	var ans Polynome
-	var arr []int
+	var arr []float64
 	var lenDiffs int
 	if from.Older == what.Older {
 		ans.Older = from.Older
@@ -117,4 +113,28 @@ func SubtractionPol(from Polynome, what Polynome) Polynome {
 		ans.MakePol(arr)
 	}
 	return ans
+}
+
+//Умножение многочлена на рациональное число
+func NumberMultiplyPol(p Polynome, a float64) Polynome {
+	for index := range p.Coeffs {
+		p.Coeffs[index] *= a
+	}
+	return p
+}
+
+//Умножение многочлена на x^k
+func VarMultiplyPol(p Polynome, k int) Polynome {
+	p.Older += k
+	return p
+}
+
+//Старший коэффициент многочлена
+func OlderPoly(p Polynome) int {
+	return p.Older
+}
+
+//Степень многочлена
+func OlderCoeffPoly(p Polynome) float64 {
+	return p.Coeffs[0]
 }
