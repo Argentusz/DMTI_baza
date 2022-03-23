@@ -21,7 +21,7 @@ type Polynome struct {
 ////Замечания по неймингу приветствуются
 func (p *Polynome) MakePol(coeffs []float64) {
 	for _, v := range coeffs {
-		if math.Round(v) != 0.0 { //Проверка на 0 старшего коэфф
+		if math.Round(v*10000) != 0.0 { //Проверка на 0 старшего коэфф
 			break
 		} else {
 			coeffs = coeffs[1:]
