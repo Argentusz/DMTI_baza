@@ -2,6 +2,7 @@ package polynome
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 )
 
@@ -19,6 +20,9 @@ type Polynome struct {
 //Конструктор полинома - метод
 ////Замечания по неймингу приветствуются
 func (p *Polynome) MakePol(coeffs []float64) {
+	if math.Round(coeffs[0]) == 0.0 { //Проверка на 0 старшего коэфф
+		coeffs = coeffs[1:]
+	}
 	p.Coeffs = coeffs
 	p.Older = len(coeffs) - 1
 }
@@ -55,8 +59,8 @@ func AdditionPol(p1 Polynome, p2 Polynome) Polynome {
 	var lenDiffs int
 	if p1.Older == p2.Older { //степени равны - просто складываем коэффициенты
 		ans.Older = p1.Older
-		for i, v := range p1.Coeffs {
-			val := p2.Coeffs[i] + v
+		for index := range p1.Coeffs {
+			val := p2.Coeffs[index] + p1.Coeffs[index]
 			arr = append(arr, val)
 		}
 		ans.MakePol(arr)
