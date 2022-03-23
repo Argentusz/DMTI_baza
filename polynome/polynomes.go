@@ -5,7 +5,7 @@ import (
 	"strconv"
 )
 
-//Модуль от Голубева Михаила
+//Структура и методы - от Голубева Михаила
 
 //структура полиномов //
 //каждый полином имеет старшую степень и коэффициенты при степенях
@@ -45,6 +45,8 @@ func (p *Polynome) ToString() string {
 }
 
 //------------------ФУНКЦИИ------------------//
+
+//Функция - от Голубева Михаила
 
 //Сложение многочленов
 func AdditionPol(p1 Polynome, p2 Polynome) Polynome {
@@ -86,6 +88,8 @@ func AdditionPol(p1 Polynome, p2 Polynome) Polynome {
 	return ans
 }
 
+//Функция - от Голубева Михаила
+
 //Вычитание многочленов
 func SubtractionPol(from Polynome, what Polynome) Polynome {
 	var ans Polynome
@@ -126,6 +130,8 @@ func SubtractionPol(from Polynome, what Polynome) Polynome {
 	return ans
 }
 
+//Функция - от Голубева Михаила
+
 //Умножение многочлена на рациональное число
 func NumberMultiplyPol(p Polynome, a float64) Polynome {
 	for index := range p.Coeffs {
@@ -133,6 +139,8 @@ func NumberMultiplyPol(p Polynome, a float64) Polynome {
 	}
 	return p
 }
+
+//Функция - от Голубева Михаила
 
 //Умножение многочлена на x^k
 func VarMultiplyPol(p Polynome, k int) Polynome {
@@ -143,10 +151,14 @@ func VarMultiplyPol(p Polynome, k int) Polynome {
 	return p
 }
 
+//Функция - от Голубева Михаила
+
 //Степень многочлена
 func OlderPoly(p Polynome) int {
 	return p.Older
 }
+
+//Функция - от Голубева Михаила
 
 //Старший коэффициент многочлена
 func OlderCoeffPoly(p Polynome) float64 {
