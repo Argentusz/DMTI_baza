@@ -20,8 +20,12 @@ type Polynome struct {
 //Конструктор полинома - метод
 ////Замечания по неймингу приветствуются
 func (p *Polynome) MakePol(coeffs []float64) {
-	if math.Round(coeffs[0]) == 0.0 { //Проверка на 0 старшего коэфф
-		coeffs = coeffs[1:]
+	for _, v := range coeffs {
+		if math.Round(v) != 0.0 { //Проверка на 0 старшего коэфф
+			break
+		} else {
+			coeffs = coeffs[1:]
+		}
 	}
 	p.Coeffs = coeffs
 	p.Older = len(coeffs) - 1
