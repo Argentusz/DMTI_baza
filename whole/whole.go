@@ -4,8 +4,7 @@ import "DMTI_baza/natural"
 
 // Whole Структура целого числа
 type Whole struct {
-	Digits   []uint8
-	Older    uint32
+	Num      natural.Natural
 	Negative bool // true (1), если отрицательное; false (0), если положительное
 }
 
@@ -18,8 +17,8 @@ func (w *Whole) MakeW(Negative bool, digits []uint8) {
 			digits = digits[1:]
 		}
 	}
-	w.Digits = digits
-	w.Older = uint32(len(digits))
+	w.Num.Digits = digits
+	w.Num.Older = uint32(len(digits))
 	w.Negative = Negative
 }
 
@@ -27,6 +26,6 @@ func (w *Whole) MakeW(Negative bool, digits []uint8) {
 // возвращает модуль целого числа как натуральное
 func Abs(w Whole) natural.Natural {
 	var n natural.Natural
-	n.MakeN(w.Digits)
+	n.MakeN(w.Num.Digits)
 	return n
 }
