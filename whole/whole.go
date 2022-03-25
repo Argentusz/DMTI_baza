@@ -18,7 +18,7 @@ func (w *Whole) MakeW(Negative bool, digits []uint8) {
 		}
 	}
 	w.Num.Digits = digits
-	w.Num.Older = uint32(len(digits))
+	w.Num.Older = uint32(len(digits)) - 1
 	w.Negative = Negative
 }
 
