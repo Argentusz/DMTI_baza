@@ -22,9 +22,9 @@ func (w *Whole) MakeW(Negative bool, digits []uint8) {
 	w.Negative = Negative
 }
 
-// Abs Функция Тростина Максима
-// возвращает модуль целого числа как натуральное
-func Abs(w Whole) natural.Natural {
+// Absolute Функция Тростина Максима
+// Возвращает модуль целого числа как натуральное
+func Absolute(w Whole) natural.Natural {
 	var n natural.Natural
 	n.MakeN(w.Num.Digits)
 	return n
