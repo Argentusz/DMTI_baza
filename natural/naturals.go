@@ -16,5 +16,5 @@ func (n *Natural) MakeN(digits []uint8) {
 		}
 	}
 	n.Digits = digits
-	n.Older = uint32(len(digits))
+	n.Older = uint32(len(digits)) - 1
 }
