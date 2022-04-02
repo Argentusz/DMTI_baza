@@ -20,45 +20,38 @@ func (n *Natural) MakeN(digits []uint8) {
 }
 
 // Compare Турбина Сравнение натуральных чисел: 2 - если первое больше второго, 0, если равно, 1 иначе.
-func Compare(a, b *Natural) int {
+func Compare(a, b Natural) int {
 	var i uint32
-	var flag, res int
-	flag = 0
+	var res int
+	res = 0
 	switch {
 	case a.Older > b.Older: //если в одном числе больше разрядов, чем в другом, то оно больше
-		flag = 1
 		res = 2
 	case b.Older > a.Older:
-		flag = 1
 		res = 1
 	default:
-		for i = 0; i < a.Older; i++ { //сравниваем разряды чисел
+		for i = 0; i < a.Older; i++ { //сравниваем разряды чисел, если соответствующий разряд больше, то одно число больше другого
 			switch {
 			case a.Digits[i] > b.Digits[i]:
-				flag = 1
 				res = 2
 				break
 			case b.Digits[i] > a.Digits[i]:
-				flag = 1
 				res = 1
 				break
 			}
 		}
 	}
-	if flag == 0 {
-		res = 0
-	}
+
 	return res
 }
 
 // CheckNull Турбина Проверка на ноль: если число не равно нулю, то «да» иначе «нет»
-func CheckNull(x *Natural) bool {
-	var res bool
-	res = false
+func CheckNull(x Natural) bool {
+
 	if x.Older == 0 { //если в числе один разряд и он равен нулю, то число является нулем
 		if x.Digits[0] == 0 {
-			res = true
+			return true
 		}
 	}
-	return res
+	return false
 }
