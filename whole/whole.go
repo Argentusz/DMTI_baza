@@ -29,3 +29,15 @@ func Absolute(w Whole) natural.Natural {
 	n.MakeN(w.Num.Digits)
 	return n
 }
+
+//Positivity Турбина Определение положительности числа (2 - положительное, 0 — равное нулю, 1 - отрицательное)
+func Positivity(x Whole) int {
+	switch {
+	case len(x.Num.Digits) == 0:
+		return 0
+	case x.Negative == true:
+		return 1
+	default:
+		return 2
+	}
+}
