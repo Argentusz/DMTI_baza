@@ -33,7 +33,7 @@ func Absolute(w Whole) natural.Natural {
 //Positivity Турбина Определение положительности числа (2 - положительное, 0 — равное нулю, 1 - отрицательное)
 func Positivity(x Whole) int {
 	switch {
-	case x.Num.Digits[0] == 0:
+	case len(x.Num.Digits) == 0:
 		return 0
 	case x.Negative == true:
 		return 1
