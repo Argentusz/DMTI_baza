@@ -53,50 +53,25 @@ func CheckNull(x Natural) bool {
 	return false
 }
 
-// Комаровский Subtraction Вычитание из первого большего натурального числа второго меньшего или равного( сделал за Милану)
-func Subtraction(x1, x2 Natural) Natural {
-	var a, b, res Natural
-	var i, j, k int
-	var mass []uint8
-	// опрределяем большее число
-	if Compare(x1, x2) == 0 {
-		mass = append(mass, 0)
-		res.MakeN(mass)
-		return res
-	} else if Compare(x1, x2) == 2 {
-		a = x1
-		b = x2
-	} else if Compare(x1, x2) == 1 {
-		a = x2
-		b = x1
-	}
-	i = int(a.Older)
-	j = int(b.Older)
-	for j > -1 {
-		switch {
-		case a.Digits[i]-b.Digits[j] < 0:
-			if a.Digits[i-1] != 0 {
-				a.Digits[i-1] = a.Digits[i-1] - 1
+//Хвостовский Добавление 1 к натуральному числу
+func Addition1(x Natural) Natural {
+	var i int
+	if x.Digits[x.Older] == 9 { // Если последний разряд равен 9, то при прибавлении единицы, он становится 0
+		x.Digits[x.Older] = 0
+		for i = int(x.Older - 1); i >= 0; i-- { // Прибавляем единицу к первому разряду, не равному 9(9 заменяем на 0)
+			if x.Digits[i] < 9 {
+				x.Digits[i] += 1
+				return x
 			} else {
-				// для случая если идет много нулей
-				k = i
-				for a.Digits[i-1] == 0 {
-					k -= 1
-					a.Digits[i] = 9
-				}
-				a.Digits[i-1] = a.Digits[i-1] - 1
+				x.Digits[i] = 0
 			}
-			mass = append([]uint8{a.Digits[i] + 10 - b.Digits[j]}, mass...)
-		default:
-			mass = append([]uint8{a.Digits[i] - b.Digits[j]}, mass...)
 		}
-		i -= 1
-		j -= 1
+	} else {
+		x.Digits[x.Older] += 1 //Если последний разряд не равен 9, то просто к нему прибавляем единицу
+		return x
 	}
-	for i > -1 {
-		mass = append([]uint8{a.Digits[i]}, mass...)
-		i -= 1
-	}
-	res.MakeN(mass)
-	return res
+	x.Digits[0] = 1                // Если все разряды равны 9, то результатов будет число с первой единицей, а остальными нулями
+	x.Older += 1                   // На разряд больше, чем изначальное
+	x.Digits = append(x.Digits, 0) // Присваиваем 0 только последнему разряду, так как остальным он уже присвоен в цикле
+	return x
 }
