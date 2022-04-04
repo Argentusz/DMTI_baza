@@ -29,12 +29,14 @@ func Compare(a, b Natural) int {
 	case b.Older > a.Older:
 		return 1
 	default:
-		for i = 0; i < a.Older; i++ { //сравниваем разряды чисел, если соответствующий разряд больше, то одно число больше другого
+		for i = 0; i < a.Older+1; i++ { //сравниваем разряды чисел, если соответствующий разряд больше, то одно число больше другого
 			switch {
 			case a.Digits[i] > b.Digits[i]:
 				return 2
 			case b.Digits[i] > a.Digits[i]:
 				return 1
+			default:
+				continue
 			}
 		}
 	}
