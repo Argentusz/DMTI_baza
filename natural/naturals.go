@@ -35,8 +35,6 @@ func Compare(a, b Natural) int {
 				return 2
 			case b.Digits[i] > a.Digits[i]:
 				return 1
-			default:
-				continue
 			}
 		}
 	}
