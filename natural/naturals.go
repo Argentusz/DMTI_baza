@@ -15,6 +15,9 @@ func (n *Natural) MakeN(digits []uint8) {
 			digits = digits[1:]
 		}
 	}
+	if len(digits) == 0 {
+		digits=[0]
+	}
 	n.Digits = digits
 	n.Older = uint32(len(digits)) - 1
 }
@@ -60,7 +63,6 @@ func Subtraction(x1, x2 Natural) Natural {
 	var mass []uint8
 	// опрределяем большее число
 	if Compare(x1, x2) == 0 {
-		mass = append(mass, 0)
 		res.MakeN(mass)
 		return res
 	} else if Compare(x1, x2) == 2 {
@@ -80,9 +82,9 @@ func Subtraction(x1, x2 Natural) Natural {
 			} else {
 				// для случая если идет много нулей
 				k = i
-				for a.Digits[i-1] == 0 {
+				for a.Digits[k-1] == 0 {
 					k -= 1
-					a.Digits[i] = 9
+					a.Digits[k] = 9
 				}
 				a.Digits[i-1] = a.Digits[i-1] - 1
 			}

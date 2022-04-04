@@ -1,6 +1,8 @@
 package whole
 
-import "DMTI_baza/natural"
+import (
+	"DMTI_baza/natural"
+)
 
 // Whole Структура целого числа
 type Whole struct {
@@ -17,6 +19,9 @@ func (w *Whole) MakeW(Negative bool, digits []uint8) {
 			digits = digits[1:]
 		}
 	}
+	if len(digits) == 0 {
+		digits=[0]
+	}
 	w.Num.Digits = digits
 	w.Num.Older = uint32(len(digits)) - 1
 	w.Negative = Negative
@@ -28,4 +33,26 @@ func Absolute(w Whole) natural.Natural {
 	var n natural.Natural
 	n.MakeN(w.Num.Digits)
 	return n
+}
+
+//Комаровский FromNaturalsToWhole преобразование из натурального в целое
+func FromNaturalsToWhole(nat natural.Natural) Whole {
+	var res Whole
+	res.Num = nat
+	res.Negative = false
+	return res
+}
+
+//FromWholeToNaturals Комаровский преобразование из неотрицательного целого в натуральное
+//Если подается неверное условие, выводится true
+func FromWholeToNaturals(wh Whole) (natural.Natural, bool) {
+	var res natural.Natural
+	if wh.Negative == true {
+		return nill, true
+	}
+	else {
+		res = wh.Num
+		err = 1
+		return res, false
+	}
 }
