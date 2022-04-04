@@ -100,6 +100,6 @@ func Addiction(a, b *Natural) Natural {
 				}
 			}
 		}
-		return *b
+		return *b // пук пук ] ыозыпвщвю би
 	}
 }
