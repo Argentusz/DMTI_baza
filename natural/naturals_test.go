@@ -3,7 +3,8 @@ package natural
 import (
 	"testing"
 )
-
+//тестовые функции Голубева Михаила
+//тест функции сравнения натуральных чисел
 func TestCompare(t *testing.T) {
 	var n1, n2 Natural
 	n1.Digits = []uint8{1, 2, 3, 4, 5, 6, 7}
@@ -37,6 +38,7 @@ func TestCompare(t *testing.T) {
 	}
 }
 
+//тест добавления единички
 func TestAddition1(t *testing.T) {
 	var n Natural
 	n.Digits = []uint8{1, 2, 3, 4, 5, 6, 7}
