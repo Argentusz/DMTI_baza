@@ -59,43 +59,43 @@ func CheckNull(x Natural) bool {
 // Комаровский Subtraction Вычитание из первого большего натурального числа второго меньшего или равного( сделал за Милану)
 func Subtraction(x1, x2 Natural) Natural {
 	var a, b, res Natural
-	var i, j, k int
+	var i, j, k int64
 	var mass []uint8
 	// опрределяем большее число
-	if Compare(x1, x2) == 0 {
+	if Compare(x1, x2) == 0 { //если они равны
 		res.MakeN(mass)
 		return res
-	} else if Compare(x1, x2) == 2 {
+	} else if Compare(x1, x2) == 2 { //если 1 больше 2
 		a = x1
 		b = x2
-	} else if Compare(x1, x2) == 1 {
+	} else if Compare(x1, x2) == 1 { //если 2 больше 1
 		a = x2
 		b = x1
 	}
-	i = int(a.Older)
-	j = int(b.Older)
-	for j > -1 {
+	i = int64(a.Older) //первый разряд большего числа
+	j = int64(b.Older) // первый разряд меньшего числа
+	for j > -1 { // пока не прошлись по всему меньгему числу 
 		switch {
-		case a.Digits[i]-b.Digits[j] < 0:
-			if a.Digits[i-1] != 0 {
+		case a.Digits[i]-b.Digits[j] < 0: //если в разряде большего цифра меньше 
+			if a.Digits[i-1] != 0 { // если в следующем разряде не ноль
 				a.Digits[i-1] = a.Digits[i-1] - 1
-			} else {
+			} else { //если ноль
 				// для случая если идет много нулей
 				k = i
-				for a.Digits[k-1] == 0 {
+				for a.Digits[k-1] == 0 { // присваиваем следующим разрядам 9 пока не доберемся до ненулевого
 					k -= 1
 					a.Digits[k] = 9
 				}
-				a.Digits[i-1] = a.Digits[i-1] - 1
+				a.Digits[k-1] = a.Digits[k-1] - 1
 			}
-			mass = append([]uint8{a.Digits[i] + 10 - b.Digits[j]}, mass...)
+			mass = append([]uint8{a.Digits[i] + 10 - b.Digits[j]}, mass...) // добавляем в новый массив разность
 		default:
 			mass = append([]uint8{a.Digits[i] - b.Digits[j]}, mass...)
 		}
 		i -= 1
 		j -= 1
 	}
-	for i > -1 {
+	for i > -1 { //если в большем числе остались разряды
 		mass = append([]uint8{a.Digits[i]}, mass...)
 		i -= 1
 	}
