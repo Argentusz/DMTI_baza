@@ -54,30 +54,30 @@ func Addiction(a, b *Natural) Natural {
 	var i, j uint32
 	var buf1, buf2 uint8
 	if Compare(a, b) == 2 || Compare(a, b) == 0 {
-		for i = 0; i <= b.Older; i++ {
+		for i = 0; i <= b.Older; i++ { //Цикл прибавления последней цифры одного числа к другой, смещаемся влево до тех пор, пока не дойдём до конца меньшего
 			a.Digits[a.Older-i] += b.Digits[b.Older-i]
-			if a.Digits[a.Older-i] >= 10 {
-				if a.Digits[0] >= 10 {
-					a.Digits = append(a.Digits, a.Digits[a.Older])
-					a.Older += 1
+			if a.Digits[a.Older-i] >= 10 { //если текущий разряд больше или равен 10
+				if a.Digits[0] >= 10 { //если именно последний разряд(самый левый) больше или равен 10
+					a.Digits = append(a.Digits, a.Digits[a.Older]) //добавляю в конец числа последную до добавления цифру
+					a.Older += 1                                   //увеличиваю older ("размер" числа?)
 					buf2 = a.Digits[0]
 					a.Digits[0] /= 10
 					buf1 = a.Digits[1]
 					a.Digits[1] = buf2 % 10
 
-					for j = 2; j < a.Older; j++ {
+					for j = 2; j < a.Older; j++ { //начиная со второй цифры и до конца числа "сдвигаю" значения
 						buf2 = a.Digits[j]
 						a.Digits[j] = buf1
 						buf1 = buf2
 					}
-				} else {
+				} else { //если последний разряд(самый левый) не больше или равен 10, то просто вычитаю из текущего 10 и прибавляю к след 1
 					a.Digits[a.Older-i] -= 10
 					a.Digits[a.Older-i-1] += 1
 				}
 			}
 		}
 		return *a
-	} else {
+	} else { // если первое меньше второго, меняю местами, прибавляю ко второму первое, всё остальное аналогично
 		for i = 0; i <= a.Older; i++ {
 			b.Digits[b.Older-i] += a.Digits[a.Older-i]
 			if b.Digits[b.Older-i] >= 10 {
@@ -100,6 +100,6 @@ func Addiction(a, b *Natural) Natural {
 				}
 			}
 		}
-		return *b // пук пук ] ыозыпвщвю би
+		return *b
 	}
 }
