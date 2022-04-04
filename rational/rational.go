@@ -44,3 +44,12 @@ func FractionalToWhole(x Rational) whole.Whole {
 
 	return p
 }
+
+//Комаровский CheckingForWhole Проверка рационального числа на целое
+func CheckingForWhole(x Rational) bool {
+	if x.Denominator.Older == 0 && x.Denominator.Digits[0] == 1 {
+		return true
+	} else {
+		return false
+	}
+}
