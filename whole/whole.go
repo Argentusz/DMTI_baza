@@ -41,3 +41,13 @@ func Positivity(x Whole) int {
 		return 2
 	}
 }
+
+// MultiplicationByNegativeOne Хвостовский Умножение целого на (-1)
+func MultiplicationByNegativeOne(x Whole) {
+	if x.Negative == true {
+		x.Negative = false
+	} else {
+		x.Negative = true
+	}
+
+}
