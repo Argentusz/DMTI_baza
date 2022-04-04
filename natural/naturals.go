@@ -48,3 +48,58 @@ func Compare(a, b *Natural) int {
 	}
 	return res
 }
+
+// Семёнов Addiction Сложение двух наутральных чисел
+func Addiction(a, b *Natural) Natural {
+	var i, j uint32
+	var buf1, buf2 uint8
+	if Compare(a, b) == 2 || Compare(a, b) == 0 {
+		for i = 0; i <= b.Older; i++ {
+			a.Digits[a.Older-i] += b.Digits[b.Older-i]
+			if a.Digits[a.Older-i] >= 10 {
+				if a.Digits[0] >= 10 {
+					a.Digits = append(a.Digits, a.Digits[a.Older])
+					a.Older += 1
+					buf2 = a.Digits[0]
+					a.Digits[0] /= 10
+					buf1 = a.Digits[1]
+					a.Digits[1] = buf2 % 10
+
+					for j = 2; j < a.Older; j++ {
+						buf2 = a.Digits[j]
+						a.Digits[j] = buf1
+						buf1 = buf2
+					}
+				} else {
+					a.Digits[a.Older-i] -= 10
+					a.Digits[a.Older-i-1] += 1
+				}
+			}
+		}
+		return *a
+	} else {
+		for i = 0; i <= a.Older; i++ {
+			b.Digits[b.Older-i] += a.Digits[a.Older-i]
+			if b.Digits[b.Older-i] >= 10 {
+				if b.Digits[0] >= 10 {
+					b.Digits = append(b.Digits, b.Digits[b.Older])
+					b.Older += 1
+					buf2 = b.Digits[0]
+					b.Digits[0] /= 10
+					buf1 = b.Digits[1]
+					b.Digits[1] = buf2 % 10
+
+					for j = 2; j < b.Older; j++ {
+						buf2 = b.Digits[j]
+						b.Digits[j] = buf1
+						buf1 = buf2
+					}
+				} else {
+					b.Digits[b.Older-i] -= 10
+					b.Digits[b.Older-i-1] += 1
+				}
+			}
+		}
+		return *b
+	}
+}
