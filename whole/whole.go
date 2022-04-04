@@ -17,6 +17,9 @@ func (w *Whole) MakeW(Negative bool, digits []uint8) {
 			digits = digits[1:]
 		}
 	}
+	if len(digits) == 0 {
+		digits = append(digits, 0)
+	}
 	w.Num.Digits = digits
 	w.Num.Older = uint32(len(digits)) - 1
 	w.Negative = Negative
@@ -39,5 +42,26 @@ func Positivity(x Whole) int {
 		return 1
 	default:
 		return 2
+	}
+}
+
+//Комаровский FromNaturalsToWhole преобразование из натурального в целое
+func FromNaturalsToWhole(nat natural.Natural) Whole {
+	var res Whole
+	res.Num = nat
+	res.Negative = false
+	return res
+}
+
+//Комаровский FromWholeToNaturals преобразование из неотрицательного целого в натуральное(если
+//подается отрицательное число то возвращается true)
+func FromWholeToNaturals(wh Whole) (natural.Natural, bool) {
+	var res natural.Natural
+	if wh.Negative == true {
+		res.Digits = nil
+		return res, true
+	} else {
+		res = wh.Num
+		return res, false
 	}
 }
