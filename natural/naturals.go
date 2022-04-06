@@ -140,19 +140,23 @@ func Subtraction(x1, x2 Natural) Natural {
 	j = int64(b.Older) //самый младший разряд меньшего числа
 	for j > -1 {       // пока не дойдем до старшего числа
 		switch {
-		case a.Digits[i]-b.Digits[j] < 0: // если разряд большего числа меньше другого
-			if a.Digits[i-1] != 0 { // если следующий разряд не равен 0 то просто вычитаем из него 1
+		case int8(a.Digits[i]-b.Digits[j]) < 0: // если разряд большего числа меньше другого
+			if int8(a.Digits[i-1]) > 0 { // если следующий разряд не равен 0 то просто вычитаем из него 1
 				a.Digits[i-1] = a.Digits[i-1] - 1
+
 			} else {
 				// для случая если идет много нулей подряд их заменяем на 9 ,а из ненулевого вычитаем 1
-				k = i
-				for a.Digits[k-1] == 0 {
-					k -= 1
+				k = i - 1
+				for a.Digits[k] <= 0 {
+
 					a.Digits[k] = 9
+					k -= 1
 				}
-				a.Digits[k-1] = a.Digits[k-1] - 1
+				a.Digits[k] = a.Digits[k] - 1
+
 			}
-			mass = append([]uint8{a.Digits[i] + 10 - b.Digits[j]}, mass...) // добавляем в начало массив значение разряда
+			mass = append([]uint8{a.Digits[i] - b.Digits[j] + 10}, mass...)
+			// добавляем в начало массив значение разряда
 		default:
 			mass = append([]uint8{a.Digits[i] - b.Digits[j]}, mass...)
 		}
