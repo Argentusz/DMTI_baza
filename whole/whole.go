@@ -60,14 +60,10 @@ func FromNaturalsToWhole(nat natural.Natural) Whole {
 }
 
 //Комаровский FromWholeToNaturals преобразование из неотрицательного целого в натуральное
-//если вводится отрицательное возвращается true
-func FromWholeToNaturals(wh Whole) (natural.Natural, bool) {
+
+func FromWholeToNaturals(wh Whole) natural.Natural {
 	var res natural.Natural
-	if wh.Negative == true {
-		res.Digits = nil
-		return res, true
-	} else {
-		res = wh.Num
-		return res, false
-	}
+	res = wh.Num
+	return res
+
 }
