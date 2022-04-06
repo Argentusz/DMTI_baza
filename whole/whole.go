@@ -47,3 +47,24 @@ func MultiplicationByNegativeOne(x Whole) Whole {
 	x.Negative = !x.Negative
 	return x
 }
+
+//Комаровский FromNaturalsToWhole преобразование из натурального в целое
+func FromNaturalsToWhole(nat natural.Natural) Whole {
+	var res Whole
+	res.Num = nat
+	res.Negative = false
+	return res
+}
+
+//Комаровский FromWholeToNaturals преобразование из неотрицательного целого в натуральное
+func FromWholeToNaturals(wh Whole) (natural.Natural, error) {
+	var res natural.Natural
+	var err error
+	if wh.Negative == true {
+		return nil, err
+	} else {
+		res = wh.Num
+		err = 1
+		return res, err
+	}
+}

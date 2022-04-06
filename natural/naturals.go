@@ -115,3 +115,51 @@ func MultiplicationBy10k(x Natural, k int) Natural {
 		return x
 	}
 }
+
+// Комаровский Subtraction Вычитание из первого большего натурального числа второго меньшего или равного( сделал за Милану)
+func Subtraction(x1, x2 Natural) Natural {
+	var a, b, res Natural
+	var i, j, k int64
+	var mass []uint8
+	// опрределяем большее число
+	if Compare(x1, x2) == 0 { // если равны сразу возвращаем 0
+		mass = append(mass, 0)
+		res.MakeN(mass)
+		return res
+	} else if Compare(x1, x2) == 2 {
+		a = x1
+		b = x2
+	} else if Compare(x1, x2) == 1 {
+		a = x2
+		b = x1
+	}
+	i = int64(a.Older) //самый младший разряд большего числа
+	j = int64(b.Older) //самый младший разряд меньшего числа
+	for j > -1 {       // пока не дойдем до старшего числа
+		switch {
+		case a.Digits[i]-b.Digits[j] < 0: // если разряд большего числа меньше другого
+			if a.Digits[i-1] != 0 { // если следующий разряд не равен 0 то просто вычитаем из него 1
+				a.Digits[i-1] = a.Digits[i-1] - 1
+			} else {
+				// для случая если идет много нулей подряд их заменяем на 9 ,а из ненулевого вычитаем 1
+				k = i
+				for a.Digits[k-1] == 0 {
+					k -= 1
+					a.Digits[k] = 9
+				}
+				a.Digits[k-1] = a.Digits[k-1] - 1
+			}
+			mass = append([]uint8{a.Digits[i] + 10 - b.Digits[j]}, mass...) // добавляем в начало массив значение разряда
+		default:
+			mass = append([]uint8{a.Digits[i] - b.Digits[j]}, mass...)
+		}
+		i -= 1
+		j -= 1
+	}
+	for i > -1 { // если не прошлись по всем разрядам большего числа
+		mass = append([]uint8{a.Digits[i]}, mass...)
+		i -= 1
+	}
+	res.MakeN(mass)
+	return res
+}
