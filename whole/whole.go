@@ -65,7 +65,7 @@ func FromWholeToNaturals(wh Whole) (natural.Natural, bool) {
 		res = wh.Num
 		return res, false
 	}
-
+}
 // MultiplicationByNegativeOne Хвостовский Умножение целого на (-1)
 func MultiplicationByNegativeOne(x Whole) Whole {
 	x.Negative = !x.Negative
