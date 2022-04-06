@@ -170,3 +170,28 @@ func Subtraction(x1, x2 Natural) Natural {
 	res.MakeN(mass)
 	return res
 }
+
+// Комаровский DifferenceOfNaturals Вычитание из натурального другого натурального, умноженного на цифру для случая с неотрицательным результатом
+func DifferenceOfNaturals(x1, x2 Natural, k uint8) Natural {
+	var a, b, res Natural
+	var mass []uint8
+	// опрределяем большее число
+	if Compare(x1, x2) == 0 { // если равны сразу возвращаем 0
+		if k == 1 { // если они раны и число,на которое необходимо умножить рано одному, сразу возвращаем 0
+			res.MakeN(mass)
+		}
+		return res // иначе возвращается пустой
+	} else if Compare(x1, x2) == 2 {
+		a = x1
+		b = x2
+	} else if Compare(x1, x2) == 1 {
+		a = x2
+		b = x1
+	}
+	b = MultiplicationNaturalNumber(b, k) //умножаем меньшее натуральное число на  заданное
+	if Compare(b, a) != 2 {               // если при умножение меньшего на цифру оно не становится больше другого,
+		// то вычитаем,если нет ,то возвращается пустой
+		res = Subtraction(a, b)
+	}
+	return res
+}
