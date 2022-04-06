@@ -49,57 +49,44 @@ func Compare(a, b *Natural) int {
 	return res
 }
 
-// Семёнов Addiction Сложение двух наутральных чисел
-func Addiction(a, b *Natural) Natural {
-	var i, j uint32
-	var buf1, buf2 uint8
-	if Compare(a, b) == 2 || Compare(a, b) == 0 {
-		for i = 0; i <= b.Older; i++ { //Цикл прибавления последней цифры одного числа к другой, смещаемся влево до тех пор, пока не дойдём до конца меньшего
-			a.Digits[a.Older-i] += b.Digits[b.Older-i]
-			if a.Digits[a.Older-i] >= 10 { //если текущий разряд больше или равен 10
-				if a.Digits[0] >= 10 { //если именно последний разряд(самый левый) больше или равен 10
-					a.Digits = append(a.Digits, a.Digits[a.Older]) //добавляю в конец числа последную до добавления цифру
-					a.Older += 1                                   //увеличиваю older ("размер" числа?)
-					buf2 = a.Digits[0]
-					a.Digits[0] /= 10
-					buf1 = a.Digits[1]
-					a.Digits[1] = buf2 % 10
-
-					for j = 2; j < a.Older; j++ { //начиная со второй цифры и до конца числа "сдвигаю" значения
-						buf2 = a.Digits[j]
-						a.Digits[j] = buf1
-						buf1 = buf2
-					}
-				} else { //если последний разряд(самый левый) не больше или равен 10, то просто вычитаю из текущего 10 и прибавляю к след 1
-					a.Digits[a.Older-i] -= 10
-					a.Digits[a.Older-i-1] += 1
-				}
-			}
-		}
-		return *a
-	} else { // если первое меньше второго, меняю местами, прибавляю ко второму первое, всё остальное аналогично
-		for i = 0; i <= a.Older; i++ {
-			b.Digits[b.Older-i] += a.Digits[a.Older-i]
-			if b.Digits[b.Older-i] >= 10 {
-				if b.Digits[0] >= 10 {
-					b.Digits = append(b.Digits, b.Digits[b.Older])
-					b.Older += 1
-					buf2 = b.Digits[0]
-					b.Digits[0] /= 10
-					buf1 = b.Digits[1]
-					b.Digits[1] = buf2 % 10
-
-					for j = 2; j < b.Older; j++ {
-						buf2 = b.Digits[j]
-						b.Digits[j] = buf1
-						buf1 = buf2
-					}
-				} else {
-					b.Digits[b.Older-i] -= 10
-					b.Digits[b.Older-i-1] += 1
-				}
-			}
-		}
-		return *b
+//Тростин Функция для копирования натурального числа
+func CopyN(n Natural) Natural {
+	var i uint32
+	var x Natural
+	for i = 0; i <= n.Older; i++ {
+		x.Digits = append(x.Digits, n.Digits[i])
 	}
+	x.Older = n.Older
+	return x
+}
+
+// Семёнов Addition Сложение двух наутральных чисел
+func Addition(a, b *Natural) Natural {
+	var i uint32
+	var r, t, d Natural
+	r = CopyN(*a)
+	t = CopyN(*b)
+	y := &r
+	u := &t
+	if Compare(y, u) != 2 || Compare(y, u) != 0 {
+		d = r
+		r = t
+		t = d
+	}
+	for i = 0; i <= t.Older; i++ { //Цикл прибавления последней цифры одного числа к другой, смещаемся влево до тех пор, пока не дойдём до конца меньшего
+		r.Digits[r.Older-i] += t.Digits[t.Older-i]
+		if r.Digits[r.Older-i] >= 10 { //если текущий разряд больше или равен 10
+			if r.Digits[0] >= 10 { //если именно последний разряд(самый левый) больше или равен 10
+				r.Digits = append([]uint8{0}, r.Digits...) //добавляю в начало числа 0
+				r.Older += 1                               //увеличиваю older ("размер" числа?)
+				r.Digits[0] = r.Digits[1] / 10
+				r.Digits[1] %= 10
+
+			} else { //если последний разряд(самый левый) не больше или равен 10, то просто вычитаю из текущего 10 и прибавляю к след 1
+				r.Digits[a.Older-i] -= 10
+				r.Digits[a.Older-i-1] += 1
+			}
+		}
+	}
+	return r
 }
