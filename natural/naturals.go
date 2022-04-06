@@ -18,3 +18,15 @@ func (n *Natural) MakeN(digits []uint8) {
 	n.Digits = digits
 	n.Older = uint32(len(digits)) - 1
 }
+
+//Тростин Функция для копирования натурального числа
+
+func CopyN(n Natural) Natural {
+	var i uint32
+	var x Natural
+	for i = 0; i <= n.Older; i++ {
+		x.Digits = append(x.Digits, n.Digits[i])
+	}
+	x.Older = n.Older
+	return x
+}
