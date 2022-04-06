@@ -17,6 +17,9 @@ func (w *Whole) MakeW(Negative bool, digits []uint8) {
 			digits = digits[1:]
 		}
 	}
+	if len(digits) == 0 {
+		digits = append(digits, 0)
+	}
 	w.Num.Digits = digits
 	w.Num.Older = uint32(len(digits)) - 1
 	w.Negative = Negative
@@ -33,7 +36,7 @@ func Absolute(w Whole) natural.Natural {
 //Positivity Турбина Определение положительности числа (2 - положительное, 0 — равное нулю, 1 - отрицательное)
 func Positivity(x Whole) int {
 	switch {
-	case len(x.Num.Digits) == 0:
+	case x.Num.Digits[0] == 0:
 		return 0
 	case x.Negative == true:
 		return 1
