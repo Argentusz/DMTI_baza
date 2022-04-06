@@ -126,7 +126,7 @@ func Subtraction(x1, x2 Natural) Natural {
 	}
 	res.MakeN(mass)
 	return res
-=======
+}	
 // MultiplicationNaturalNumber Хвостовский Умножение натурального числа на цифру
 func MultiplicationNaturalNumber(x Natural, b uint8) Natural {
 	var c uint8
@@ -165,5 +165,4 @@ func MultiplicationBy10k(x Natural, k int) Natural {
 		}
 		return x
 	}
->>>>>>> main
 }
