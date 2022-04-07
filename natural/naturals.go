@@ -93,10 +93,11 @@ func Addition1(x Natural) Natural {
 }
 
 // MultiplicationNaturalNumber Хвостовский Умножение натурального числа на цифру
-func MultiplicationNaturalNumber(x Natural, b uint8) Natural {
+func MultiplicationNaturalNumber(g Natural, b uint8) Natural {
 	var c uint8
 	var i int
 	c = 0
+	x := CopyN(g)
 	for i = int(x.Older); i >= 0; i-- { //берём последний элемент массива до первого элемента массива
 		x.Digits[i] *= b       // умножаю разряд числа на цифру
 		x.Digits[i] += c       // перенос лишнего десятка с умножения
@@ -261,8 +262,4 @@ func Multiplication(x Natural, y Natural) Natural {
 	}
 	otv = Addition(otv, masSum[i]) // прибавляем последнее оставшееся
 	return otv
-}
-=======
-	
-	return r
 }
