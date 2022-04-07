@@ -12,17 +12,17 @@ Naturals - натуральные с нулём
 N-1 | Сравнение натуральных чисел: 2 - если первое больше второго, 0, если равно, 1 иначе. | Compare (COM_NN_D) | | Турбина
 N-2 | Проверка на ноль: если число не равно нулю, то «да» иначе «нет» | CheckNull (NZER_N_B) | | Турбина
 N-3 | Добавление 1 к натуральному числу | Addition1 (ADD_1N_N) | | Хвостовский
-N-4 | Сложение натуральных чисел | ADD_NN_N | Compare | Семёнов
+N-4 | Сложение натуральных чисел | Addition (ADD_NN_N) | Compare | Семёнов
 N-5 | Вычитание из первого большего натурального числа второго меньшего или равного | Subtraction (SUB_NN_N) | Compare | Лицеванова
 N-6 | Умножение натурального числа на цифру | MultiplicationNaturalNumber (MUL_ND_N) | | Хвостовский
 N-7 | Умножение натурального числа на 10^k | MultiplicationBy10k (MUL_Nk_N) | | Хвостовский
-N-8 | Умножение натуральных чисел | MUL_NN_N | MultiplicationNaturalNumber MultiplicationBy10k ADD_NN_N | Грунская
-N-9 | Вычитание из натурального другого натурального, умноженного на цифру для случая с неотрицательным результатом | SUB_NDN_N | Subtraction MultiplicationNaturalNumber Compare  | Комаровский
+N-8 | Умножение натуральных чисел | Multiplication (MUL_NN_N) | MultiplicationNaturalNumber MultiplicationBy10k Addition | Грунская
+N-9 | Вычитание из натурального другого натурального, умноженного на цифру для случая с неотрицательным результатом | DifferenceOfNaturals (SUB_NDN_N) | Subtraction MultiplicationNaturalNumber Compare  | Комаровский
 N-10 | Вычисление первой цифры деления большего натурального на меньшее, домноженное на 10^k,где k - номер позиции этой цифры (номер считается с нуля) | DIV_NN_Dk | MultiplicationBy10k Compare | Тростин
-N-11 | Частное от деления большего натурального числа на меньшее или равное натуральное с остатком(делитель отличен от нуля) | DIV_NN_N | DIV_NN_DkSUB_NDN_N | Пименов
-N-12 | Остаток от деления большего натурального числа на меньшее или равное натуральное с остатком(делитель отличен от нуля) | MOD_NN_N | DIV_NN_NSUB_NDN_N | Пименов
+N-11 | Частное от деления большего натурального числа на меньшее или равное натуральное с остатком(делитель отличен от нуля) | DIV_NN_N | DIV_NN_Dk DifferenceOfNaturals | Пименов
+N-12 | Остаток от деления большего натурального числа на меньшее или равное натуральное с остатком(делитель отличен от нуля) | MOD_NN_N | DIV_NN_N DifferenceOfNaturals | Пименов
 N-13 | НОД натуральных чисел | GCF_NN_N | MOD_NN_N Compare CheckNull| Турбина
-N-14 | НОК натуральных чисел | LCM_NN_N | GCF_NN_NMUL_NN_N | Турбина
+N-14 | НОК натуральных чисел | LCM_NN_N | GCF_NN_N Multiplication | Турбина
 
 Номер | Целые числа (b, n; A[..]) - знак числа (1 — минус, 0 — плюс) номер старшей позиции и массив цифр |   |   | Человек, ответственный за модуль
 -- | -- | -- | -- | --
@@ -31,11 +31,11 @@ Z-2 | Определение положительности числа (2 - по
 Z-3 | Умножение целого на (-1) | MultiplicationByNegativeOne (MUL_ZM_Z) | | Хвостовский
 Z-4 | Преобразование натурального в целое | FromNaturalsToWhole (TRANS_N_Z) | | Лицеванова
 Z-5 | Преобразование целого неотрицательного в натуральное | FromWholeToNaturals (TRANS_Z_N) | | Лицеванова
-Z-6 | Сложение целых чисел | ADD_ZZ_Z | Positivity Absolute Compare ADD_NN_N Subtraction MultiplicationByNegativeOne | Семёнов
-Z-7 | Вычитание целых чисел | SUB_ZZ_Z | Positivity Absolute Compare ADD_NN_N Subtraction MUL_Z-_Z | Семёнов
-Z-8 | Умножение целых чисел | MUL_ZZ_Z | Positivity Absolute MUL_NN_NMUL_Z-_Z | Тростин
+Z-6 | Сложение целых чисел | ADD_ZZ_Z | Positivity Absolute Compare Addition Subtraction MultiplicationByNegativeOne | Семёнов
+Z-7 | Вычитание целых чисел | SUB_ZZ_Z | Positivity Absolute Compare Addition Subtraction MultiplicationByNegativeOne | Семёнов
+Z-8 | Умножение целых чисел | MUL_ZZ_Z | Positivity Absolute Multiplication MultiplicationByNegativeOne | Тростин
 Z-9 | Частное от деления целого на целое (делитель отличен от нуля) | DIV_ZZ_Z | Absolute Positivity DIV_NN_N Addition1 | Морозов
-Z-10 | Остаток от деления целого на целое(делитель отличен от нуля) | MOD_ZZ_Z | DIV_ZZ_ZMUL_ZZ_ZSUB_ZZ_ZMUL_Z-_Z | Морозов
+Z-10 | Остаток от деления целого на целое(делитель отличен от нуля) | MOD_ZZ_Z | DIV_ZZ_ZMUL_ZZ_ZSUB_ZZ_Z MultiplicationByNegativeOne | Морозов
 
 Номер | Рациональная числа (дроби) — пара (целое; натуральное), первое имеет смысл числителя, второе - знаменателя |   |   | Человек, ответственный за модуль
 -- | -- | -- | -- | --
