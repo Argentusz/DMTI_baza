@@ -241,14 +241,29 @@ func Multiplication(x Natural, y Natural) Natural {
 	var otv Natural //структура для ответа
 	var i uint32
 	var pow int
-	var masSum []Natural               //массив структур для сложения
+	var masSum []Natural //массив структур для сложения
+	var change Natural
 	otv.Digits = append(otv.Digits, 0) // даем структуре otv нолик чтобы в ней было хоть что-то
 	pow = 0
+	if (x.Digits[0] == 0 && x.Older == 0) || (y.Digits[0] == 0 && y.Older == 0) { // если хоть один множитель 0 - возвращаем 0
+		return otv //otv у нас уже нолик
+	}
+	if x.Older == 0 && y.Older == 0 { //если оба однозначные
+		otv.Digits = append(otv.Digits, (x.Digits[0]*y.Digits[0])/10) //запишем старший разряд
+		otv.Digits = append(otv.Digits, (x.Digits[0]*y.Digits[0])%10) // и младший
+		otv.MakeN(otv.Digits)                                         //избавимся от нулей
+		return otv
+	}
+	if y.Older == 0 { //если только второй множитель однозначный поменяем местами
+		change = y
+		y = x
+		x = change
+	}
 
 	for i = y.Older; i != 0; i-- {
 		k := MultiplicationNaturalNumber(x, y.Digits[i]) //умножаем 1 число на каждую цифру второго
 		e := MultiplicationBy10k(k, pow)                 //умножаем произведение на степень 10 т.к. сдвигаем влево (ну вы поняли да)
-		pow += 1                                         //увелечиваем степень 10
+		pow += 1                                         //увеличиваем степень 10
 		masSum = append(masSum, e)                       //заполняем массив структур
 	}
 
@@ -261,5 +276,6 @@ func Multiplication(x Natural, y Natural) Natural {
 		otv = Addition(otv, masSum[i]) //складываем все произведения в массиве
 	}
 	otv = Addition(otv, masSum[i]) // прибавляем последнее оставшееся
+	
 	return otv
 }
