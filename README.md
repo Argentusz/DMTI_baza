@@ -33,9 +33,9 @@ Z-4 | Преобразование натурального в целое | From
 Z-5 | Преобразование целого неотрицательного в натуральное | FromWholeToNaturals (TRANS_Z_N) | | Лицеванова
 Z-6 | Сложение целых чисел | ADD_ZZ_Z | Positivity Absolute Compare Addition Subtraction MultiplicationByNegativeOne | Семёнов
 Z-7 | Вычитание целых чисел | SUB_ZZ_Z | Positivity Absolute Compare Addition Subtraction MultiplicationByNegativeOne | Семёнов
-Z-8 | Умножение целых чисел | MUL_ZZ_Z | Positivity Absolute Multiplication MultiplicationByNegativeOne | Тростин
+Z-8 | Умножение целых чисел | Multiplication (MUL_ZZ_Z) | Positivity Absolute Multiplication MultiplicationByNegativeOne | Тростин
 Z-9 | Частное от деления целого на целое (делитель отличен от нуля) | DIV_ZZ_Z | Absolute Positivity DIV_NN_N Addition1 | Морозов
-Z-10 | Остаток от деления целого на целое(делитель отличен от нуля) | MOD_ZZ_Z | DIV_ZZ_ZMUL_ZZ_ZSUB_ZZ_Z MultiplicationByNegativeOne | Морозов
+Z-10 | Остаток от деления целого на целое(делитель отличен от нуля) | MOD_ZZ_Z | DIV_ZZ_Z Multiplication SUB_ZZ_Z MultiplicationByNegativeOne | Морозов
 
 Номер | Рациональная числа (дроби) — пара (целое; натуральное), первое имеет смысл числителя, второе - знаменателя |   |   | Человек, ответственный за модуль
 -- | -- | -- | -- | --
@@ -43,10 +43,10 @@ Q-1 | Сокращение дроби | RED_Q_Q | Absolute GCF_NN_NDIV_ZZ_Z | С
 Q-2 | Проверка на целое, если рациональное число является целым, то «да», иначе «нет» | CheckingForWhole (INT_Q_B) | | Лицеванова
 Q-3 | Преобразование целого в дробное | WholeToFractional (TRANS_Z_Q) | | Грунская
 Q-4 | Преобразование дробного в целое (если знаменатель равен 1) | FractionalToWhole (TRANS_Q_Z) | | Грунская
-Q-5 | Сложение дробей | ADD_QQ_Q | LCM_NN_NMUL_ZZ_ZADD_ZZ_Z | Комаровский
-Q-6 | Вычитание дробей | SUB_QQ_Q | LCM_NN_NMUL_ZZ_ZSUB_ZZ_Z | Комаровский
-Q-7 | Умножение дробей | MUL_QQ_Q | MUL_ZZ_Z | Морозов
-Q-8 | Деление дробей (делитель отличен от нуля) | DIV_QQ_Q | MUL_ZZ_Z | Морозов
+Q-5 | Сложение дробей | ADD_QQ_Q | LCM_NN_N Multiplication ADD_ZZ_Z | Комаровский
+Q-6 | Вычитание дробей | SUB_QQ_Q | LCM_NN_N Multiplication SUB_ZZ_Z | Комаровский
+Q-7 | Умножение дробей | MUL_QQ_Q | Multiplication | Морозов
+Q-8 | Деление дробей (делитель отличен от нуля) | DIV_QQ_Q | Multiplication | Морозов
 
 Номер | Многочлен с рациональными коэффициентамиm – степень многочлена и массив C коэффициентов |   |   | Человек, ответственный за модуль
 -- | -- | -- | -- | --
