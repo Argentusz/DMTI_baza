@@ -22,6 +22,19 @@ func (n *Natural) MakeN(digits []uint8) {
 	n.Older = uint32(len(digits)) - 1
 }
 
+
+//Тростин Функция для копирования натурального числа
+
+func CopyN(n Natural) Natural {
+	var i uint32
+	var x Natural
+	for i = 0; i <= n.Older; i++ {
+		x.Digits = append(x.Digits, n.Digits[i])
+	}
+	x.Older = n.Older
+	return x
+}
+
 // Compare Турбина Сравнение натуральных чисел: 2 - если первое больше второго, 0, если равно, 1 иначе.
 func Compare(a, b Natural) int {
 	var i uint32
