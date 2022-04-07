@@ -50,6 +50,7 @@ func Compare(a, b Natural) int {
 				return 2
 			case b.Digits[i] > a.Digits[i]:
 				return 1
+
 			}
 		}
 	}
@@ -165,7 +166,6 @@ func Subtraction(x1, x2 Natural) Natural {
 					k -= 1
 				}
 				a.Digits[k] = a.Digits[k] - 1
-
 			}
 			mass = append([]uint8{a.Digits[i] - b.Digits[j] + 10}, mass...)
 			// добавляем в начало массив значение разряда
@@ -181,6 +181,28 @@ func Subtraction(x1, x2 Natural) Natural {
 	}
 	res.MakeN(mass)
 	return res
+}
+
+
+// Комаровский DifferenceOfNaturals Вычитание из натурального другого натурального, умноженного на цифру для случая с неотрицательным результатом
+func DifferenceOfNaturals(x1, x2 Natural, k uint8) Natural {
+	var a, b, res Natural
+	var mass []uint8
+	// опрределяем большее число
+	if Compare(x1, x2) == 0 { // если равны сразу возвращаем 0
+		if k == 1 { // если они раны и число,на которое необходимо умножить рано одному, сразу возвращаем 0
+			res.MakeN(mass)
+		}
+		return res // иначе возвращается пустой
+	}
+  a = CopyN(x1)
+	b = CopyN(x2)
+	b = MultiplicationNaturalNumber(b, k) //умножаем меньшее натуральное число на  заданное
+	if Compare(b, a) != 2 {               // если при умножение меньшего на цифру оно не становится больше другого,
+		// то вычитаем,если нет ,то возвращается пустой
+		res = Subtraction(a, b)
+	}
+  return res
 }
 
 // Семёнов Addition Сложение двух наутральных чисел
@@ -208,7 +230,6 @@ func Addition(a, b Natural) Natural {
 				r.Digits[r.Older-i] -= 10
 				r.Digits[r.Older-i-1] += 1
 			}
-		}
 	}
 	return r
 }
@@ -240,4 +261,8 @@ func Multiplication(x Natural, y Natural) Natural {
 	}
 	otv = Addition(otv, masSum[i]) // прибавляем последнее оставшееся
 	return otv
+}
+=======
+	
+	return r
 }
