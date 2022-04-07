@@ -50,6 +50,7 @@ func Compare(a, b Natural) int {
 				return 2
 			case b.Digits[i] > a.Digits[i]:
 				return 1
+
 			}
 		}
 	}
@@ -165,7 +166,6 @@ func Subtraction(x1, x2 Natural) Natural {
 					k -= 1
 				}
 				a.Digits[k] = a.Digits[k] - 1
-
 			}
 			mass = append([]uint8{a.Digits[i] - b.Digits[j] + 10}, mass...)
 			// добавляем в начало массив значение разряда
@@ -194,12 +194,42 @@ func DifferenceOfNaturals(x1, x2 Natural, k uint8) Natural {
 		}
 		return res // иначе возвращается пустой
 	}
-	a = CopyN(x1)
+  a = CopyN(x1)
 	b = CopyN(x2)
 	b = MultiplicationNaturalNumber(b, k) //умножаем меньшее натуральное число на  заданное
 	if Compare(b, a) != 2 {               // если при умножение меньшего на цифру оно не становится больше другого,
 		// то вычитаем,если нет ,то возвращается пустой
 		res = Subtraction(a, b)
 	}
-	return res
+  return res
+}
+
+// Семёнов Addition Сложение двух наутральных чисел
+func Addition(a, b Natural) Natural {
+	var i uint32
+	var r, t, buffer Natural
+	r = CopyN(a)
+	t = CopyN(b)
+	if Compare(r, t) != 2 && Compare(r, t) != 0 { //Сравниваем числа, если первое небольше второго и они оба не равны, то меняем их местами
+		buffer = r
+		r = t
+		t = buffer
+	}
+	for i = 0; i <= t.Older; i++ { //Цикл прибавления последней цифры одного числа к другой, смещаемся влево до тех пор, пока не дойдём до конца меньшего
+		r.Digits[r.Older-i] += t.Digits[t.Older-i]
+	}
+	for i = 0; i <= r.Older; i++ { //теперь проходим по получившемуся числу и, если где-то остался элемент больше или равный 10, исправляем
+		if r.Digits[r.Older-i] >= 10 {
+			if r.Older-i == 0 && r.Digits[0] >= 10 { //если очередь дошла до последнего разряда(самый левый) и если он  больше или равен 10, то
+				r.Digits = append([]uint8{0}, r.Digits...) //добавляю в начало числа 0
+				r.Older += 1                               //увеличиваю older ("размер" числа?)
+				r.Digits[0] = r.Digits[1] / 10
+				r.Digits[1] %= 10
+			} else { // если нет, то вычитаем из тек разряда 10 и +1 к след
+				r.Digits[r.Older-i] -= 10
+				r.Digits[r.Older-i-1] += 1
+			}
+		}
+	
+	return r
 }
