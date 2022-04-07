@@ -22,6 +22,9 @@ func Zero() Whole {
 // Возвращает целое число как строку
 func ToStringW(w Whole) string {
 	var s string
+	if w.Negative {
+		s += "-"
+	}
 	s += natural.ToStringN(w.Num)
 	return s
 }
