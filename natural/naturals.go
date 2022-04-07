@@ -159,6 +159,8 @@ func MultiplicationBy10k(x Natural, k int) Natural {
 	}
 }
 
+// DivideOneIteration Тростин Максим
+// Одна итерация деления
 func DivideOneIteration(x, y Natural) Natural {
 	var big, small, res Natural
 	var multiplier uint8
@@ -299,6 +301,8 @@ func DifferenceOfNaturals(x1, x2 Natural, k uint8) Natural {
 	}
 	return res
 }
+
+//Грунская Умножение натуральных чисел
 
 func Multiplication(x Natural, y Natural) Natural {
 	var otv Natural //структура для ответа
