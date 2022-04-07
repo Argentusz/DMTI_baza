@@ -362,7 +362,8 @@ func IntegerFromDivision(num1, num2 Natural) Natural {
 	}
 
 	// делим в первый раз и до тех пор, пока не получим младший разряд
-	for quotient.Older > 0 || quotient.Digits == nil {
+	// также необходимо удостовериться, что мы не будем делить ноль на число
+	for (quotient.Older > 0 || quotient.Digits == nil) && num1.Digits[0] != 0 {
 		quotient = DivideOneIteration(num1, num2)
 		num1 = DifferenceOfNaturals(num1, Multiplication(num2, quotient), 1) // num1 = num1 - num2 * quotient
 		result = Addition(result, quotient)                                  // добавляем разряд в конечный результат
