@@ -3,6 +3,7 @@ package natural
 import (
 	"testing"
 )
+
 //тестовые функции Голубева Михаила
 //тест функции сравнения натуральных чисел
 func TestCompare(t *testing.T) {
@@ -66,6 +67,145 @@ func TestAddition1(t *testing.T) {
 	for i, v := range got.Digits {
 		if v != want[i] {
 			t.Fatalf("3 - получили %+v, ожидалось %+v", got, want)
+		}
+	}
+}
+
+//тест умножения
+func TestMultiplication(t *testing.T) {
+	var n1, n2 Natural
+	n1.MakeN([]uint8{4})
+	n2.MakeN([]uint8{1})
+	got := Multiplication(n1, n2)
+	want := []uint8{4}
+	for i, v := range got.Digits {
+		if v != want[i] {
+			t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+		}
+	}
+	n1.MakeN([]uint8{4})
+	n2.MakeN([]uint8{0})
+	got = Multiplication(n1, n2)
+	want = []uint8{0}
+	for i, v := range got.Digits {
+		if v != want[i] {
+			t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+		}
+	}
+	n1.MakeN([]uint8{3})
+	n2.MakeN([]uint8{9})
+	got = Multiplication(n1, n2)
+	want = []uint8{2, 7}
+	for i, v := range got.Digits {
+		if v != want[i] {
+			t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+		}
+	}
+	n1.MakeN([]uint8{0})
+	n2.MakeN([]uint8{1, 2, 4, 5})
+	got = Multiplication(n1, n2)
+	want = []uint8{0}
+	for i, v := range got.Digits {
+		if v != want[i] {
+			t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+		}
+	}
+	n1.MakeN([]uint8{3, 7, 8})
+	n2.MakeN([]uint8{1, 2, 4, 5})
+	got = Multiplication(n1, n2)
+	want = []uint8{4, 7, 0, 6, 1, 0}
+	for i, v := range got.Digits {
+		if v != want[i] {
+			t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+		}
+	}
+}
+
+func TestIntegerFromDivision(t *testing.T) {
+	var n1, n2 Natural
+	n1.MakeN([]uint8{5, 1, 2})
+	n2.MakeN([]uint8{2})
+	got := IntegerFromDivision(n1, n2)
+	want := []uint8{2, 5, 6}
+	for i, v := range got.Digits {
+		if v != want[i] {
+			t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+		}
+	}
+	n1.MakeN([]uint8{5, 1, 3})
+	n2.MakeN([]uint8{2})
+	got = IntegerFromDivision(n1, n2)
+	want = []uint8{2, 5, 6}
+	for i, v := range got.Digits {
+		if v != want[i] {
+			t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+		}
+	}
+	n1.MakeN([]uint8{5, 1, 3})
+	n2.MakeN([]uint8{5, 1, 3})
+	got = IntegerFromDivision(n1, n2)
+	want = []uint8{1}
+	for i, v := range got.Digits {
+		if v != want[i] {
+			t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+		}
+	}
+	n1.MakeN([]uint8{2})
+	n2.MakeN([]uint8{5, 1, 3})
+	got = IntegerFromDivision(n1, n2)
+	want = []uint8{2, 5, 6}
+	for i, v := range got.Digits {
+		if v != want[i] {
+			t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+		}
+	}
+}
+
+func TestRemainderFromDivision(t *testing.T) {
+	var n1, n2 Natural
+	n1.MakeN([]uint8{5, 1, 2})
+	n2.MakeN([]uint8{2})
+	got := RemainderFromDivision(n1, n2)
+	want := []uint8{0}
+	for i, v := range got.Digits {
+		if v != want[i] {
+			t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+		}
+	}
+	n1.MakeN([]uint8{5, 1, 3})
+	n2.MakeN([]uint8{2})
+	got = RemainderFromDivision(n1, n2)
+	want = []uint8{1}
+	for i, v := range got.Digits {
+		if v != want[i] {
+			t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+		}
+	}
+	n1.MakeN([]uint8{5, 1, 3})
+	n2.MakeN([]uint8{5, 1, 3})
+	got = RemainderFromDivision(n1, n2)
+	want = []uint8{0}
+	for i, v := range got.Digits {
+		if v != want[i] {
+			t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+		}
+	}
+	n1.MakeN([]uint8{2, 3})
+	n2.MakeN([]uint8{1, 3})
+	got = RemainderFromDivision(n1, n2)
+	want = []uint8{1, 0}
+	for i, v := range got.Digits {
+		if v != want[i] {
+			t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+		}
+	}
+	n1.MakeN([]uint8{1, 3})
+	n2.MakeN([]uint8{2, 3})
+	got = RemainderFromDivision(n1, n2)
+	want = []uint8{1, 0}
+	for i, v := range got.Digits {
+		if v != want[i] {
+			t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
 		}
 	}
 }

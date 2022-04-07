@@ -117,7 +117,6 @@ func Addition1(x Natural) Natural {
 	return x
 }
 
-
 // MultiplicationNaturalNumber Хвостовский Умножение натурального числа на цифру
 func MultiplicationNaturalNumber(g Natural, b uint8) Natural {
 	var c uint8
@@ -161,7 +160,9 @@ func MultiplicationBy10k(x Natural, k int) Natural {
 }
 
 // DivideOneIteration Тростин Максим
-// Одна итерация деления
+// Вычисление первой цифры деления большего натурального на меньшее,
+// домноженное на 10^k,где k - номер позиции этой цифры
+// (номер считается с нуля)
 func DivideOneIteration(x, y Natural) Natural {
 	var big, small, res Natural
 	var multiplier uint8
@@ -249,7 +250,6 @@ func Subtraction(x1, x2 Natural) Natural {
 	return res
 }
 
-
 // DifferenceOfNaturals Комаровский
 // Вычитание из натурального другого натурального, умноженного на цифру для случая с неотрицательным результатом
 func DifferenceOfNaturals(x1, x2 Natural, k uint8) Natural {
@@ -262,14 +262,14 @@ func DifferenceOfNaturals(x1, x2 Natural, k uint8) Natural {
 		}
 		return res // иначе возвращается пустой
 	}
-  a = CopyN(x1)
+	a = CopyN(x1)
 	b = CopyN(x2)
 	b = MultiplicationNaturalNumber(b, k) //умножаем меньшее натуральное число на  заданное
 	if Compare(b, a) != 2 {               // если при умножение меньшего на цифру оно не становится больше другого,
 		// то вычитаем,если нет ,то возвращается пустой
 		res = Subtraction(a, b)
 	}
-  return res
+	return res
 }
 
 // Семёнов Addition Сложение двух наутральных чисел
@@ -297,6 +297,7 @@ func Addition(a, b Natural) Natural {
 				r.Digits[r.Older-i] -= 10
 				r.Digits[r.Older-i-1] += 1
 			}
+		}
 	}
 	return r
 }
@@ -342,6 +343,48 @@ func Multiplication(x Natural, y Natural) Natural {
 		otv = Addition(otv, masSum[i]) //складываем все произведения в массиве
 	}
 	otv = Addition(otv, masSum[i]) // прибавляем последнее оставшееся
-	
+
 	return otv
+}
+
+// Пименов
+// Частное от деления большего натурального числа на меньшее или равное натуральное с остатком
+// (делитель отличен от нуля)
+func IntegerFromDivision(num1, num2 Natural) Natural {
+	var quotient Natural // частное при делении с помощью функции DivideOneIteration
+	var result Natural   // целая часть от деления num1 на num2 (результат)
+
+	result.MakeN([]uint8{0}) // в начале результат равен нулю
+
+	// необходимо, чтобы num1 было бОльшим
+	if Compare(num1, num2) == 1 {
+		num1, num2 = num2, num1
+	}
+
+	// делим в первый раз и до тех пор, пока не получим младший разряд
+	for quotient.Older > 0 || quotient.Digits == nil {
+		quotient = DivideOneIteration(num1, num2)
+		num1 = DifferenceOfNaturals(num1, Multiplication(num2, quotient), 1) // num1 = num1 - num2 * quotient
+		result = Addition(result, quotient)                                  // добавляем разряд в конечный результат
+	}
+
+	return result
+}
+
+// Пименов
+// Остаток от деления большего натурального числа на меньшее или равное натуральное с остатком
+// (делитель отличен от нуля)
+func RemainderFromDivision(num1, num2 Natural) Natural {
+	var integer Natural // целая часть при делении num1 на num2
+	var result Natural  // остаток от деления num1 на num2 (результат)
+
+	// необходимо, чтобы num1 было бОльшим
+	if Compare(num1, num2) == 1 {
+		num1, num2 = num2, num1
+	}
+
+	integer = IntegerFromDivision(num1, num2)
+	result = DifferenceOfNaturals(num1, Multiplication(integer, num2), 1) // вычет целой части * делитель из num1
+
+	return result
 }
