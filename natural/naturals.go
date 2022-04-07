@@ -61,30 +61,31 @@ func CopyN(n Natural) Natural {
 }
 
 // Семёнов Addition Сложение двух наутральных чисел
-func Addition(a, b *Natural) Natural {
+func Addition(a, b Natural) Natural {
 	var i uint32
 	var r, t, buffer Natural
-	r = CopyN(*a)
-	t = CopyN(*b)
+	r = CopyN(a)
+	t = CopyN(b)
 	y := &r
 	u := &t
-	if Compare(y, u) != 2 && Compare(y, u) != 0 {
+	if Compare(y, u) != 2 && Compare(y, u) != 0 { //Сравниваем числа, если первое небольше второго и они оба не равны, то меняем их местами
 		buffer = r
 		r = t
 		t = buffer
 	}
 	for i = 0; i <= t.Older; i++ { //Цикл прибавления последней цифры одного числа к другой, смещаемся влево до тех пор, пока не дойдём до конца меньшего
 		r.Digits[r.Older-i] += t.Digits[t.Older-i]
-		if r.Digits[r.Older-i] >= 10 { //если текущий разряд больше или равен 10
-			if r.Digits[0] >= 10 { //если именно последний разряд(самый левый) больше или равен 10
+	}
+	for i = 0; i <= r.Older; i++ { //теперь проходим по получившемуся числу и, если где-то остался элемент больше или равный 10, исправляем
+		if r.Digits[r.Older-i] >= 10 {
+			if r.Older-i == 0 && r.Digits[0] >= 10 { //если очередь дошла до последнего разряда(самый левый) и если он  больше или равен 10, то
 				r.Digits = append([]uint8{0}, r.Digits...) //добавляю в начало числа 0
 				r.Older += 1                               //увеличиваю older ("размер" числа?)
 				r.Digits[0] = r.Digits[1] / 10
 				r.Digits[1] %= 10
-
-			} else { //если последний разряд(самый левый) не больше или равен 10, то просто вычитаю из текущего 10 и прибавляю к след 1
-				r.Digits[a.Older-i] -= 10
-				r.Digits[a.Older-i-1] += 1
+			} else { // если нет, то вычитаем из тек разряда 10 и +1 к след
+				r.Digits[r.Older-i] -= 10
+				r.Digits[r.Older-i-1] += 1
 			}
 		}
 	}
