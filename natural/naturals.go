@@ -63,15 +63,15 @@ func CopyN(n Natural) Natural {
 // Семёнов Addition Сложение двух наутральных чисел
 func Addition(a, b *Natural) Natural {
 	var i uint32
-	var r, t, d Natural
+	var r, t, buffer Natural
 	r = CopyN(*a)
 	t = CopyN(*b)
 	y := &r
 	u := &t
-	if Compare(y, u) != 2 || Compare(y, u) != 0 {
-		d = r
+	if Compare(y, u) != 2 && Compare(y, u) != 0 {
+		buffer = r
 		r = t
-		t = d
+		t = buffer
 	}
 	for i = 0; i <= t.Older; i++ { //Цикл прибавления последней цифры одного числа к другой, смещаемся влево до тех пор, пока не дойдём до конца меньшего
 		r.Digits[r.Older-i] += t.Digits[t.Older-i]
