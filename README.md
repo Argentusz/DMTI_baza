@@ -18,8 +18,8 @@ N-6 | Умножение натурального числа на цифру | M
 N-7 | Умножение натурального числа на 10^k | MultiplicationBy10k (MUL_Nk_N) | | Хвостовский
 N-8 | Умножение натуральных чисел | Multiplication (MUL_NN_N) | MultiplicationNaturalNumber MultiplicationBy10k Addition | Грунская
 N-9 | Вычитание из натурального другого натурального, умноженного на цифру для случая с неотрицательным результатом | DifferenceOfNaturals (SUB_NDN_N) | Subtraction MultiplicationNaturalNumber Compare  | Комаровский
-N-10 | Вычисление первой цифры деления большего натурального на меньшее, домноженное на 10^k,где k - номер позиции этой цифры (номер считается с нуля) | DIV_NN_Dk | MultiplicationBy10k Compare | Тростин
-N-11 | Частное от деления большего натурального числа на меньшее или равное натуральное с остатком(делитель отличен от нуля) | DIV_NN_N | DIV_NN_Dk DifferenceOfNaturals | Пименов
+N-10 | Вычисление первой цифры деления большего натурального на меньшее, домноженное на 10^k,где k - номер позиции этой цифры (номер считается с нуля) | DivideOneIteration (DIV_NN_Dk) | MultiplicationBy10k Compare | Тростин
+N-11 | Частное от деления большего натурального числа на меньшее или равное натуральное с остатком(делитель отличен от нуля) | DIV_NN_N | DivideOneIteration DifferenceOfNaturals | Пименов
 N-12 | Остаток от деления большего натурального числа на меньшее или равное натуральное с остатком(делитель отличен от нуля) | MOD_NN_N | DIV_NN_N DifferenceOfNaturals | Пименов
 N-13 | НОД натуральных чисел | GCF_NN_N | MOD_NN_N Compare CheckNull| Турбина
 N-14 | НОК натуральных чисел | LCM_NN_N | GCF_NN_N Multiplication | Турбина
