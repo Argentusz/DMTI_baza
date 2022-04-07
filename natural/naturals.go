@@ -93,10 +93,11 @@ func Addition1(x Natural) Natural {
 }
 
 // MultiplicationNaturalNumber Хвостовский Умножение натурального числа на цифру
-func MultiplicationNaturalNumber(x Natural, b uint8) Natural {
+func MultiplicationNaturalNumber(g Natural, b uint8) Natural {
 	var c uint8
 	var i int
 	c = 0
+	x := CopyN(g)
 	for i = int(x.Older); i >= 0; i-- { //берём последний элемент массива до первого элемента массива
 		x.Digits[i] *= b       // умножаю разряд числа на цифру
 		x.Digits[i] += c       // перенос лишнего десятка с умножения
@@ -183,6 +184,7 @@ func Subtraction(x1, x2 Natural) Natural {
 	return res
 }
 
+
 // Комаровский DifferenceOfNaturals Вычитание из натурального другого натурального, умноженного на цифру для случая с неотрицательным результатом
 func DifferenceOfNaturals(x1, x2 Natural, k uint8) Natural {
 	var a, b, res Natural
@@ -229,7 +231,51 @@ func Addition(a, b Natural) Natural {
 				r.Digits[r.Older-i] -= 10
 				r.Digits[r.Older-i-1] += 1
 			}
-		}
-	
+	}
 	return r
+}
+
+//Грунская Умножение натуральных чисел
+
+func Multiplication(x Natural, y Natural) Natural {
+	var otv Natural //структура для ответа
+	var i uint32
+	var pow int
+	var masSum []Natural //массив структур для сложения
+	var change Natural
+	otv.Digits = append(otv.Digits, 0) // даем структуре otv нолик чтобы в ней было хоть что-то
+	pow = 0
+	if (x.Digits[0] == 0 && x.Older == 0) || (y.Digits[0] == 0 && y.Older == 0) { // если хоть один множитель 0 - возвращаем 0
+		return otv //otv у нас уже нолик
+	}
+	if x.Older == 0 && y.Older == 0 { //если оба однозначные
+		otv.Digits = append(otv.Digits, (x.Digits[0]*y.Digits[0])/10) //запишем старший разряд
+		otv.Digits = append(otv.Digits, (x.Digits[0]*y.Digits[0])%10) // и младший
+		otv.MakeN(otv.Digits)                                         //избавимся от нулей
+		return otv
+	}
+	if y.Older == 0 { //если только второй множитель однозначный поменяем местами
+		change = y
+		y = x
+		x = change
+	}
+
+	for i = y.Older; i != 0; i-- {
+		k := MultiplicationNaturalNumber(x, y.Digits[i]) //умножаем 1 число на каждую цифру второго
+		e := MultiplicationBy10k(k, pow)                 //умножаем произведение на степень 10 т.к. сдвигаем влево (ну вы поняли да)
+		pow += 1                                         //увеличиваем степень 10
+		masSum = append(masSum, e)                       //заполняем массив структур
+	}
+
+	k := MultiplicationNaturalNumber(x, y.Digits[i]) //добавляем последнее произведение
+	e := MultiplicationBy10k(k, pow)
+	masSum = append(masSum, e)
+	otv = Addition(otv, e) //сразу прибавляем к ответу последнее произвденеие
+
+	for i = 0; i < uint32(len(masSum)-2); i++ {
+		otv = Addition(otv, masSum[i]) //складываем все произведения в массиве
+	}
+	otv = Addition(otv, masSum[i]) // прибавляем последнее оставшееся
+	
+	return otv
 }
