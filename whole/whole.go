@@ -17,6 +17,9 @@ func (w *Whole) MakeW(Negative bool, digits []uint8) {
 			digits = digits[1:]
 		}
 	}
+	if len(digits) == 0 {
+		digits = append(digits, 0)
+	}
 	w.Num.Digits = digits
 	w.Num.Older = uint32(len(digits)) - 1
 	w.Negative = Negative
@@ -28,4 +31,39 @@ func Absolute(w Whole) natural.Natural {
 	var n natural.Natural
 	n.MakeN(w.Num.Digits)
 	return n
+}
+
+//Positivity Турбина Определение положительности числа (2 - положительное, 0 — равное нулю, 1 - отрицательное)
+func Positivity(x Whole) int {
+	switch {
+	case x.Num.Digits[0] == 0:
+		return 0
+	case x.Negative == true:
+		return 1
+	default:
+		return 2
+	}
+}
+
+// MultiplicationByNegativeOne Хвостовский Умножение целого на (-1)
+func MultiplicationByNegativeOne(x Whole) Whole {
+	x.Negative = !x.Negative
+	return x
+}
+
+//Комаровский FromNaturalsToWhole преобразование из натурального в целое
+func FromNaturalsToWhole(nat natural.Natural) Whole {
+	var res Whole
+	res.Num = nat
+	res.Negative = false
+	return res
+}
+
+//Комаровский FromWholeToNaturals преобразование из неотрицательного целого в натуральное
+
+func FromWholeToNaturals(wh Whole) natural.Natural {
+	var res natural.Natural
+	res = wh.Num
+	return res
+
 }
