@@ -92,3 +92,23 @@ func FromWholeToNaturals(wh Whole) natural.Natural {
 	return res
 
 }
+
+// Multiplication Тростин Максим
+// Умножение целых
+func Multiplication(x, y Whole) Whole {
+	// Если хотя бы один ноль, то возвращаем ноль
+	// (чтобы не проходить по всем функциям и не париться по поводу знака)
+	if natural.CheckNull(x.Num) || natural.CheckNull(y.Num) {
+		return Zero()
+	}
+	var res Whole
+	// Определяем знак результата
+	if (x.Negative && y.Negative) || (!x.Negative && !y.Negative) {
+		res.Negative = false
+	} else {
+		res.Negative = true
+	}
+	// Вычисляем модуль результата
+	res.Num = natural.Multiplication(x.Num, y.Num)
+	return res
+}
