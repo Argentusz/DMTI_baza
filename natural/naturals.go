@@ -19,34 +19,27 @@ func (n *Natural) MakeN(digits []uint8) {
 	n.Older = uint32(len(digits)) - 1
 }
 
-// Турбина Compare Сравнение натуральных чисел: 2 - если первое больше второго, 0, если равно, 1 иначе.
-func Compare(a, b *Natural) int {
+// Compare Турбина Сравнение натуральных чисел: 2 - если первое больше второго, 0, если равно, 1 иначе.
+func Compare(a, b Natural) int {
 	var i uint32
-	var flag, res int
-	flag = 0
+
 	switch {
-	case a.Older > b.Older:
-		flag = 1
-		res = 2
+	case a.Older > b.Older: //если в одном числе больше разрядов, чем в другом, то оно больше
+		return 2
 	case b.Older > a.Older:
-		flag = 1
-		res = 1
+		return 1
 	default:
-		for i = 0; i < a.Older; i++ {
+		for i = 0; i < a.Older+1; i++ { //сравниваем разряды чисел, если соответствующий разряд больше, то одно число больше другого
 			switch {
-			case a.Digits[0] > b.Digits[0]:
-				flag = 1
-				res = 2
-			case b.Digits[0] > a.Digits[0]:
-				flag = 1
-				res = 1
+			case a.Digits[i] > b.Digits[i]:
+				return 2
+			case b.Digits[i] > a.Digits[i]:
+				return 1
 			}
 		}
 	}
-	if flag == 0 {
-		res = 0
-	}
-	return res
+
+	return 0
 }
 
 //Тростин Функция для копирования натурального числа
@@ -66,9 +59,7 @@ func Addition(a, b Natural) Natural {
 	var r, t, buffer Natural
 	r = CopyN(a)
 	t = CopyN(b)
-	y := &r
-	u := &t
-	if Compare(y, u) != 2 && Compare(y, u) != 0 { //Сравниваем числа, если первое небольше второго и они оба не равны, то меняем их местами
+	if Compare(r, t) != 2 && Compare(r, t) != 0 { //Сравниваем числа, если первое небольше второго и они оба не равны, то меняем их местами
 		buffer = r
 		r = t
 		t = buffer
