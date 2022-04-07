@@ -22,7 +22,6 @@ func (n *Natural) MakeN(digits []uint8) {
 	n.Older = uint32(len(digits)) - 1
 }
 
-
 //Тростин Функция для копирования натурального числа
 
 func CopyN(n Natural) Natural {
@@ -194,13 +193,9 @@ func DifferenceOfNaturals(x1, x2 Natural, k uint8) Natural {
 			res.MakeN(mass)
 		}
 		return res // иначе возвращается пустой
-	} else if Compare(x1, x2) == 2 {
-		a = x1
-		b = x2
-	} else if Compare(x1, x2) == 1 {
-		a = x2
-		b = x1
 	}
+	a = CopyN(x1)
+	b = CopyN(x2)
 	b = MultiplicationNaturalNumber(b, k) //умножаем меньшее натуральное число на  заданное
 	if Compare(b, a) != 2 {               // если при умножение меньшего на цифру оно не становится больше другого,
 		// то вычитаем,если нет ,то возвращается пустой
