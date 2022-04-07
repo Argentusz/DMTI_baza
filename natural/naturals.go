@@ -338,6 +338,5 @@ func Multiplication(x Natural, y Natural) Natural {
 		otv = Addition(otv, masSum[i]) //складываем все произведения в массиве
 	}
 	otv = Addition(otv, masSum[i]) // прибавляем последнее оставшееся
-
 	return otv
 }
