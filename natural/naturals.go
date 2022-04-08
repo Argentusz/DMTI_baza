@@ -396,10 +396,14 @@ func RemainderFromDivision(num1, num2 Natural) Natural {
 //Турбина
 //НОД натуральных чисел
 func GreatestCommonDivisor(num1, num2 Natural) Natural {
-	for CheckNull(num1) && CheckNull(num2) { //пока оба числа не равны нулю
-		RemainderFromDivision(num1, num2) //Остаток от деления большего на меньшее из чисел
+	for CheckNull(num1) == false && CheckNull(num2) == false { //пока оба числа не равны нулю
+		if Compare(num1, num2) == 2 {
+			num1 = RemainderFromDivision(num1, num2) //Остаток от деления большего на меньшее из чисел
+		} else {
+			num2 = RemainderFromDivision(num1, num2)
+		}
 	}
-	if CheckNull(num1) { //То число, которое не обнулилось является НОД
+	if CheckNull(num1) == false { //То число, которое не обнулилось является НОД
 		return num1
 	} else {
 		return num2
