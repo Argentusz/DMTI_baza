@@ -113,7 +113,6 @@ func Multiplication(x, y Whole) Whole {
 	return res
 }
 
-
 //CopyW
 //Функция для копирования целого числа
 func CopyW(n Whole) Whole {
@@ -187,6 +186,7 @@ func Subtraction(a, b Whole) Whole {
 		res.Negative = false
 	}
 	return res
+}
 
 //Морозов Никита
 //Остаток от деления целого на целое (делитель отличен от нуля)
