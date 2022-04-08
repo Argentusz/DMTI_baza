@@ -118,19 +118,24 @@ func Multiplication(x, y Whole) Whole {
 //Морозов Никита
 //Остаток от деления целого на целое (делитель отличен от нуля)
 //На вход: Делимое num1, Делитель num2
-func RemainderFromDivision(num1, num2 Whole) natural.Natural {
+func RemainderFromDivision(num1, num2 Whole) Whole {
 
 	//Объявляем результат
-	//Так как остаток всегда положительный, берём его как Natural
-	var result natural.Natural
+	var result Whole
+
+	//Сразу делаем остаток положительным
+	result.Negative = false
 
 	//Находим остаток вне зависимости от знаков
-	result = natural.RemainderFromDivision(Absolute(num1), Absolute(num2))
+	result.Num = natural.RemainderFromDivision(Absolute(num1), Absolute(num2))
 
-	//Если хотя бы одно число отрицательно, то действуем по формуле
-	//result = num2 - (num1 mod num2)
-	if Positivity(num1) == 1 || Positivity(num2) == 1 {
-		result = natural.Subtraction(Absolute(num2), result)
+	//Если остаток не равен нулю
+	if natural.CheckNull(result.Num) == false {
+		//Если хотя бы одно число отрицательно, то действуем по формуле
+		//result = num2 - (num1 mod num2)
+		if Positivity(num1) == 1 || Positivity(num2) == 1 {
+			result.Num = natural.Subtraction(Absolute(num2), Absolute(result))
+		}
 	}
 
 	return result
@@ -139,7 +144,7 @@ func RemainderFromDivision(num1, num2 Whole) natural.Natural {
 //Морозов Никита
 //Частное от деления целого на целое
 //На вход: Делмое num1, Делитель num2
-func IntegerFromDivision(num1, num2 Whole) Whole {
+func WholeFromDivision(num1, num2 Whole) Whole {
 	//Объявляем результат
 	var result Whole
 
@@ -148,7 +153,10 @@ func IntegerFromDivision(num1, num2 Whole) Whole {
 
 	//Если хотя бы один знак отрицателен, прибавялем к частному 1
 	if Positivity(num1) == 1 || Positivity(num2) == 1 {
-		result.Num = natural.Addition1(result.Num)
+		//Если остаток не равен нулю, то действуем
+		if natural.CheckNull(RemainderFromDivision(num1, num2).Num) == false {
+			result.Num = natural.Addition1(result.Num)
+		}
 
 		//Если отрицательно только одно число, делаем частное отрицательным
 		if Positivity(num1) == 1 && Positivity(num2) == 1 {
