@@ -31,20 +31,20 @@ Z-2 | Определение положительности числа (2 - по
 Z-3 | Умножение целого на (-1) | MultiplicationByNegativeOne (MUL_ZM_Z) | | Хвостовский
 Z-4 | Преобразование натурального в целое | FromNaturalsToWhole (TRANS_N_Z) | | Лицеванова
 Z-5 | Преобразование целого неотрицательного в натуральное | FromWholeToNaturals (TRANS_Z_N) | | Лицеванова
-Z-6 | Сложение целых чисел | ADD_ZZ_Z | Positivity Absolute Compare Addition Subtraction MultiplicationByNegativeOne | Семёнов
-Z-7 | Вычитание целых чисел | SUB_ZZ_Z | Positivity Absolute Compare Addition Subtraction MultiplicationByNegativeOne | Семёнов
+Z-6 | Сложение целых чисел | Addition (ADD_ZZ_Z) | Positivity Absolute Compare Addition Subtraction MultiplicationByNegativeOne | Семёнов
+Z-7 | Вычитание целых чисел | Subtraction (SUB_ZZ_Z) | Positivity Absolute Compare Addition Subtraction MultiplicationByNegativeOne | Семёнов
 Z-8 | Умножение целых чисел | Multiplication (MUL_ZZ_Z) | Positivity Absolute Multiplication MultiplicationByNegativeOne | Тростин
-Z-9 | Частное от деления целого на целое (делитель отличен от нуля) | DIV_ZZ_Z | Absolute Positivity IntegerFromDivision Addition1 | Морозов
-Z-10 | Остаток от деления целого на целое(делитель отличен от нуля) | MOD_ZZ_Z | DIV_ZZ_Z Multiplication SUB_ZZ_Z MultiplicationByNegativeOne | Морозов
+Z-9 | Частное от деления целого на целое (делитель отличен от нуля) | WholeFromDivision (DIV_ZZ_Z) | Absolute Positivity IntegerFromDivision Addition1 | Морозов
+Z-10 | Остаток от деления целого на целое(делитель отличен от нуля) | RemainderFromDivision (MOD_ZZ_Z) | WholeFromDivision Multiplication Subtraction MultiplicationByNegativeOne | Морозов
 
 Номер | Рациональная числа (дроби) — пара (целое; натуральное), первое имеет смысл числителя, второе - знаменателя |   |   | Человек, ответственный за модуль
 -- | -- | -- | -- | --
-Q-1 | Сокращение дроби | RED_Q_Q | Absolute GreatestCommonDivisor DIV_ZZ_Z | Семёнов
+Q-1 | Сокращение дроби | RED_Q_Q | Absolute GreatestCommonDivisor WholeFromDivision | Семёнов
 Q-2 | Проверка на целое, если рациональное число является целым, то «да», иначе «нет» | CheckingForWhole (INT_Q_B) | | Лицеванова
 Q-3 | Преобразование целого в дробное | WholeToFractional (TRANS_Z_Q) | | Грунская
 Q-4 | Преобразование дробного в целое (если знаменатель равен 1) | FractionalToWhole (TRANS_Q_Z) | | Грунская
-Q-5 | Сложение дробей | ADD_QQ_Q | LeastCommonMultiple Multiplication ADD_ZZ_Z | Комаровский
-Q-6 | Вычитание дробей | SUB_QQ_Q | LeastCommonMultiple Multiplication SUB_ZZ_Z | Комаровский
+Q-5 | Сложение дробей | ADD_QQ_Q | LeastCommonMultiple Multiplication Addition | Комаровский
+Q-6 | Вычитание дробей | SUB_QQ_Q | LeastCommonMultiple Multiplication Subtraction | Комаровский
 Q-7 | Умножение дробей | MUL_QQ_Q | Multiplication | Морозов
 Q-8 | Деление дробей (делитель отличен от нуля) | DIV_QQ_Q | Multiplication | Морозов
 
@@ -56,7 +56,7 @@ P-3 | Умножение многочлена на рациональное чи
 P-4 | Умножение многочлена на x^k | MUL_Pxk_P | | Голубев
 P-5 | Старший коэффициент многочлена | LED_P_Q | | Голубев
 P-6 | Степень многочлена | DEG_P_N | | Голубев
-P-7 | Вынесение из многочлена НОК знаменателей коэффициентов и НОД числителей | FAC_P_Q | Absolute FromWholeToNaturals LeastCommonMultiple GreatestCommonDivisor FromNaturalsToWhole DIV_ZZ_Z | Морозов
+P-7 | Вынесение из многочлена НОК знаменателей коэффициентов и НОД числителей | FAC_P_Q | Absolute FromWholeToNaturals LeastCommonMultiple GreatestCommonDivisor FromNaturalsToWhole WholeFromDivision | Морозов
 P-8 | Умножение многочленов | MUL_PP_P | MUL_PQ_PMUL_Pxk_PADD_PP_P | Грунская
 P-9 | Частное от деления многочлена на многочлен при делении с остатком | DIV_PP_P | DIV_QQ_QDEG_P_NMUL_Pxk_PSUB_PP_PADD_PP_P | Комаровский
 P-10 | Остаток от деления многочлена на многочлен при делении с остатком | MOD_PP_P | DIV_PP_PMUL_PP_PSUB_PP_P | Комаровский
