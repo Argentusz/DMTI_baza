@@ -52,6 +52,7 @@ func CopyR(n Rational) Rational {
 		x.Denominator.Digits = append(x.Denominator.Digits, n.Denominator.Digits[i])
 	}
 	x.Nominator.Num.Older = n.Nominator.Num.Older
+	x.Denominator.Older = n.Denominator.Older
 	x.Nominator.Negative = n.Nominator.Negative
 	return x
 }
@@ -94,7 +95,7 @@ func CheckingForWhole(x Rational) bool {
 func Addition(x1, x2 Rational) Rational {
 	var res, a, b Rational
 	var nod, d1, d2 natural.Natural // d1,d2 множители необходимы для приведению к общему знаменателю
-	a, b = x1, x2
+	a, b = CopyR(x1), CopyR(x2)
 	if natural.Compare(a.Denominator, b.Denominator) == 0 { //если знаменатели равны просто складываем числители
 		res.Nominator = whole.Addition(a.Nominator, b.Nominator)
 		res.Denominator = a.Denominator
@@ -116,7 +117,7 @@ func Addition(x1, x2 Rational) Rational {
 func Subtraction(x1, x2 Rational) Rational {
 	var res, a, b Rational
 	var nod, d1, d2 natural.Natural
-	a, b = x1, x2
+	a, b = CopyR(x1), CopyR(x2)
 	if natural.Compare(a.Denominator, b.Denominator) == 0 { //если знаменатели равны просто вычитаем числители
 		res.Nominator = whole.Subtraction(a.Nominator, b.Nominator)
 		res.Denominator = a.Denominator
