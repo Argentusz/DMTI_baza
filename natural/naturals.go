@@ -116,7 +116,6 @@ func Addition1(x Natural) Natural {
 	return x
 }
 
-
 // MultiplicationNaturalNumber Хвостовский
 // Умножение натурального числа на цифру
 
@@ -392,4 +391,24 @@ func RemainderFromDivision(num1, num2 Natural) Natural {
 	result = DifferenceOfNaturals(num1, Multiplication(integer, num2), 1) // вычет целой части * делитель из num1
 
 	return result
+}
+
+//Турбина
+//НОД натуральных чисел
+func GreatestCommonDivisor(num1, num2 Natural) Natural {
+	for CheckNull(num1) && CheckNull(num2) { //пока оба числа не равны нулю
+		RemainderFromDivision(num1, num2) //Остаток от деления большего на меньшее из чисел
+	}
+	if CheckNull(num1) { //То число, которое не обнулилось является НОД
+		return num1
+	} else {
+		return num2
+	}
+}
+
+// Турбина
+//НОК натуральных чисел
+func LeastCommonMultiple(num1, num2 Natural) Natural {
+	//Произведение двух чисел делим на их НОД
+	return IntegerFromDivision(Multiplication(num1, num2), GreatestCommonDivisor(num1, num2))
 }
