@@ -417,5 +417,8 @@ func GreatestCommonDivisor(num1, num2 Natural) Natural {
 //НОК натуральных чисел
 func LeastCommonMultiple(num1, num2 Natural) Natural {
 	//Произведение двух чисел делим на их НОД
+	if CheckNull(num1) || (CheckNull(num2)) {
+		return Zero()
+	}
 	return IntegerFromDivision(Multiplication(num1, num2), GreatestCommonDivisor(num1, num2))
 }
