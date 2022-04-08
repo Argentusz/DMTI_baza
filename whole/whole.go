@@ -1,6 +1,8 @@
 package whole
 
-import "DMTI_baza/natural"
+import (
+	"DMTI_baza/natural"
+)
 
 // Whole
 // Структура целого числа
@@ -111,4 +113,50 @@ func Multiplication(x, y Whole) Whole {
 	// Вычисляем модуль результата
 	res.Num = natural.Multiplication(x.Num, y.Num)
 	return res
+}
+
+//Морозов Никита
+//Остаток от деления целого на целое (делитель отличен от нуля)
+//На вход: Делимое num1, Делитель num2
+func RemainderFromDivision(num1, num2 Whole) natural.Natural {
+
+	//Объявляем результат
+	//Так как остаток всегда положительный, берём его как Natural
+	var result natural.Natural
+
+	//Находим остаток вне зависимости от знаков
+	result = natural.RemainderFromDivision(Absolute(num1), Absolute(num2))
+
+	//Если хотя бы одно число отрицательно, то действуем по формуле
+	//result = num2 - (num1 mod num2)
+	if Positivity(num1) == 1 || Positivity(num2) == 1 {
+		result = natural.Subtraction(Absolute(num2), result)
+	}
+
+	return result
+}
+
+//Морозов Никита
+//Частное от деления целого на целое
+//На вход: Делмое num1, Делитель num2
+func IntegerFromDivision(num1, num2 Whole) Whole {
+	//Объявляем результат
+	var result Whole
+
+	//Находим частное вне зависимости от знаков
+	result.Num = natural.IntegerFromDivision(Absolute(num2), Absolute(num1))
+
+	//Если хотя бы один знак отрицателен, прибавялем к частному 1
+	if Positivity(num1) == 1 || Positivity(num2) == 1 {
+		result.Num = natural.Addition1(result.Num)
+
+		//Если отрицательно только одно число, делаем частное отрицательным
+		if Positivity(num1) == 1 && Positivity(num2) == 1 {
+			result.Negative = false
+		} else {
+			result.Negative = true
+		}
+	}
+
+	return result
 }
