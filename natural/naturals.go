@@ -396,6 +396,9 @@ func RemainderFromDivision(num1, num2 Natural) Natural {
 //Турбина
 //НОД натуральных чисел
 func GreatestCommonDivisor(num1, num2 Natural) Natural {
+	if CheckNull(num1) || CheckNull(num2) {
+		return Zero()
+	}
 	for CheckNull(num1) == false && CheckNull(num2) == false { //пока оба числа не равны нулю
 		if Compare(num1, num2) == 2 {
 			num1 = RemainderFromDivision(num1, num2) //Остаток от деления большего на меньшее из чисел
