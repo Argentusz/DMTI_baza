@@ -113,6 +113,81 @@ func Multiplication(x, y Whole) Whole {
 	return res
 }
 
+
+//CopyW
+//Функция для копирования целого числа
+func CopyW(n Whole) Whole {
+	var i uint32
+	var x Whole
+	for i = 0; i <= n.Num.Older; i++ {
+		x.Num.Digits = append(x.Num.Digits, n.Num.Digits[i])
+	}
+	x.Num.Older = n.Num.Older
+	x.Negative = n.Negative
+	return x
+}
+
+//Addition Семёнов
+//Сложение двух целых чисел
+func Addition(a, b Whole) Whole {
+	var fl1, fl2 uint32
+	var r, t, res Whole
+	r, t = CopyW(a), CopyW(b)
+	if Positivity(r) == 1 { // запоминаем, если первое отрицательное
+		fl1 += 1
+	}
+	if Positivity(t) == 1 { // запоминаем, если второе отрицательное
+		fl2 += 1
+	}
+	if fl1+fl2 != 1 { // если оба отрицательные или оба положительные складываем цифры
+		r.Num = natural.Addition(r.Num, t.Num)
+		return r
+	} else { //иначе рассматриваем их как оба положительные и вычитаем из большего меньшее
+		res = CopyW(r) //берём копию первого числа и делаем с ним операции
+		res.Num = natural.Subtraction(res.Num, t.Num)
+		if natural.Compare(r.Num, t.Num) == 1 && fl1 == 1 { //если изначально первое меньше второго и знак первого минус, то меняем у результата знак на положительный
+			res = MultiplicationByNegativeOne(res)
+		}
+		if natural.Compare(r.Num, t.Num) == 1 && fl2 == 1 { //если изначально первое меньше второго и знак второго минус, меняем на отрицательный
+			res = MultiplicationByNegativeOne(res)
+		}
+	}
+	if natural.Compare(a.Num, b.Num) == 0 && fl1 != fl2 { // если числа равны, а их знаки нет, в сумме дают 0, фиксим у этого 0 знак на false
+		res.Negative = false
+	}
+	return res
+}
+
+//Subtraction Семёнов
+//Вычитание двух целых чисел
+func Subtraction(a, b Whole) Whole {
+	var fl1, fl2 uint32
+	var r, t, res Whole
+	r, t = CopyW(a), CopyW(b)
+	if Positivity(r) == 1 { // запоминаем, если первое отрицательное
+		fl1 += 1
+	}
+	if Positivity(t) == 1 { // запоминаем, если второе отрицательное
+		fl2 += 1
+	}
+	if fl1 != fl2 { // если оба отрицательные или оба положительные складываем цифры
+		r.Num = natural.Addition(r.Num, t.Num)
+		return r
+	} else { //иначе рассматриваем их как оба положительные и вычитаем из большего меньшее
+		res = CopyW(r)
+		res.Num = natural.Subtraction(res.Num, t.Num)
+		if natural.Compare(r.Num, t.Num) == 1 && fl1 == 1 { //если первое число меньшего второго(не учитываем знак) и перове отрицательное, меняем знак на противоположный
+			res = MultiplicationByNegativeOne(res)
+		}
+		if natural.Compare(r.Num, t.Num) == 1 && fl2 == 1 { //если первое число меньшего второго(не учитываем знак) и второе отрицательное, меняем знак на противоположный
+			r = MultiplicationByNegativeOne(r)
+		}
+	}
+	if natural.Compare(a.Num, b.Num) == 0 && fl1 == fl2 { // если числа равны и их знаки тоже,в результате получаем 0, фиксим
+		res.Negative = false
+	}
+	return res
+
 //Морозов Никита
 //Остаток от деления целого на целое (делитель отличен от нуля)
 //На вход: Делимое num1, Делитель num2
