@@ -67,3 +67,62 @@ func FromWholeToNaturals(wh Whole) natural.Natural {
 	return res
 
 }
+
+//CopyW
+//Функция для копирования целого числа
+func CopyW(n Whole) Whole {
+	var i uint32
+	var x Whole
+	for i = 0; i <= n.Num.Older; i++ {
+		x.Num.Digits = append(x.Num.Digits, n.Num.Digits[i])
+	}
+	x.Num.Older = n.Num.Older
+	x.Negative = n.Negative
+	return x
+}
+
+//Addition Семёнов
+//Сложение двух целых чисел
+func Addition(a, b Whole) Whole {
+	var fl1, fl2 uint32
+	var r, t Whole
+	r, t = CopyW(a), CopyW(b)                                                     // коппирую числа
+	if natural.Compare(r.Num, t.Num) != 2 && natural.Compare(r.Num, t.Num) != 0 { //Сравниваем числа, если первое небольше второго и они оба не равны, то меняем их местами
+		r, t = t, r
+	}
+	if Positivity(r) == 1 { // запоминаем, если первое отрицательное
+		fl1 += 1
+	}
+	if Positivity(t) == 1 { // запоминаем, если второе отрицательное
+		fl2 += 1
+	}
+	if fl1+fl2 != 1 { // если оба отрицательные или оба положительные складываем цифры
+		r.Num = natural.Addition(r.Num, t.Num)
+	} else { // иначе вычитаем
+		r.Num = natural.Subtraction(r.Num, t.Num)
+	}
+	return r
+}
+
+//Subtraction Семёнов
+//Вычитание двух целых чисел
+func Subtraction(a, b Whole) Whole {
+	var fl1, fl2 uint32
+	var r, t Whole
+	r, t = CopyW(a), CopyW(b)                                                     // коппирую числа
+	if natural.Compare(r.Num, t.Num) != 2 && natural.Compare(r.Num, t.Num) != 0 { //Сравниваем числа, если первое небольше второго и они оба не равны, то меняем их местами
+		r, t = t, r
+	}
+	if Positivity(r) == 1 { // запоминаем, если первое отрицательное
+		fl1 += 1
+	}
+	if Positivity(t) == 1 { // запоминаем, если второе отрицательное
+		fl2 += 1
+	}
+	if fl1+fl2 != 1 { // если оба отрицательные или оба положительные вычитаем цифры
+		r.Num = natural.Subtraction(r.Num, t.Num)
+	} else { // иначе складываем
+		r.Num = natural.Addition(r.Num, t.Num)
+	}
+	return r
+}
