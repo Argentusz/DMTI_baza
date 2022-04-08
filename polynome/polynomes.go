@@ -1,25 +1,32 @@
 package polynome
 
 import (
+	"DMTI_baza/rational"
+	"DMTI_baza/whole"
 	"fmt"
 	"math"
 	"strconv"
 )
+
 //----------НЕ ЗАБЫТЬ ПОМЕНЯТЬ FLOAT----------//
 //Структура и методы - от Голубева Михаила
 
-//структура полиномов //
+type Polynomial struct {
+	Older uint32
+	Coeff []rational.Rational
+}
+
+// Old структура полиномов //
 //каждый полином имеет старшую степень и коэффициенты при степенях
-type Polynome struct {
+type Old struct {
 	Older  int
 	Coeffs []float64
 }
 
 //------------------МЕТОДЫ------------------//
 
-//Конструктор полинома - метод
-////Замечания по неймингу приветствуются
-func (p *Polynome) MakePol(coeffs []float64) {
+// MakePolOld Конструктор полинома - метод
+func (p *Old) MakePolOld(coeffs []float64) {
 	for _, v := range coeffs {
 		if math.Round(v*10000) != 0.0 { //Проверка на 0 старшего коэфф
 			break
@@ -31,8 +38,28 @@ func (p *Polynome) MakePol(coeffs []float64) {
 	p.Older = len(coeffs) - 1
 }
 
-//Приведение полинома к строковому виду "ax^n+bx^(n-1)+...+nx^0" - метод
-func (p *Polynome) ToString() string {
+// MakeP Тростин Максим/Голубев Михаил
+// Метод создания полинома
+func (p *Polynomial) MakeP(coeffs []rational.Rational) {
+	for _, v := range coeffs {
+		if whole.Positivity(v.Nominator) != 0 { //Проверка на 0 старшего коэфф
+			break
+		} else {
+			coeffs = coeffs[1:]
+		}
+	}
+	p.Coeff = coeffs
+	p.Older = uint32(len(coeffs))
+	if p.Older == 0 {
+		p.Coeff = append(p.Coeff, rational.Zero())
+	} else {
+		p.Older -= 1
+	}
+
+}
+
+// ToStringPolOld Приведение полинома к строковому виду "ax^n+bx^(n-1)+...+nx^0" - метод
+func (p *Old) ToStringPolOld() string {
 	var str string
 	x := "x"
 	if p.Older == 0 {
@@ -52,13 +79,34 @@ func (p *Polynome) ToString() string {
 	return str
 }
 
+func (p *Polynomial) ToStringPol() string {
+	var str string
+	var i uint32
+	if p.Older == 0 {
+		return fmt.Sprint(p.Coeff[0])
+	} else {
+		for i = 0; i < p.Older; i++ {
+			if whole.Positivity(p.Coeff[i].Nominator) == 2 {
+				str += "+" + rational.ToStringR(p.Coeff[i]) + "x" + "^" + strconv.FormatUint(uint64(p.Older-i), 10)
+			} else if whole.Positivity(p.Coeff[i].Nominator) == 1 {
+				str += "-" + rational.ToStringR(p.Coeff[i]) + "x" + "^" + strconv.FormatUint(uint64(p.Older-i), 10)
+			}
+
+		}
+	}
+	if str[0] == '+' {
+		str = str[1:]
+	}
+	return str
+}
+
 //------------------ФУНКЦИИ------------------//
 
 //Функция - от Голубева Михаила
 
-//Сложение многочленов
-func AdditionPol(p1 Polynome, p2 Polynome) Polynome {
-	var ans Polynome
+// AdditionPolOld Сложение многочленов
+func AdditionPolOld(p1 Old, p2 Old) Old {
+	var ans Old
 	var arr []float64
 	var lenDiffs int
 	if p1.Older == p2.Older { //степени равны - просто складываем коэффициенты
@@ -67,7 +115,7 @@ func AdditionPol(p1 Polynome, p2 Polynome) Polynome {
 			val := p2.Coeffs[index] + p1.Coeffs[index]
 			arr = append(arr, val)
 		}
-		ans.MakePol(arr)
+		ans.MakePolOld(arr)
 	} else if p1.Older > p2.Older { //степень первого больше
 		ans.Older = p1.Older
 		lenDiffs = len(p1.Coeffs) - len(p2.Coeffs)
@@ -79,7 +127,7 @@ func AdditionPol(p1 Polynome, p2 Polynome) Polynome {
 			val := v + p1.Coeffs[i+lenDiffs]
 			arr = append(arr, val)
 		}
-		ans.MakePol(arr)
+		ans.MakePolOld(arr)
 	} else if p1.Older < p2.Older { //аналогично, но наоборот
 		lenDiffs = len(p2.Coeffs) - len(p1.Coeffs)
 		ans.Older = p2.Older
@@ -91,16 +139,16 @@ func AdditionPol(p1 Polynome, p2 Polynome) Polynome {
 			val := v + p2.Coeffs[i+lenDiffs]
 			arr = append(arr, val)
 		}
-		ans.MakePol(arr)
+		ans.MakePolOld(arr)
 	}
 	return ans
 }
 
 //Функция - от Голубева Михаила
 
-//Вычитание многочленов
-func SubtractionPol(from Polynome, what Polynome) Polynome {
-	var ans Polynome
+// SubtractionPolOld Вычитание многочленов
+func SubtractionPolOld(from Old, what Old) Old {
+	var ans Old
 	var arr []float64
 	var lenDiffs int
 	if from.Older == what.Older { //если они одной степени - просто вычитаем коэффициенты
@@ -109,7 +157,7 @@ func SubtractionPol(from Polynome, what Polynome) Polynome {
 			val := v - what.Coeffs[i]
 			arr = append(arr, val)
 		}
-		ans.MakePol(arr)
+		ans.MakePolOld(arr)
 	} else if from.Older > what.Older { //степень того из которого вычитаем больше степени вычитаемого
 		lenDiffs = len(from.Coeffs) - len(what.Coeffs)
 		ans.Older = from.Older
@@ -121,7 +169,7 @@ func SubtractionPol(from Polynome, what Polynome) Polynome {
 			val := from.Coeffs[i+lenDiffs] - v //записываем разность остальных коэффов
 			arr = append(arr, val)
 		}
-		ans.MakePol(arr)
+		ans.MakePolOld(arr)
 	} else if from.Older < what.Older { //наоборот - степень второго больше
 		lenDiffs = len(what.Coeffs) - len(from.Coeffs)
 		ans.Older = what.Older
@@ -133,15 +181,15 @@ func SubtractionPol(from Polynome, what Polynome) Polynome {
 			val := v - what.Coeffs[i+lenDiffs]
 			arr = append(arr, val)
 		}
-		ans.MakePol(arr)
+		ans.MakePolOld(arr)
 	}
 	return ans
 }
 
 //Функция - от Голубева Михаила
 
-//Умножение многочлена на рациональное число
-func NumberMultiplyPol(p Polynome, a float64) Polynome {
+// NumberMultiplyPolOld  Умножение многочлена на рациональное число
+func NumberMultiplyPolOld(p Old, a float64) Old {
 	for index := range p.Coeffs {
 		p.Coeffs[index] *= a
 	}
@@ -150,8 +198,8 @@ func NumberMultiplyPol(p Polynome, a float64) Polynome {
 
 //Функция - от Голубева Михаила
 
-//Умножение многочлена на x^k
-func VarMultiplyPol(p Polynome, k int) Polynome {
+// VarMultiplyPolOld Умножение многочлена на x^k
+func VarMultiplyPolOld(p Old, k int) Old {
 	p.Older += k
 	for i := 0; i < p.Older; i++ {
 		p.Coeffs = append(p.Coeffs, 0) //Добавляем нули как коэффициенты младших степеней
@@ -161,14 +209,14 @@ func VarMultiplyPol(p Polynome, k int) Polynome {
 
 //Функция - от Голубева Михаила
 
-//Степень многочлена
-func OlderPoly(p Polynome) int {
+// OlderPoly Степень многочлена
+func OlderPoly(p Polynomial) uint32 {
 	return p.Older
 }
 
 //Функция - от Голубева Михаила
 
-//Старший коэффициент многочлена
-func OlderCoeffPoly(p Polynome) float64 {
-	return p.Coeffs[0]
+// OlderCoeffPoly Старший коэффициент многочлена
+func OlderCoeffPoly(p Polynomial) rational.Rational {
+	return p.Coeff[0]
 }

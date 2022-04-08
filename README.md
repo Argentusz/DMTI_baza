@@ -12,17 +12,17 @@ Naturals - натуральные с нулём
 N-1 | Сравнение натуральных чисел: 2 - если первое больше второго, 0, если равно, 1 иначе. | Compare (COM_NN_D) | | Турбина
 N-2 | Проверка на ноль: если число не равно нулю, то «да» иначе «нет» | CheckNull (NZER_N_B) | | Турбина
 N-3 | Добавление 1 к натуральному числу | Addition1 (ADD_1N_N) | | Хвостовский
-N-4 | Сложение натуральных чисел | ADD_NN_N | Compare | Семёнов
+N-4 | Сложение натуральных чисел | Addition (ADD_NN_N) | Compare | Семёнов
 N-5 | Вычитание из первого большего натурального числа второго меньшего или равного | Subtraction (SUB_NN_N) | Compare | Лицеванова
 N-6 | Умножение натурального числа на цифру | MultiplicationNaturalNumber (MUL_ND_N) | | Хвостовский
 N-7 | Умножение натурального числа на 10^k | MultiplicationBy10k (MUL_Nk_N) | | Хвостовский
-N-8 | Умножение натуральных чисел | MUL_NN_N | MultiplicationNaturalNumber MultiplicationBy10k ADD_NN_N | Грунская
-N-9 | Вычитание из натурального другого натурального, умноженного на цифру для случая с неотрицательным результатом | SUB_NDN_N | Subtraction MultiplicationNaturalNumber Compare  | Комаровский
-N-10 | Вычисление первой цифры деления большего натурального на меньшее, домноженное на 10^k,где k - номер позиции этой цифры (номер считается с нуля) | DIV_NN_Dk | MultiplicationBy10k Compare | Тростин
-N-11 | Частное от деления большего натурального числа на меньшее или равное натуральное с остатком(делитель отличен от нуля) | DIV_NN_N | DIV_NN_DkSUB_NDN_N | Пименов
-N-12 | Остаток от деления большего натурального числа на меньшее или равное натуральное с остатком(делитель отличен от нуля) | MOD_NN_N | DIV_NN_NSUB_NDN_N | Пименов
-N-13 | НОД натуральных чисел | GCF_NN_N | MOD_NN_N Compare CheckNull| Турбина
-N-14 | НОК натуральных чисел | LCM_NN_N | GCF_NN_NMUL_NN_N | Турбина
+N-8 | Умножение натуральных чисел | Multiplication (MUL_NN_N) | MultiplicationNaturalNumber MultiplicationBy10k Addition | Грунская
+N-9 | Вычитание из натурального другого натурального, умноженного на цифру для случая с неотрицательным результатом | DifferenceOfNaturals (SUB_NDN_N) | Subtraction MultiplicationNaturalNumber Compare  | Комаровский
+N-10 | Вычисление первой цифры деления большего натурального на меньшее, домноженное на 10^k,где k - номер позиции этой цифры (номер считается с нуля) | DivideOneIteration (DIV_NN_Dk) | MultiplicationBy10k Compare | Тростин
+N-11 | Частное от деления большего натурального числа на меньшее или равное натуральное с остатком(делитель отличен от нуля) | IntegerFromDivision (DIV_NN_N) | DivideOneIteration DifferenceOfNaturals | Пименов
+N-12 | Остаток от деления большего натурального числа на меньшее или равное натуральное с остатком(делитель отличен от нуля) | RemainderFromDivision (MOD_NN_N) | IntegerFromDivision DifferenceOfNaturals | Пименов
+N-13 | НОД натуральных чисел | GreatestCommonDivisor (GCF_NN_N) | RemainderFromDivision Compare CheckNull| Турбина
+N-14 | НОК натуральных чисел | LeastCommonMultiple (LCM_NN_N) | GreatestCommonDivisor Multiplication | Турбина
 
 Номер | Целые числа (b, n; A[..]) - знак числа (1 — минус, 0 — плюс) номер старшей позиции и массив цифр |   |   | Человек, ответственный за модуль
 -- | -- | -- | -- | --
@@ -31,22 +31,22 @@ Z-2 | Определение положительности числа (2 - по
 Z-3 | Умножение целого на (-1) | MultiplicationByNegativeOne (MUL_ZM_Z) | | Хвостовский
 Z-4 | Преобразование натурального в целое | FromNaturalsToWhole (TRANS_N_Z) | | Лицеванова
 Z-5 | Преобразование целого неотрицательного в натуральное | FromWholeToNaturals (TRANS_Z_N) | | Лицеванова
-Z-6 | Сложение целых чисел | ADD_ZZ_Z | Positivity Absolute Compare ADD_NN_N Subtraction MultiplicationByNegativeOne | Семёнов
-Z-7 | Вычитание целых чисел | SUB_ZZ_Z | Positivity Absolute Compare ADD_NN_N Subtraction MUL_Z-_Z | Семёнов
-Z-8 | Умножение целых чисел | MUL_ZZ_Z | Positivity Absolute MUL_NN_NMUL_Z-_Z | Тростин
-Z-9 | Частное от деления целого на целое (делитель отличен от нуля) | DIV_ZZ_Z | Absolute Positivity DIV_NN_N Addition1 | Морозов
-Z-10 | Остаток от деления целого на целое(делитель отличен от нуля) | MOD_ZZ_Z | DIV_ZZ_ZMUL_ZZ_ZSUB_ZZ_ZMUL_Z-_Z | Морозов
+Z-6 | Сложение целых чисел | ADD_ZZ_Z | Positivity Absolute Compare Addition Subtraction MultiplicationByNegativeOne | Семёнов
+Z-7 | Вычитание целых чисел | SUB_ZZ_Z | Positivity Absolute Compare Addition Subtraction MultiplicationByNegativeOne | Семёнов
+Z-8 | Умножение целых чисел | Multiplication (MUL_ZZ_Z) | Positivity Absolute Multiplication MultiplicationByNegativeOne | Тростин
+Z-9 | Частное от деления целого на целое (делитель отличен от нуля) | DIV_ZZ_Z | Absolute Positivity IntegerFromDivision Addition1 | Морозов
+Z-10 | Остаток от деления целого на целое(делитель отличен от нуля) | MOD_ZZ_Z | DIV_ZZ_Z Multiplication SUB_ZZ_Z MultiplicationByNegativeOne | Морозов
 
 Номер | Рациональная числа (дроби) — пара (целое; натуральное), первое имеет смысл числителя, второе - знаменателя |   |   | Человек, ответственный за модуль
 -- | -- | -- | -- | --
-Q-1 | Сокращение дроби | RED_Q_Q | Absolute GCF_NN_NDIV_ZZ_Z | Семёнов
+Q-1 | Сокращение дроби | RED_Q_Q | Absolute GreatestCommonDivisor DIV_ZZ_Z | Семёнов
 Q-2 | Проверка на целое, если рациональное число является целым, то «да», иначе «нет» | CheckingForWhole (INT_Q_B) | | Лицеванова
 Q-3 | Преобразование целого в дробное | WholeToFractional (TRANS_Z_Q) | | Грунская
 Q-4 | Преобразование дробного в целое (если знаменатель равен 1) | FractionalToWhole (TRANS_Q_Z) | | Грунская
-Q-5 | Сложение дробей | ADD_QQ_Q | LCM_NN_NMUL_ZZ_ZADD_ZZ_Z | Комаровский
-Q-6 | Вычитание дробей | SUB_QQ_Q | LCM_NN_NMUL_ZZ_ZSUB_ZZ_Z | Комаровский
-Q-7 | Умножение дробей | MUL_QQ_Q | MUL_ZZ_Z | Морозов
-Q-8 | Деление дробей (делитель отличен от нуля) | DIV_QQ_Q | MUL_ZZ_Z | Морозов
+Q-5 | Сложение дробей | ADD_QQ_Q | LeastCommonMultiple Multiplication ADD_ZZ_Z | Комаровский
+Q-6 | Вычитание дробей | SUB_QQ_Q | LeastCommonMultiple Multiplication SUB_ZZ_Z | Комаровский
+Q-7 | Умножение дробей | MUL_QQ_Q | Multiplication | Морозов
+Q-8 | Деление дробей (делитель отличен от нуля) | DIV_QQ_Q | Multiplication | Морозов
 
 Номер | Многочлен с рациональными коэффициентамиm – степень многочлена и массив C коэффициентов |   |   | Человек, ответственный за модуль
 -- | -- | -- | -- | --
@@ -56,7 +56,7 @@ P-3 | Умножение многочлена на рациональное чи
 P-4 | Умножение многочлена на x^k | MUL_Pxk_P | | Голубев
 P-5 | Старший коэффициент многочлена | LED_P_Q | | Голубев
 P-6 | Степень многочлена | DEG_P_N | | Голубев
-P-7 | Вынесение из многочлена НОК знаменателей коэффициентов и НОД числителей | FAC_P_Q | Absolute FromWholeToNaturals LCM_NN_NGCF_NN_N FromNaturalsToWhole DIV_ZZ_Z | Морозов
+P-7 | Вынесение из многочлена НОК знаменателей коэффициентов и НОД числителей | FAC_P_Q | Absolute FromWholeToNaturals LeastCommonMultiple GreatestCommonDivisor FromNaturalsToWhole DIV_ZZ_Z | Морозов
 P-8 | Умножение многочленов | MUL_PP_P | MUL_PQ_PMUL_Pxk_PADD_PP_P | Грунская
 P-9 | Частное от деления многочлена на многочлен при делении с остатком | DIV_PP_P | DIV_QQ_QDEG_P_NMUL_Pxk_PSUB_PP_PADD_PP_P | Комаровский
 P-10 | Остаток от деления многочлена на многочлен при делении с остатком | MOD_PP_P | DIV_PP_PMUL_PP_PSUB_PP_P | Комаровский

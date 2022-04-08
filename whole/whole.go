@@ -113,6 +113,7 @@ func Multiplication(x, y Whole) Whole {
 	return res
 }
 
+
 //CopyW
 //Функция для копирования целого числа
 func CopyW(n Whole) Whole {
@@ -186,4 +187,57 @@ func Subtraction(a, b Whole) Whole {
 		res.Negative = false
 	}
 	return res
+
+//Морозов Никита
+//Остаток от деления целого на целое (делитель отличен от нуля)
+//На вход: Делимое num1, Делитель num2
+func RemainderFromDivision(num1, num2 Whole) Whole {
+
+	//Объявляем результат
+	var result Whole
+
+	//Сразу делаем остаток положительным
+	result.Negative = false
+
+	//Находим остаток вне зависимости от знаков
+	result.Num = natural.RemainderFromDivision(Absolute(num1), Absolute(num2))
+
+	//Если остаток не равен нулю
+	if natural.CheckNull(result.Num) == false {
+		//Если хотя бы одно число отрицательно, то действуем по формуле
+		//result = num2 - (num1 mod num2)
+		if Positivity(num1) == 1 || Positivity(num2) == 1 {
+			result.Num = natural.Subtraction(Absolute(num2), Absolute(result))
+		}
+	}
+
+	return result
+}
+
+//Морозов Никита
+//Частное от деления целого на целое
+//На вход: Делмое num1, Делитель num2
+func WholeFromDivision(num1, num2 Whole) Whole {
+	//Объявляем результат
+	var result Whole
+
+	//Находим частное вне зависимости от знаков
+	result.Num = natural.IntegerFromDivision(Absolute(num2), Absolute(num1))
+
+	//Если хотя бы один знак отрицателен, прибавялем к частному 1
+	if Positivity(num1) == 1 || Positivity(num2) == 1 {
+		//Если остаток не равен нулю, то действуем
+		if natural.CheckNull(RemainderFromDivision(num1, num2).Num) == false {
+			result.Num = natural.Addition1(result.Num)
+		}
+
+		//Если отрицательно только одно число, делаем частное отрицательным
+		if Positivity(num1) == 1 && Positivity(num2) == 1 {
+			result.Negative = false
+		} else {
+			result.Negative = true
+		}
+	}
+
+	return result
 }
