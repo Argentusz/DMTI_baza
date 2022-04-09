@@ -74,3 +74,34 @@ func CheckingForWhole(x Rational) bool {
 	return x.Denominator.Older == 0 && x.Denominator.Digits[0] == 1
 
 }
+
+//CopyW
+//Функция для копирования целого числа
+func CopyR(n Rational) Rational {
+	var i uint32
+	var x Rational
+	for i = 0; i <= n.Nominator.Num.Older; i++ {
+		x.Nominator.Num.Digits = append(x.Nominator.Num.Digits, n.Nominator.Num.Digits[i])
+	}
+	for i = 0; i <= n.Denominator.Older; i++ {
+		x.Denominator.Digits = append(x.Denominator.Digits, n.Denominator.Digits[i])
+	}
+	x.Nominator.Num.Older = n.Nominator.Num.Older
+	x.Denominator.Older = n.Denominator.Older
+	x.Nominator.Negative = n.Nominator.Negative
+	return x
+}
+
+//SimplifyingFractions Семёнов
+//Функция скоращения дробей
+func SimplifyingFractions(a Rational) Rational {
+	var NOD natural.Natural
+	var Copy Rational
+	Copy = CopyR(a) //делаю копию
+
+	NOD = natural.GreatestCommonDivisor(Copy.Nominator.Num, Copy.Denominator) // нахожу наибольший общий делитель
+	Copy.Denominator = natural.IntegerFromDivision(Copy.Denominator, NOD)     // делю на НОД числитель
+	Copy.Nominator.Num = natural.IntegerFromDivision(Copy.Nominator.Num, NOD) // делю на НОД знаменатель
+
+	return Copy
+}
