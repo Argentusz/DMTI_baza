@@ -71,7 +71,10 @@ func FractionalToWhole(x Rational) whole.Whole {
 // CheckingForWhole Комаровский
 // Проверка рационального числа на целое
 func CheckingForWhole(x Rational) bool {
-	return x.Denominator.Older == 0 && x.Denominator.Digits[0] == 1
+	var res Rational
+	res = CopyR(x)
+	res = SimplifyingFractions(res)
+	return res.Denominator.Older == 0 && res.Denominator.Digits[0] == 1
 
 }
 
