@@ -75,7 +75,7 @@ func CheckingForWhole(x Rational) bool {
 
 }
 
-//CopyW
+//CopyW Семёнов
 //Функция для копирования целого числа
 func CopyR(n Rational) Rational {
 	var i uint32
