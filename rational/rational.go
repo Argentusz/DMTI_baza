@@ -97,11 +97,22 @@ func CopyR(n Rational) Rational {
 func SimplifyingFractions(a Rational) Rational {
 	var NOD natural.Natural
 	var Copy Rational
+	DigEd := []uint8{1}
+	ed := natural.Natural{DigEd, 0}
 	Copy = CopyR(a) //делаю копию
 
+	if Copy.Nominator.Num.Digits[0] == 0 || Copy.Denominator.Digits[0] == 0 { // если в знаменателе//числителе 0, то возвращаем функцию, которую мне сказали возвращать, простите
+		return Zero()
+	}
+
 	NOD = natural.GreatestCommonDivisor(Copy.Nominator.Num, Copy.Denominator) // нахожу наибольший общий делитель
-	Copy.Denominator = natural.IntegerFromDivision(Copy.Denominator, NOD)     // делю на НОД числитель
-	Copy.Nominator.Num = natural.IntegerFromDivision(Copy.Nominator.Num, NOD) // делю на НОД знаменатель
+
+	if natural.Compare(ed, NOD) == 0 { // если NOD == 1, то возврашаю дробь, не деля её
+		return Copy
+	} else { // если нет, то делю
+		Copy.Denominator = natural.IntegerFromDivision(Copy.Denominator, NOD)     // делю на НОД числитель
+		Copy.Nominator.Num = natural.IntegerFromDivision(Copy.Nominator.Num, NOD) // делю на НОД знаменатель
+	}
 
 	return Copy
 }
