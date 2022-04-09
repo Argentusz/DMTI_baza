@@ -90,6 +90,20 @@ func CheckingForWhole(x Rational) bool {
 
 }
 
+//SimplifyingFractions Семёнов
+//Функция скоращения дробей
+func SimplifyingFractions(a Rational) Rational {
+	var NOD natural.Natural
+	var Copy Rational
+	Copy = CopyR(a) //делаю копию
+
+	NOD = natural.GreatestCommonDivisor(Copy.Nominator.Num, Copy.Denominator) // нахожу наибольший общий делитель
+	Copy.Denominator = natural.IntegerFromDivision(Copy.Denominator, NOD)     // делю на НОД числитель
+	Copy.Nominator.Num = natural.IntegerFromDivision(Copy.Nominator.Num, NOD) // делю на НОД знаменатель
+
+	return Copy
+}
+
 // Addition Комаровский
 //Сложение дробей
 func Addition(x1, x2 Rational) Rational {
@@ -99,17 +113,23 @@ func Addition(x1, x2 Rational) Rational {
 	if natural.Compare(a.Denominator, b.Denominator) == 0 { //если знаменатели равны просто складываем числители
 		res.Nominator = whole.Addition(a.Nominator, b.Nominator)
 		res.Denominator = a.Denominator
-		return res
-	} else {
-		nod = natural.LeastCommonMultiple(a.Denominator, b.Denominator) // Находим Нод знаменателей
-		d1 = natural.IntegerFromDivision(b.Denominator, nod)            // ищем недостающие множители для приведению к общему знаменателю
-		d2 = natural.IntegerFromDivision(a.Denominator, nod)
-		res.Denominator = natural.Multiplication(a.Denominator, d2)   // находим новый знаменатель
-		a.Nominator.Num = natural.Multiplication(a.Nominator.Num, d2) // Находим новые числители
-		b.Nominator.Num = natural.Multiplication(b.Nominator.Num, d1)
-		res.Nominator = whole.Addition(a.Nominator, b.Nominator) // складываем числители
+		if natural.CheckNull(res.Nominator.Num) == false {
+			res = SimplifyingFractions(res)
+		}
+
 		return res
 	}
+	nod = natural.LeastCommonMultiple(a.Denominator, b.Denominator) // Находим Нод знаменателей
+	d1 = natural.IntegerFromDivision(b.Denominator, nod)            // ищем недостающие множители для приведению к общему знаменателю
+	d2 = natural.IntegerFromDivision(a.Denominator, nod)
+	res.Denominator = natural.Multiplication(a.Denominator, d2)   // находим новый знаменатель
+	a.Nominator.Num = natural.Multiplication(a.Nominator.Num, d2) // Находим новые числители
+	b.Nominator.Num = natural.Multiplication(b.Nominator.Num, d1)
+	res.Nominator = whole.Addition(a.Nominator, b.Nominator) // складываем числители
+	if natural.CheckNull(res.Nominator.Num) == false {
+		res = SimplifyingFractions(res)
+	}
+	return res
 }
 
 // Subtraction Комаровский
@@ -121,15 +141,21 @@ func Subtraction(x1, x2 Rational) Rational {
 	if natural.Compare(a.Denominator, b.Denominator) == 0 { //если знаменатели равны просто вычитаем числители
 		res.Nominator = whole.Subtraction(a.Nominator, b.Nominator)
 		res.Denominator = a.Denominator
-		return res
-	} else {
-		nod = natural.LeastCommonMultiple(a.Denominator, b.Denominator) // Находим Нод знаменателей
-		d1 = natural.IntegerFromDivision(b.Denominator, nod)            // ищем недостающие множители для приведению к общему знаменателю
-		d2 = natural.IntegerFromDivision(a.Denominator, nod)
-		res.Denominator = natural.Multiplication(a.Denominator, d2)   // находим новый знаменатель
-		a.Nominator.Num = natural.Multiplication(a.Nominator.Num, d2) // Находим новые числители
-		b.Nominator.Num = natural.Multiplication(b.Nominator.Num, d1)
-		res.Nominator = whole.Subtraction(a.Nominator, b.Nominator) // вычитаем числители
+		if natural.CheckNull(res.Nominator.Num) == false {
+			res = SimplifyingFractions(res)
+		}
 		return res
 	}
+	nod = natural.LeastCommonMultiple(a.Denominator, b.Denominator) // Находим Нод знаменателей
+	d1 = natural.IntegerFromDivision(b.Denominator, nod)            // ищем недостающие множители для приведению к общему знаменателю
+	d2 = natural.IntegerFromDivision(a.Denominator, nod)
+	res.Denominator = natural.Multiplication(a.Denominator, d2)   // находим новый знаменатель
+	a.Nominator.Num = natural.Multiplication(a.Nominator.Num, d2) // Находим новые числители
+	b.Nominator.Num = natural.Multiplication(b.Nominator.Num, d1)
+	res.Nominator = whole.Subtraction(a.Nominator, b.Nominator) // вычитаем числители
+	if natural.CheckNull(res.Nominator.Num) == false {
+		res = SimplifyingFractions(res)
+	}
+	return res
+
 }
