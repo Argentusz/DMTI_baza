@@ -18,7 +18,7 @@ type Rational struct {
 func Zero() Rational {
 	var zero Rational
 	zero.Nominator = whole.Zero()
-	zero.Denominator = natural.Natural{Digits: []uint8{1}, Older: 1}
+	zero.Denominator = natural.Natural{Digits: []uint8{1}, Older: 0}
 	return zero
 }
 
@@ -95,11 +95,22 @@ func CheckingForWhole(x Rational) bool {
 func SimplifyingFractions(a Rational) Rational {
 	var NOD natural.Natural
 	var Copy Rational
+	DigEd := []uint8{1}
+	ed := natural.Natural{DigEd, 0}
 	Copy = CopyR(a) //делаю копию
 
+	if Copy.Nominator.Num.Digits[0] == 0 || Copy.Denominator.Digits[0] == 0 { // если в знаменателе//числителе 0, то возвращаем функцию, которую мне сказали возвращать, простите
+		return Zero()
+	}
+
 	NOD = natural.GreatestCommonDivisor(Copy.Nominator.Num, Copy.Denominator) // нахожу наибольший общий делитель
-	Copy.Denominator = natural.IntegerFromDivision(Copy.Denominator, NOD)     // делю на НОД числитель
-	Copy.Nominator.Num = natural.IntegerFromDivision(Copy.Nominator.Num, NOD) // делю на НОД знаменатель
+
+	if natural.Compare(ed, NOD) == 0 { // если NOD == 1, то возврашаю дробь, не деля её
+		return Copy
+	} else { // если нет, то делю
+		Copy.Denominator = natural.IntegerFromDivision(Copy.Denominator, NOD)     // делю на НОД числитель
+		Copy.Nominator.Num = natural.IntegerFromDivision(Copy.Nominator.Num, NOD) // делю на НОД знаменатель
+	}
 
 	return Copy
 }
@@ -113,10 +124,7 @@ func Addition(x1, x2 Rational) Rational {
 	if natural.Compare(a.Denominator, b.Denominator) == 0 { //если знаменатели равны просто складываем числители
 		res.Nominator = whole.Addition(a.Nominator, b.Nominator)
 		res.Denominator = a.Denominator
-		if natural.CheckNull(res.Nominator.Num) == false {
-			res = SimplifyingFractions(res)
-		}
-
+		res = SimplifyingFractions(res)
 		return res
 	}
 	nod = natural.LeastCommonMultiple(a.Denominator, b.Denominator) // Находим Нод знаменателей
@@ -126,9 +134,7 @@ func Addition(x1, x2 Rational) Rational {
 	a.Nominator.Num = natural.Multiplication(a.Nominator.Num, d2) // Находим новые числители
 	b.Nominator.Num = natural.Multiplication(b.Nominator.Num, d1)
 	res.Nominator = whole.Addition(a.Nominator, b.Nominator) // складываем числители
-	if natural.CheckNull(res.Nominator.Num) == false {
-		res = SimplifyingFractions(res)
-	}
+	res = SimplifyingFractions(res)
 	return res
 }
 
@@ -141,9 +147,7 @@ func Subtraction(x1, x2 Rational) Rational {
 	if natural.Compare(a.Denominator, b.Denominator) == 0 { //если знаменатели равны просто вычитаем числители
 		res.Nominator = whole.Subtraction(a.Nominator, b.Nominator)
 		res.Denominator = a.Denominator
-		if natural.CheckNull(res.Nominator.Num) == false {
-			res = SimplifyingFractions(res)
-		}
+		res = SimplifyingFractions(res)
 		return res
 	}
 	nod = natural.LeastCommonMultiple(a.Denominator, b.Denominator) // Находим Нод знаменателей
@@ -153,9 +157,7 @@ func Subtraction(x1, x2 Rational) Rational {
 	a.Nominator.Num = natural.Multiplication(a.Nominator.Num, d2) // Находим новые числители
 	b.Nominator.Num = natural.Multiplication(b.Nominator.Num, d1)
 	res.Nominator = whole.Subtraction(a.Nominator, b.Nominator) // вычитаем числители
-	if natural.CheckNull(res.Nominator.Num) == false {
-		res = SimplifyingFractions(res)
-	}
+	res = SimplifyingFractions(res)
 	return res
 
 }
