@@ -116,3 +116,48 @@ func SimplifyingFractions(a Rational) Rational {
 
 	return Copy
 }
+
+//Морозов Никита
+//Умножение дробей
+func Multiplication(num1, num2 Rational) Rational {
+	//Объявялем резульятат
+	var result Rational
+
+	//Перемножаем числители
+	result.Nominator = whole.Multiplication(num1.Nominator, num2.Nominator)
+
+	//Перемножаем знаменатели
+	result.Denominator = natural.Multiplication(num1.Denominator, num2.Denominator)
+
+	//Сокращаем результат
+	result = SimplifyingFractions(result)
+
+	return result
+}
+
+//Морозов Никита
+//Деление дробей
+//На вход: Дробь num1, Дробь num2
+func Devision(num1, num2 Rational) Rational {
+	var result Rational
+
+	//Сразу определяем знак
+	//Сравниваем знаки числителей
+	//Если они равны, то дробь точно положительна
+	if whole.Positivity(num1.Nominator) == whole.Positivity(num2.Nominator) {
+		result.Nominator.Negative = false
+	} else {
+		result.Nominator.Negative = true
+	}
+
+	//Перемножаем числитель первого и знаменатель второго
+	result.Nominator.Num = natural.Multiplication(whole.Absolute(num1.Nominator), num2.Denominator)
+
+	//Перемножаем числитель второго и знаменатель первого
+	result.Denominator = natural.Multiplication(whole.Absolute(num2.Nominator), num1.Denominator)
+
+	//Сокращаем результат
+	result = SimplifyingFractions(result)
+
+	return result
+}
