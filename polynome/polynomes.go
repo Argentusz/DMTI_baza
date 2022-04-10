@@ -14,9 +14,6 @@ type Polynomial struct {
 	Coeff []rational.Rational
 }
 
-
-
-
 // MakeP Тростин Максим/Голубев Михаил
 // Метод создания полинома
 func (p *Polynomial) MakeP(coeffs []rational.Rational) {
@@ -62,6 +59,24 @@ func OlderCoeffPoly(p Polynomial) rational.Rational {
 	return p.Coeff[0]
 }
 
+// Derivative Максим Тростин
+// Производная многочлена
+func Derivative(p0 Polynomial) Polynomial {
+	var i uint32
+	p := CopyP(p0)
+	// Константа просто уходит
+	p.Coeff[p.Older] = rational.Zero()
+	for i = p.Older; i != 0; i-- {
+		// Каждый коэффициент - это произведение степени старшего на коэффициент старшего
+		p.Coeff[i] = rational.Multiplication(p.Coeff[i-1], rational.IntToRational(int64(p.Older-i+1), 1))
+	}
+	// Убираем оставшуюся старшую степень
+	p.Older--
+	var _ rational.Rational
+	_, p.Coeff = p.Coeff[0], p.Coeff[1:]
+	return p
+}
+
 //Compare Турбина
 //Сравнение полиномов: 0, если равно, 1 иначе.
 func Compare(num1, num2 Polynomial) int {
@@ -83,20 +98,6 @@ func Compare(num1, num2 Polynomial) int {
 	return 0
 }
 
-//MultiplicationRational Семёнов Максим
-//Умножение полинома на рациональное число
-func MultiplicationRational(a Polynomial, b rational.Rational) Polynomial {
-	var i uint32
-
-	for i = 0; i < a.Older; i++ { //прогоняем каждый член полинома(так можно говорить?) отдельно
-		a.Coeff[i] = rational.Multiplication(a.Coeff[i], b) // умножаем опред член на рациональное число
-	}
-
-	return a
-}
-
-// ToStringPol Максим Тростин.
-// Возвращает полином в строковом виде
 func (p *Polynomial) ToStringPol() string {
 	var str string
 	var i uint32
