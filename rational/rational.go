@@ -138,7 +138,7 @@ func Multiplication(num1, num2 Rational) Rational {
 //Морозов Никита
 //Деление дробей
 //На вход: Дробь num1, Дробь num2
-func Devision(num1, num2 Rational) Rational {
+func Division(num1, num2 Rational) Rational {
 	var result Rational
 
 	//Сразу определяем знак
