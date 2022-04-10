@@ -98,6 +98,20 @@ func Compare(num1, num2 Polynomial) int {
 	return 0
 }
 
+//MultiplicationRational Семёнов Максим
+//Умножение полинома на рациональное число
+func MultiplicationRational(a Polynomial, b rational.Rational) Polynomial {
+	var i uint32
+
+	for i = 0; i < a.Older; i++ { //прогоняем каждый член полинома(так можно говорить?) отдельно
+		a.Coeff[i] = rational.Multiplication(a.Coeff[i], b) // умножаем опред член на рациональное число
+	}
+
+	return a
+}
+
+// ToStringPol Максим Тростин.
+// Возвращает полином в строковом виде
 func (p *Polynomial) ToStringPol() string {
 	var str string
 	var i uint32
