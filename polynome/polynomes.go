@@ -219,3 +219,25 @@ func (p *Polynomial) ToStringPol() string {
 	}
 	return str
 }
+
+// QuotientOfDivision Комаровский
+// Частное от деления полиномов
+func QuotientOfDivision(x1, x2 Polynomial) Polynomial {
+	var coef rational.Rational
+	var diff uint32
+	var x, y, mid, res Polynomial
+	var midcoef []rational.Rational
+	x, y = CopyP(x1), CopyP(x2)
+	for x.Older >= y.Older { // пока стрепень первого больше или равна второго
+		diff = x.Older - y.Older                                // разница их степеней
+		coef = rational.Division(x.Coeff[0], y.Coeff[0])        //деление старшего коэфицента первого и второго для определения коэфицента в частном
+		mid = MultiplicationRational(y, coef)                   //умножаем делитель на полученный коэфицент
+		mid = MultiplicationXpowerK(mid, int(diff))             //домножаем на степень
+		x = SubstractionP(x, mid)                               // вычитаем, тем самым убирается старшая степень
+		midcoef = append([]rational.Rational{coef}, midcoef...) // добавляем коэф
+		x.Older -= 1
+		x.Coeff = x.Coeff[1:]
+	}
+	res.MakeP(midcoef)
+	return res
+}
