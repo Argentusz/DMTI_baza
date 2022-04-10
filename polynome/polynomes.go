@@ -234,7 +234,10 @@ func GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(polynom Polynomial)
 
 	//Клонироуем все элементы числители в массив НОД
 	for i := 0; i < len(polynom.Coeff); i++ {
-		GCD = append(GCD, whole.Absolute(polynom.Coeff[i].Nominator))
+		//Исключаем нулевые коэффициенты
+		if natural.CheckNull(whole.Absolute(polynom.Coeff[i].Nominator)) == false {
+			GCD = append(GCD, whole.Absolute(polynom.Coeff[i].Nominator))
+		}
 	}
 
 	//Клонируем все элементы знаменателя в массив НОК
@@ -247,7 +250,7 @@ func GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(polynom Polynomial)
 	//Записываем в ячейки массива
 	//В конец последняя ячейка не изменится — её удаляем
 	//Повторяем пока массив не будет содержать только один элемент
-	//Пример: 
+	//Пример:
 	//Числители 3 6 9
 	//Находим НОД от 3 и 6: 3
 	//Находим НОД от 6 и 9: 3
