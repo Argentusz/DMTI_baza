@@ -123,9 +123,10 @@ func SubstractionP(fromOld Polynomial, whatOld Polynomial) Polynomial {
 }
 
 //Голубев Михаил - MultiplicationXpowerK функция умножения многочлена на x^k
-func MultiplicationXpowerK(p Polynomial, k int) Polynomial {
+func MultiplicationXpowerK(polynome Polynomial, k int) Polynomial {
 	nullCoeff := rational.Rational{Nominator: whole.Whole{Num: natural.Natural{Digits: []uint8{0}, Older: 0},
 		Negative: false}, Denominator: natural.Natural{Digits: []uint8{1}, Older: 0}} //создаем коэффициент вида 0/1
+	p := CopyP(polynome)
 	coeffs := p.Coeff
 	var result Polynomial
 	for i := 0; i < k; i++ {
