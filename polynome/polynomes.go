@@ -240,7 +240,7 @@ func Compare(num1, num2 Polynomial) int {
 	switch {
 	case num1.Older > num2.Older: //если старшая степень больше, то полином больше
 		return 2
-	case num2.Older > num2.Older:
+	case num2.Older > num1.Older:
 		return 1
 	default:
 		//сравниваем коэффициенты, если соответствующий коэффициент больше, то одно число больше другого
