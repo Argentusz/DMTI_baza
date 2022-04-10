@@ -14,9 +14,6 @@ type Polynomial struct {
 	Coeff []rational.Rational
 }
 
-
-
-
 // MakeP Тростин Максим/Голубев Михаил
 // Метод создания полинома
 func (p *Polynomial) MakeP(coeffs []rational.Rational) {
@@ -60,6 +57,24 @@ func OlderPoly(p Polynomial) uint32 {
 // OlderCoeffPoly Старший коэффициент многочлена
 func OlderCoeffPoly(p Polynomial) rational.Rational {
 	return p.Coeff[0]
+}
+
+// Derivative Максим Тростин
+// Производная многочлена
+func Derivative(p0 Polynomial) Polynomial {
+	var i uint32
+	p := CopyP(p0)
+	// Константа просто уходит
+	p.Coeff[p.Older] = rational.Zero()
+	for i = p.Older; i != 0; i-- {
+		// Каждый коэффициент - это произведение степени старшего на коэффициент старшего
+		p.Coeff[i] = rational.Multiplication(p.Coeff[i-1], rational.IntToRational(int64(p.Older-i+1), 1))
+	}
+	// Убираем оставшуюся старшую степень
+	p.Older--
+	var _ rational.Rational
+	_, p.Coeff = p.Coeff[0], p.Coeff[1:]
+	return p
 }
 
 //Compare Турбина
