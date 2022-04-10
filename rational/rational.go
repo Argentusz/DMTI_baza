@@ -35,6 +35,19 @@ func ToStringR(r Rational) string {
 	return s
 }
 
+// IntToRational Максим Тростин
+// Конвертирует int в Rational
+func IntToRational(n, d int64) Rational {
+	var r Rational
+	r.Nominator = whole.IntToWhole(n)
+	if d < 0 {
+		d *= -1
+		r.Nominator.Negative = !r.Nominator.Negative
+	}
+	r.Denominator = natural.IntToNat(uint64(d))
+	return r
+}
+
 // MakeR
 // Метод для создания рационального числа
 func (r *Rational) MakeR(nom whole.Whole, den natural.Natural) {
@@ -78,96 +91,7 @@ func CheckingForWhole(x Rational) bool {
 
 }
 
-//CopyW
-//Функция для копирования целого числа
-func CopyR(n Rational) Rational {
-	var i uint32
-	var x Rational
-	for i = 0; i <= n.Nominator.Num.Older; i++ {
-		x.Nominator.Num.Digits = append(x.Nominator.Num.Digits, n.Nominator.Num.Digits[i])
-	}
-	for i = 0; i <= n.Denominator.Older; i++ {
-		x.Denominator.Digits = append(x.Denominator.Digits, n.Denominator.Digits[i])
-	}
-	x.Nominator.Num.Older = n.Nominator.Num.Older
-	x.Denominator.Older = n.Denominator.Older
-	x.Nominator.Negative = n.Nominator.Negative
-	return x
-}
-
-//SimplifyingFractions Семёнов
-//Функция скоращения дробей
-func SimplifyingFractions(a Rational) Rational {
-	var NOD natural.Natural
-	var Copy Rational
-	DigEd := []uint8{1}
-	ed := natural.Natural{DigEd, 0}
-	Copy = CopyR(a) //делаю копию
-
-	if Copy.Nominator.Num.Digits[0] == 0 || Copy.Denominator.Digits[0] == 0 { // если в знаменателе//числителе 0, то возвращаем функцию, которую мне сказали возвращать, простите
-		return Zero()
-	}
-
-	NOD = natural.GreatestCommonDivisor(Copy.Nominator.Num, Copy.Denominator) // нахожу наибольший общий делитель
-
-	if natural.Compare(ed, NOD) == 0 { // если NOD == 1, то возврашаю дробь, не деля её
-		return Copy
-	} else { // если нет, то делю
-		Copy.Denominator = natural.IntegerFromDivision(Copy.Denominator, NOD)     // делю на НОД числитель
-		Copy.Nominator.Num = natural.IntegerFromDivision(Copy.Nominator.Num, NOD) // делю на НОД знаменатель
-	}
-
-	return Copy
-}
-
-// Addition Комаровский
-//Сложение дробей
-func Addition(x1, x2 Rational) Rational {
-	var res, a, b Rational
-	var nod, d1, d2 natural.Natural // d1,d2 множители необходимы для приведению к общему знаменателю
-	a, b = CopyR(x1), CopyR(x2)
-	if natural.Compare(a.Denominator, b.Denominator) == 0 { //если знаменатели равны просто складываем числители
-		res.Nominator = whole.Addition(a.Nominator, b.Nominator)
-		res.Denominator = a.Denominator
-		res = SimplifyingFractions(res)
-		return res
-	}
-	nod = natural.LeastCommonMultiple(a.Denominator, b.Denominator) // Находим Нод знаменателей
-	d1 = natural.IntegerFromDivision(b.Denominator, nod)            // ищем недостающие множители для приведению к общему знаменателю
-	d2 = natural.IntegerFromDivision(a.Denominator, nod)
-	res.Denominator = natural.Multiplication(a.Denominator, d2)   // находим новый знаменатель
-	a.Nominator.Num = natural.Multiplication(a.Nominator.Num, d2) // Находим новые числители
-	b.Nominator.Num = natural.Multiplication(b.Nominator.Num, d1)
-	res.Nominator = whole.Addition(a.Nominator, b.Nominator) // складываем числители
-	res = SimplifyingFractions(res)
-	return res
-}
-
-// Subtraction Комаровский
-// Вычитание дробей
-func Subtraction(x1, x2 Rational) Rational {
-	var res, a, b Rational
-	var nod, d1, d2 natural.Natural
-	a, b = CopyR(x1), CopyR(x2)
-	if natural.Compare(a.Denominator, b.Denominator) == 0 { //если знаменатели равны просто вычитаем числители
-		res.Nominator = whole.Subtraction(a.Nominator, b.Nominator)
-		res.Denominator = a.Denominator
-		res = SimplifyingFractions(res)
-		return res
-	}
-	nod = natural.LeastCommonMultiple(a.Denominator, b.Denominator) // Находим Нод знаменателей
-	d1 = natural.IntegerFromDivision(b.Denominator, nod)            // ищем недостающие множители для приведению к общему знаменателю
-	d2 = natural.IntegerFromDivision(a.Denominator, nod)
-	res.Denominator = natural.Multiplication(a.Denominator, d2)   // находим новый знаменатель
-	a.Nominator.Num = natural.Multiplication(a.Nominator.Num, d2) // Находим новые числители
-	b.Nominator.Num = natural.Multiplication(b.Nominator.Num, d1)
-	res.Nominator = whole.Subtraction(a.Nominator, b.Nominator) // вычитаем числители
-	res = SimplifyingFractions(res)
-	return res
-
-}
-
-//CopyW
+// CopyR Семёнов
 //Функция для копирования целого числа
 func CopyR(n Rational) Rational {
 	var i uint32
@@ -230,7 +154,7 @@ func Multiplication(num1, num2 Rational) Rational {
 //Морозов Никита
 //Деление дробей
 //На вход: Дробь num1, Дробь num2
-func Devision(num1, num2 Rational) Rational {
+func Division(num1, num2 Rational) Rational {
 	var result Rational
 
 	//Сразу определяем знак
@@ -252,4 +176,51 @@ func Devision(num1, num2 Rational) Rational {
 	result = SimplifyingFractions(result)
 
 	return result
+}
+
+// Addition Комаровский
+//Сложение дробей
+func Addition(x1, x2 Rational) Rational {
+	var res, a, b Rational
+	var nod, d1, d2 natural.Natural // d1,d2 множители необходимы для приведению к общему знаменателю
+	a, b = CopyR(x1), CopyR(x2)
+	if natural.Compare(a.Denominator, b.Denominator) == 0 { //если знаменатели равны просто складываем числители
+		res.Nominator = whole.Addition(a.Nominator, b.Nominator)
+		res.Denominator = a.Denominator
+		res = SimplifyingFractions(res)
+		return res
+	}
+	nod = natural.LeastCommonMultiple(a.Denominator, b.Denominator) // Находим Нод знаменателей
+	d1 = natural.IntegerFromDivision(b.Denominator, nod)            // ищем недостающие множители для приведению к общему знаменателю
+	d2 = natural.IntegerFromDivision(a.Denominator, nod)
+	res.Denominator = natural.Multiplication(a.Denominator, d2)   // находим новый знаменатель
+	a.Nominator.Num = natural.Multiplication(a.Nominator.Num, d2) // Находим новые числители
+	b.Nominator.Num = natural.Multiplication(b.Nominator.Num, d1)
+	res.Nominator = whole.Addition(a.Nominator, b.Nominator) // складываем числители
+	res = SimplifyingFractions(res)
+	return res
+}
+
+// Subtraction Комаровский
+// Вычитание дробей
+func Subtraction(x1, x2 Rational) Rational {
+	var res, a, b Rational
+	var nod, d1, d2 natural.Natural
+	a, b = CopyR(x1), CopyR(x2)
+	if natural.Compare(a.Denominator, b.Denominator) == 0 { //если знаменатели равны просто вычитаем числители
+		res.Nominator = whole.Subtraction(a.Nominator, b.Nominator)
+		res.Denominator = a.Denominator
+		res = SimplifyingFractions(res)
+		return res
+	}
+	nod = natural.LeastCommonMultiple(a.Denominator, b.Denominator) // Находим Нод знаменателей
+	d1 = natural.IntegerFromDivision(b.Denominator, nod)            // ищем недостающие множители для приведению к общему знаменателю
+	d2 = natural.IntegerFromDivision(a.Denominator, nod)
+	res.Denominator = natural.Multiplication(a.Denominator, d2)   // находим новый знаменатель
+	a.Nominator.Num = natural.Multiplication(a.Nominator.Num, d2) // Находим новые числители
+	b.Nominator.Num = natural.Multiplication(b.Nominator.Num, d1)
+	res.Nominator = whole.Subtraction(a.Nominator, b.Nominator) // вычитаем числители
+	res = SimplifyingFractions(res)
+	return res
+
 }
