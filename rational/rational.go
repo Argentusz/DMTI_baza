@@ -35,6 +35,19 @@ func ToStringR(r Rational) string {
 	return s
 }
 
+// IntToRational Максим Тростин
+// Конвертирует int в Rational
+func IntToRational(n, d int64) Rational {
+	var r Rational
+	r.Nominator = whole.IntToWhole(n)
+	if d < 0 {
+		d *= -1
+		r.Nominator.Negative = !r.Nominator.Negative
+	}
+	r.Denominator = natural.IntToNat(uint64(d))
+	return r
+}
+
 // MakeR
 // Метод для создания рационального числа
 func (r *Rational) MakeR(nom whole.Whole, den natural.Natural) {
@@ -78,7 +91,7 @@ func CheckingForWhole(x Rational) bool {
 
 }
 
-//CopyW Семёнов
+// CopyR Семёнов
 //Функция для копирования целого числа
 func CopyR(n Rational) Rational {
 	var i uint32

@@ -2,14 +2,14 @@ package whole
 
 import "DMTI_baza/natural"
 
-// Whole
+// Whole Тростин Максим.
 // Структура целого числа
 type Whole struct {
 	Num      natural.Natural
 	Negative bool // true (1), если отрицательное; false (0), если положительное
 }
 
-// Zero
+// Zero Тростин Максим.
 // Возвращает целый нуль (положительный =) )
 func Zero() Whole {
 	var zero Whole
@@ -18,7 +18,7 @@ func Zero() Whole {
 	return zero
 }
 
-// ToStringW
+// ToStringW Тростин Максим.
 // Возвращает целое число как строку
 func ToStringW(w Whole) string {
 	var s string
@@ -29,7 +29,20 @@ func ToStringW(w Whole) string {
 	return s
 }
 
-// MakeW
+// IntToWhole Максим Тростин
+// Конвертирует int в Whole
+func IntToWhole(n int64) Whole {
+	var w Whole
+	w.Negative = false
+	if n < 0 {
+		w.Negative = true
+		n *= -1
+	}
+	w.Num = natural.IntToNat(uint64(n))
+	return w
+}
+
+// MakeW Тростин Максим.
 // Метод для создания целого
 func (w *Whole) MakeW(Negative bool, digits []uint8) {
 	for _, v := range digits {
@@ -47,7 +60,7 @@ func (w *Whole) MakeW(Negative bool, digits []uint8) {
 	w.Negative = Negative
 }
 
-// Absolute Тростина Максима
+// Absolute Тростин Максим.
 // Возвращает модуль целого числа как натуральное
 func Absolute(w Whole) natural.Natural {
 	var n natural.Natural

@@ -2,14 +2,14 @@ package natural
 
 import "fmt"
 
-// Natural
+// Natural Тростин Максим
 // Структура натурального числа
 type Natural struct {
 	Digits []uint8 // Цифры больше 255 и меньше 0 нам не понадобятся, а памяти сохранит уйму
 	Older  uint32
 }
 
-// Zero
+// Zero Тростин Максим.
 // Возвращает натуральный нуль
 func Zero() Natural {
 	var zero Natural
@@ -18,7 +18,7 @@ func Zero() Natural {
 	return zero
 }
 
-// ToStringN
+// ToStringN Тростин Максим.
 // Возвращает натуральное как строку
 func ToStringN(n Natural) string {
 	var s string
@@ -28,7 +28,7 @@ func ToStringN(n Natural) string {
 	return s
 }
 
-// MakeN
+// MakeN Тростин Максим.
 // Метод для создания натурала
 func (n *Natural) MakeN(digits []uint8) {
 	for _, v := range digits {
@@ -54,6 +54,23 @@ func CopyN(n Natural) Natural {
 		x.Digits = append(x.Digits, n.Digits[i])
 	}
 	x.Older = n.Older
+	return x
+}
+
+// IntToNat Тростин Максима
+// Переводит uin64 в Natural
+func IntToNat(n uint64) Natural {
+	var x Natural
+	for n != 0 {
+		x.Digits = append([]uint8{uint8(n % 10)}, x.Digits...)
+		n /= 10
+		x.Older++
+	}
+	if x.Older > 0 {
+		x.Older--
+	} else {
+		x.Digits = append(x.Digits, 0)
+	}
 	return x
 }
 

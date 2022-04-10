@@ -83,8 +83,13 @@ func OlderCoeffPoly(p Polynomial) rational.Rational {
 }
 
 //func Derivative(p0 Polynomial) Polynomial {
+//	var i uint32
 //	p := CopyP(p0)
-//
+//	// 2x^2 + 2x + 1
+//	p.Coeff[p.Older] = rational.Zero()
+//	for i = p.Older; i != 0; i-- {
+//		p.Coeff[i] = rational.Multiplication(p.Coeff[i-1])
+//	}
 //}
 
 //// ToStringPolOld Приведение полинома к строковому виду "ax^n+bx^(n-1)+...+nx^0" - метод
