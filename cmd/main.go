@@ -4,6 +4,8 @@ package main
 //В целом, на него смотреть пока не нужно, это я сам добью, потом посмотрите и оцените(!)
 import (
 	"DMTI_baza/natural"
+	"DMTI_baza/polynome"
+	"DMTI_baza/rational"
 	"DMTI_baza/whole"
 	"fmt"
 	"strconv"
@@ -22,6 +24,10 @@ func main() {
 	case 1:
 		naturalsGui(functionNumber)
 	case 2:
+		wholeGui(functionNumber)
+	case 3:
+		rationalGui(functionNumber)
+	case 4:
 
 	}
 }
@@ -252,4 +258,212 @@ func inputWhole(s string) whole.Whole {
 	var w whole.Whole
 	w.MakeW(negative, nums)
 	return w
+}
+
+func rationalGui(f int) {
+	var s string
+	switch f {
+	case 1: //Сокращение дроби
+		fmt.Println("rational-")
+		fmt.Scan(&s)
+		r := inputRational(s)
+		fmt.Println(rational.ToStringR(rational.SimplifyingFractions(r)))
+	case 2: //Проверка на целое, если рациональное число является целым, то «да», иначе «нет»
+		fmt.Println("rational-")
+		fmt.Scan(&s)
+		r := inputRational(s)
+		fmt.Println(rational.CheckingForWhole(r))
+	case 3: //Преобразование целого в дробное
+		fmt.Println("rational-")
+		fmt.Scan(&s)
+		wh := inputWhole(s)
+		fmt.Println(rational.ToStringR(rational.WholeToFractional(wh)))
+	case 4: //дробного в целое
+		fmt.Println("rational-")
+		fmt.Scan(&s)
+		r := inputRational(s)
+		fmt.Println(whole.ToStringW(rational.FractionalToWhole(r)))
+	case 5: //сложение дробей
+		fmt.Println("1st rational-")
+		fmt.Scan(&s)
+		r1 := inputRational(s)
+		fmt.Println("2nd rational-")
+		fmt.Scan(&s)
+		r2 := inputRational(s)
+		fmt.Println(rational.ToStringR(rational.Addition(r1, r2)))
+	case 6: //вычитание дробей
+		fmt.Println("1st rational-")
+		fmt.Scan(&s)
+		r1 := inputRational(s)
+		fmt.Println("2nd rational-")
+		fmt.Scan(&s)
+		r2 := inputRational(s)
+		fmt.Println(rational.ToStringR(rational.Subtraction(r1, r2)))
+	case 7: //умножение дробей
+		fmt.Println("1st rational-")
+		fmt.Scan(&s)
+		r1 := inputRational(s)
+		fmt.Println("2nd rational-")
+		fmt.Scan(&s)
+		r2 := inputRational(s)
+		fmt.Println(rational.ToStringR(rational.Multiplication(r1, r2)))
+	case 8: //деление дробей
+		fmt.Println("1st rational-")
+		fmt.Scan(&s)
+		r1 := inputRational(s)
+		fmt.Println("2nd rational-")
+		fmt.Scan(&s)
+		r2 := inputRational(s)
+		fmt.Println(rational.ToStringR(rational.Division(r1, r2)))
+	}
+}
+
+func inputRational(s string) rational.Rational {
+	arr := strings.Split(s, "/")
+	nom := inputWhole(arr[0])
+	denom := inputNatural(arr[1])
+	var r rational.Rational
+	r.MakeR(nom, denom)
+	return r
+}
+
+func polynomeGui(f int) {
+	var s, sTemp string
+	var power int
+	switch f {
+	case 1: //Сложение многочленов
+		fmt.Println("1st power - ")
+		fmt.Scan(&power)
+		for i := 0; i <= power; i++ {
+			fmt.Println("coeff with power ", power-i)
+			fmt.Scan(&sTemp)
+			s += sTemp
+			if i < power {
+				s += ";"
+			}
+		}
+		p1 := inputPolynomes(s)
+		fmt.Println("2nd power - ")
+		fmt.Scan(&power)
+		for i := 0; i <= power; i++ {
+			fmt.Println("coeff with power ", power-i)
+			fmt.Scan(&sTemp)
+			s += sTemp
+			if i < power {
+				s += ";"
+			}
+		}
+		p2 := inputPolynomes(s)
+		res := polynome.AdditionP(p1, p2)
+		fmt.Println(res.ToStringPol())
+	case 2: //вычитание многочленов
+		fmt.Println("from power - ")
+		fmt.Scan(&power)
+		for i := 0; i <= power; i++ {
+			fmt.Println("coeff with power ", power-i)
+			fmt.Scan(&sTemp)
+			s += sTemp
+			if i < power {
+				s += ";"
+			}
+		}
+		from := inputPolynomes(s)
+		fmt.Println("what power - ")
+		fmt.Scan(&power)
+		for i := 0; i <= power; i++ {
+			fmt.Println("coeff with power ", power-i)
+			fmt.Scan(&sTemp)
+			s += sTemp
+			if i < power {
+				s += ";"
+			}
+		}
+		what := inputPolynomes(s)
+		res := polynome.SubstractionP(from, what)
+		fmt.Println(res.ToStringPol())
+	case 3: //Умножение многочлена на рациональное число
+		fmt.Println(" power - ")
+		fmt.Scan(&power)
+		for i := 0; i <= power; i++ {
+			fmt.Println("coeff with power ", power-i)
+			fmt.Scan(&sTemp)
+			s += sTemp
+			if i < power {
+				s += ";"
+			}
+		}
+		p1 := inputPolynomes(s)
+		fmt.Println("rational-")
+		fmt.Scan(&s)
+		r := inputRational(s)
+		res := polynome.MultiplicationRational(p1, r)
+		fmt.Println(res.ToStringPol())
+	case 4: //Умножение многочлена на x^k
+		fmt.Println(" power - ")
+		fmt.Scan(&power)
+		for i := 0; i <= power; i++ {
+			fmt.Println("coeff with power ", power-i)
+			fmt.Scan(&sTemp)
+			s += sTemp
+			if i < power {
+				s += ";"
+			}
+		}
+		p1 := inputPolynomes(s)
+		fmt.Println("k=")
+		fmt.Scan(&power)
+		res := polynome.MultiplicationXpowerK(p1, power)
+		fmt.Println(res.ToStringPol())
+	case 5: //старший коэфф
+		fmt.Println(" power - ")
+		fmt.Scan(&power)
+		for i := 0; i <= power; i++ {
+			fmt.Println("coeff with power ", power-i)
+			fmt.Scan(&sTemp)
+			s += sTemp
+			if i < power {
+				s += ";"
+			}
+		}
+		p1 := inputPolynomes(s)
+		fmt.Println(rational.ToStringR(polynome.OlderCoeffPoly(p1)))
+	case 6: //степень
+		fmt.Println(" power - ")
+		fmt.Scan(&power)
+		for i := 0; i <= power; i++ {
+			fmt.Println("coeff with power ", power-i)
+			fmt.Scan(&sTemp)
+			s += sTemp
+			if i < power {
+				s += ";"
+			}
+		}
+		p1 := inputPolynomes(s)
+		fmt.Println(polynome.OlderPoly(p1))
+	case 12: //производная
+		fmt.Println(" power - ")
+		fmt.Scan(&power)
+		for i := 0; i <= power; i++ {
+			fmt.Println("coeff with power ", power-i)
+			fmt.Scan(&sTemp)
+			s += sTemp
+			if i < power {
+				s += ";"
+			}
+		}
+		p1 := inputPolynomes(s)
+		res := polynome.Derivative(p1)
+		fmt.Println(res.ToStringPol())
+	}
+}
+
+func inputPolynomes(s string) polynome.Polynomial {
+	arrayRationalsStr := strings.Split(s, ";")
+	var coeffs []rational.Rational
+	for i, _ := range arrayRationalsStr {
+		coeffs = append(coeffs, inputRational(arrayRationalsStr[i]))
+	}
+	var p polynome.Polynomial
+	p.MakeP(coeffs)
+	return p
 }
