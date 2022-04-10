@@ -216,15 +216,15 @@ func Subtraction(x1, x2 Rational) Rational {
 // Сравнение рациональных: 2 - если первое больше второго, 0, если равно, 1 иначе.
 func Compare(num1, num2 Rational) int {
 	var a, b Rational
-	num1 = SimplifyingFractions(num1) //Сокращаем дроби
-	num2 = SimplifyingFractions(num2)
-	if CheckingForWhole(num1) == true && CheckingForWhole(num2) == true { //Если числа целые, то просто сравниваем числители
-		return whole.Compare(num1.Nominator, num2.Nominator)
+	a = CopyR(num1)
+	b = CopyR(num2)
+	a = SimplifyingFractions(a) //Сокращаем дроби
+	b = SimplifyingFractions(b)
+	if CheckingForWhole(a) == true && CheckingForWhole(b) == true { //Если числа целые, то просто сравниваем числители
+		return whole.Compare(a.Nominator, b.Nominator)
 	} else {
 		//Числители домножаем на частное НОК и знаменателя
 		//Приводим к общему знаменателю равному НОК знаменателей
-		a = CopyR(num1)
-		b = CopyR(num2)
 		a.Nominator.Num = natural.Multiplication(a.Nominator.Num, natural.IntegerFromDivision(natural.LeastCommonMultiple(a.Denominator, b.Denominator), a.Denominator))
 		b.Nominator.Num = natural.Multiplication(b.Nominator.Num, natural.IntegerFromDivision(natural.LeastCommonMultiple(a.Denominator, b.Denominator), b.Denominator))
 		a.Denominator = natural.LeastCommonMultiple(a.Denominator, b.Denominator)
