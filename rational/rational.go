@@ -227,8 +227,6 @@ func Compare(num1, num2 Rational) int {
 		//Приводим к общему знаменателю равному НОК знаменателей
 		a.Nominator.Num = natural.Multiplication(a.Nominator.Num, natural.IntegerFromDivision(natural.LeastCommonMultiple(a.Denominator, b.Denominator), a.Denominator))
 		b.Nominator.Num = natural.Multiplication(b.Nominator.Num, natural.IntegerFromDivision(natural.LeastCommonMultiple(a.Denominator, b.Denominator), b.Denominator))
-		a.Denominator = natural.LeastCommonMultiple(a.Denominator, b.Denominator)
-		b.Denominator = natural.LeastCommonMultiple(a.Denominator, b.Denominator)
 		return whole.Compare(a.Nominator, b.Nominator)
 	}
 }
