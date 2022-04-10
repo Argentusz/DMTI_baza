@@ -215,6 +215,7 @@ func Subtraction(x1, x2 Rational) Rational {
 //Compare Турбина
 // Сравнение рациональных: 2 - если первое больше второго, 0, если равно, 1 иначе.
 func Compare(num1, num2 Rational) int {
+	var a, b Rational
 	num1 = SimplifyingFractions(num1) //Сокращаем дроби
 	num2 = SimplifyingFractions(num2)
 	if CheckingForWhole(num1) == true && CheckingForWhole(num2) == true { //Если числа целые, то просто сравниваем числители
@@ -222,10 +223,12 @@ func Compare(num1, num2 Rational) int {
 	} else {
 		//Числители домножаем на частное НОК и знаменателя
 		//Приводим к общему знаменателю равному НОК знаменателей
-		num1.Nominator.Num = natural.Multiplication(num1.Nominator.Num, natural.IntegerFromDivision(natural.LeastCommonMultiple(num1.Denominator, num2.Denominator), num1.Denominator))
-		num2.Nominator.Num = natural.Multiplication(num2.Nominator.Num, natural.IntegerFromDivision(natural.LeastCommonMultiple(num1.Denominator, num2.Denominator), num2.Denominator))
-		num1.Denominator = natural.LeastCommonMultiple(num1.Denominator, num2.Denominator)
-		num2.Denominator = natural.LeastCommonMultiple(num1.Denominator, num2.Denominator)
-		return whole.Compare(num1.Nominator, num2.Nominator)
+		a = CopyR(num1)
+		b = CopyR(num2)
+		a.Nominator.Num = natural.Multiplication(a.Nominator.Num, natural.IntegerFromDivision(natural.LeastCommonMultiple(a.Denominator, b.Denominator), a.Denominator))
+		b.Nominator.Num = natural.Multiplication(b.Nominator.Num, natural.IntegerFromDivision(natural.LeastCommonMultiple(a.Denominator, b.Denominator), b.Denominator))
+		a.Denominator = natural.LeastCommonMultiple(a.Denominator, b.Denominator)
+		b.Denominator = natural.LeastCommonMultiple(a.Denominator, b.Denominator)
+		return whole.Compare(a.Nominator, b.Nominator)
 	}
 }
