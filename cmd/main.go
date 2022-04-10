@@ -28,7 +28,7 @@ func main() {
 	case 3:
 		rationalGui(functionNumber)
 	case 4:
-
+		polynomeGui(functionNumber)
 	}
 }
 
