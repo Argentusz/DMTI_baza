@@ -190,7 +190,7 @@ func Compare(num1, num2 Polynomial) int {
 func MultiplicationRational(a Polynomial, b rational.Rational) Polynomial {
 	var i uint32
 
-	for i = 0; i < a.Older; i++ { //прогоняем каждый член полинома(так можно говорить?) отдельно
+	for i = 0; i < a.Older+1; i++ { //прогоняем каждый член полинома(так можно говорить?) отдельно
 		a.Coeff[i] = rational.Multiplication(a.Coeff[i], b) // умножаем опред член на рациональное число
 	}
 
@@ -224,19 +224,19 @@ func (p *Polynomial) ToStringPol() string {
 // Частное от деления полиномов
 func QuotientOfDivision(x1, x2 Polynomial) Polynomial {
 	var coef rational.Rational
-	var diff uint32
+	var diff, k uint32
 	var x, y, mid, res Polynomial
 	var midcoef []rational.Rational
 	x, y = CopyP(x1), CopyP(x2)
-	for x.Older >= y.Older { // пока стрепень первого больше или равна второго
-		diff = x.Older - y.Older                                // разница их степеней
-		coef = rational.Division(x.Coeff[0], y.Coeff[0])        //деление старшего коэфицента первого и второго для определения коэфицента в частном
-		mid = MultiplicationRational(y, coef)                   //умножаем делитель на полученный коэфицент
-		mid = MultiplicationXpowerK(mid, int(diff))             //домножаем на степень
-		x = SubstractionP(x, mid)                               // вычитаем, тем самым убирается старшая степень
-		midcoef = append([]rational.Rational{coef}, midcoef...) // добавляем коэф
-		x.Older -= 1
-		x.Coeff = x.Coeff[1:]
+	k = x.Older
+	for k >= y.Older { // пока стрепень первого больше или равна второго
+		diff = k - y.Older                               // разница их степеней
+		coef = rational.Division(x.Coeff[0], y.Coeff[0]) //деление старшего коэфицента первого и второго для определения коэфицента в частном
+		mid = MultiplicationXpowerK(y, int(diff))        //домножаем на степень
+		mid = MultiplicationRational(mid, coef)
+		x = SubstractionP(x, mid) // вычитаем, тем самым убирается старшая степень
+		midcoef = append(midcoef, coef)
+		k -= 1
 	}
 	res.MakeP(midcoef)
 	return res
