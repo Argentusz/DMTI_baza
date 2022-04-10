@@ -251,3 +251,26 @@ func WholeFromDivision(num1, num2 Whole) Whole {
 
 	return result
 }
+
+//Compare Турбина
+//Сравнение целых: 2 - если первое больше второго, 0, если равно, 1 иначе.
+func Compare(num1, num2 Whole) int {
+	switch {
+	case num1.Negative == true && num2.Negative == false:
+		return 1
+	case num1.Negative == false && num2.Negative == true:
+		return 2
+	case num1.Negative == false && num2.Negative == false:
+		return natural.Compare(num1.Num, num2.Num)
+	default:
+		if natural.Compare(num1.Num, num2.Num) == 2 {
+			return 1
+		} else {
+			if natural.Compare(num1.Num, num2.Num) == 1 {
+				return 2
+			} else {
+				return 0
+			}
+		}
+	}
+}
