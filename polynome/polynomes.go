@@ -63,7 +63,7 @@ func CopyP(p Polynomial) Polynomial {
 	var i uint32
 	copyP.Older = p.Older
 	for i = 0; i <= p.Older; i++ {
-		copyP.Coeff[i] = rational.CopyR(p.Coeff[i])
+		copyP.Coeff = append(copyP.Coeff, rational.CopyR(p.Coeff[i]))
 	}
 	return copyP
 }
@@ -82,15 +82,23 @@ func OlderCoeffPoly(p Polynomial) rational.Rational {
 	return p.Coeff[0]
 }
 
-//func Derivative(p0 Polynomial) Polynomial {
-//	var i uint32
-//	p := CopyP(p0)
-//	// 2x^2 + 2x + 1
-//	p.Coeff[p.Older] = rational.Zero()
-//	for i = p.Older; i != 0; i-- {
-//		p.Coeff[i] = rational.Multiplication(p.Coeff[i-1])
-//	}
-//}
+// Derivative Максим Тростин
+// Производная многочлена
+func Derivative(p0 Polynomial) Polynomial {
+	var i uint32
+	p := CopyP(p0)
+	// Константа просто уходит
+	p.Coeff[p.Older] = rational.Zero()
+	for i = p.Older; i != 0; i-- {
+		// Каждый коэффициент - это произведение степени старшего на коэффициент старшего
+		p.Coeff[i] = rational.Multiplication(p.Coeff[i-1], rational.IntToRational(int64(p.Older-i+1), 1))
+	}
+	// Убираем оставшуюся старшую степень
+	p.Older--
+	var _ rational.Rational
+	_, p.Coeff = p.Coeff[0], p.Coeff[1:]
+	return p
+}
 
 //// ToStringPolOld Приведение полинома к строковому виду "ax^n+bx^(n-1)+...+nx^0" - метод
 //func (p *Old) ToStringPolOld() string {

@@ -176,6 +176,7 @@ func Division(num1, num2 Rational) Rational {
 	result = SimplifyingFractions(result)
 
 	return result
+}
 
 // Addition Комаровский
 //Сложение дробей
