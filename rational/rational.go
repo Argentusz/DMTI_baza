@@ -163,6 +163,7 @@ func Division(num1, num2 Rational) Rational {
 	result = SimplifyingFractions(result)
 
 	return result
+}
 
 // Addition Комаровский
 //Сложение дробей
@@ -209,4 +210,23 @@ func Subtraction(x1, x2 Rational) Rational {
 	res = SimplifyingFractions(res)
 	return res
 
+}
+
+//Compare Турбина
+// Сравнение рациональных: 2 - если первое больше второго, 0, если равно, 1 иначе.
+func Compare(num1, num2 Rational) int {
+	var a, b Rational
+	a = CopyR(num1)
+	b = CopyR(num2)
+	a = SimplifyingFractions(a) //Сокращаем дроби
+	b = SimplifyingFractions(b)
+	if CheckingForWhole(a) == true && CheckingForWhole(b) == true { //Если числа целые, то просто сравниваем числители
+		return whole.Compare(a.Nominator, b.Nominator)
+	} else {
+		//Числители домножаем на частное НОК и знаменателя
+		//Приводим к общему знаменателю равному НОК знаменателей
+		a.Nominator.Num = natural.Multiplication(a.Nominator.Num, natural.IntegerFromDivision(natural.LeastCommonMultiple(a.Denominator, b.Denominator), a.Denominator))
+		b.Nominator.Num = natural.Multiplication(b.Nominator.Num, natural.IntegerFromDivision(natural.LeastCommonMultiple(a.Denominator, b.Denominator), b.Denominator))
+		return whole.Compare(a.Nominator, b.Nominator)
+	}
 }
