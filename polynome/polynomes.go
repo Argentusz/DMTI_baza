@@ -47,9 +47,10 @@ func CopyP(p Polynomial) Polynomial {
 }
 
 //Голубев Михаил - AdditionP сложение многочленов
-func AdditionP(p1 Polynomial, p2 Polynomial) Polynomial {
+func AdditionP(p1Old Polynomial, p2Old Polynomial) Polynomial {
 	var result Polynomial
 	var coeffsRes []rational.Rational
+	p1, p2 := CopyP(p1Old), CopyP(p2Old)
 	if p1.Older == p2.Older { //коэффициенты равны - просто складываем коэффициенты попарно
 		for i, v := range p1.Coeff {
 			coeffsRes = append(coeffsRes, rational.Addition(v, p2.Coeff[i]))
@@ -82,9 +83,10 @@ func AdditionP(p1 Polynomial, p2 Polynomial) Polynomial {
 }
 
 //Голубев Михаил - SubstractionPol вычитание многочленов
-func SubstractionP(from Polynomial, what Polynomial) Polynomial {
+func SubstractionP(fromOld Polynomial, whatOld Polynomial) Polynomial {
 	var result Polynomial
 	var coeffsRes []rational.Rational
+	from, what := CopyP(fromOld), CopyP(whatOld)
 	if from.Older == what.Older { //если степени равны - просто вычитаем коэффициенты
 		for i, v := range from.Coeff {
 			coeffsRes = append(coeffsRes, rational.Subtraction(v, what.Coeff[i]))
