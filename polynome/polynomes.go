@@ -1,6 +1,7 @@
 package polynome
 
 import (
+	"DMTI_baza/natural"
 	"DMTI_baza/rational"
 	"DMTI_baza/whole"
 	"fmt"
@@ -45,16 +46,102 @@ func CopyP(p Polynomial) Polynomial {
 	return copyP
 }
 
-//Функция - от Голубева Михаила
+//Голубев Михаил - AdditionP сложение многочленов
+func AdditionP(p1Old Polynomial, p2Old Polynomial) Polynomial {
+	var result Polynomial
+	var coeffsRes []rational.Rational
+	p1, p2 := CopyP(p1Old), CopyP(p2Old)
+	if p1.Older == p2.Older { //коэффициенты равны - просто складываем коэффициенты попарно
+		for i, v := range p1.Coeff {
+			coeffsRes = append(coeffsRes, rational.Addition(v, p2.Coeff[i]))
+		}
+		result.MakeP(coeffsRes)
+		return result
+	}
+	if p1.Older > p2.Older { //иначе считаем разницу, записываем нв новый полином все коэффициенты большего а после складываем начиная с разницы
+		difference := int(p1.Older - p2.Older)
+		for i := 0; i < difference; i++ {
+			coeffsRes = append(coeffsRes, p1.Coeff[i])
+		}
+		for i := difference; i < int(p1.Older); i++ {
+			coeffsRes = append(coeffsRes, rational.Addition(p1.Coeff[i], p2.Coeff[i-difference]))
+		}
+		result.MakeP(coeffsRes)
+	}
 
-// OlderPoly Степень многочлена
+	if p1.Older < p2.Older {
+		difference := int(p2.Older - p1.Older)
+		for i := 0; i < difference; i++ {
+			coeffsRes = append(coeffsRes, p2.Coeff[i])
+		}
+		for i := difference; i < int(p2.Older); i++ {
+			coeffsRes = append(coeffsRes, rational.Addition(p2.Coeff[i], p1.Coeff[i-difference]))
+		}
+		result.MakeP(coeffsRes)
+	}
+	return result
+}
+
+//Голубев Михаил - SubstractionPol вычитание многочленов
+func SubstractionP(fromOld Polynomial, whatOld Polynomial) Polynomial {
+	var result Polynomial
+	var coeffsRes []rational.Rational
+	from, what := CopyP(fromOld), CopyP(whatOld)
+	if from.Older == what.Older { //если степени равны - просто вычитаем коэффициенты
+		for i, v := range from.Coeff {
+			coeffsRes = append(coeffsRes, rational.Subtraction(v, what.Coeff[i]))
+		}
+		result.MakeP(coeffsRes)
+		return result
+	}
+	if from.Older > what.Older { //если коэффициенты не равны - считаем разницу и в новый полином записываем все коэффициенты большего до разницы
+		difference := int(from.Older - what.Older)
+		for i := 0; i < difference; i++ {
+			coeffsRes = append(coeffsRes, from.Coeff[i])
+		}
+		for i := difference; i < int(from.Older); i++ { //и вычитаем коэффициенты после разницы
+			coeffsRes = append(coeffsRes, rational.Subtraction(from.Coeff[i], what.Coeff[i-difference]))
+		}
+		result.MakeP(coeffsRes)
+	}
+	if from.Older < what.Older {
+		difference := int(what.Older - from.Older)
+		for i := 0; i < difference; i++ {
+			if what.Coeff[i].Nominator.Negative != true {
+				what.Coeff[i].Nominator.Negative = true
+			} else {
+				what.Coeff[i].Nominator.Negative = false
+			}
+			coeffsRes = append(coeffsRes, what.Coeff[i])
+		}
+		for i := difference; i < int(what.Older); i++ {
+			coeffsRes = append(coeffsRes, rational.Subtraction(what.Coeff[i], from.Coeff[i-difference]))
+		}
+		result.MakeP(coeffsRes)
+	}
+	return result
+}
+
+//Голубев Михаил - MultiplicationXpowerK функция умножения многочлена на x^k
+func MultiplicationXpowerK(polynome Polynomial, k int) Polynomial {
+	nullCoeff := rational.Rational{Nominator: whole.Whole{Num: natural.Natural{Digits: []uint8{0}, Older: 0},
+		Negative: false}, Denominator: natural.Natural{Digits: []uint8{1}, Older: 0}} //создаем коэффициент вида 0/1
+	p := CopyP(polynome)
+	coeffs := p.Coeff
+	var result Polynomial
+	for i := 0; i < k; i++ {
+		coeffs = append(coeffs, nullCoeff) //обнуляем все коэффициенты меньше x^k
+	}
+	result.MakeP(coeffs)
+	return result
+}
+
+// Голубев Михаил OlderPoly Степень многочлена
 func OlderPoly(p Polynomial) uint32 {
 	return p.Older
 }
 
-//Функция - от Голубева Михаила
-
-// OlderCoeffPoly Старший коэффициент многочлена
+// Голубев Михаил OlderCoeffPoly Старший коэффициент многочлена
 func OlderCoeffPoly(p Polynomial) rational.Rational {
 	return p.Coeff[0]
 }
