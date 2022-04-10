@@ -232,3 +232,27 @@ func MultiplicationRational(a Polynomial, b rational.Rational) Polynomial {
 
 	return a
 }
+
+//Compare Турбина
+//Сравнение полиномов:: 2 - если первое больше второго, 0, если равно, 1 иначе.
+func Compare(num1, num2 Polynomial) int {
+	var i uint32
+	switch {
+	case num1.Older > num2.Older: //если старшая степень больше, то полином больше
+		return 2
+	case num2.Older > num2.Older:
+		return 1
+	default:
+		//сравниваем коэффициенты, если соответствующий коэффициент больше, то одно число больше другого
+		for i = 0; i < num1.Older+1; i++ {
+			switch {
+			case rational.Compare(num1.Coeff[i], num2.Coeff[i]) == 2:
+				return 2
+			case rational.Compare(num1.Coeff[i], num2.Coeff[i]) == 1:
+				return 1
+			}
+		}
+	}
+
+	return 0
+}
