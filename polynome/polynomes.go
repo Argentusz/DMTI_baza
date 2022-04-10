@@ -224,20 +224,43 @@ func (p *Polynomial) ToStringPol() string {
 // Частное от деления полиномов
 func QuotientOfDivision(x1, x2 Polynomial) Polynomial {
 	var coef rational.Rational
-	var diff, k uint32
+	var diff uint32
 	var x, y, mid, res Polynomial
 	var midcoef []rational.Rational
 	x, y = CopyP(x1), CopyP(x2)
-	k = x.Older
-	for k >= y.Older { // пока стрепень первого больше или равна второго
-		diff = k - y.Older                               // разница их степеней
+	for x.Older >= y.Older { // пока стрепень первого больше или равна второго
+		diff = x.Older - y.Older                         // разница их степеней
 		coef = rational.Division(x.Coeff[0], y.Coeff[0]) //деление старшего коэфицента первого и второго для определения коэфицента в частном
 		mid = MultiplicationXpowerK(y, int(diff))        //домножаем на степень
 		mid = MultiplicationRational(mid, coef)
 		x = SubstractionP(x, mid) // вычитаем, тем самым убирается старшая степень
 		midcoef = append(midcoef, coef)
-		k -= 1
 	}
 	res.MakeP(midcoef)
+	return res
+}
+func MultiplicationPol(xOld, yOld Polynomial) Polynomial {
+	var x, y, otv Polynomial
+	var i uint32
+	var SumMas []Polynomial
+	x = CopyP(xOld)
+	y = CopyP(yOld)
+	for i = 0; i < y.Older+1; i++ {
+		k := MultiplicationXpowerK(x, int(i))
+		e := MultiplicationRational(k, y.Coeff[y.Older-i])
+		SumMas = append(SumMas, e)
+	}
+	otv = AdditionP(SumMas[0], SumMas[1])
+	for i = 2; int(i) < len(SumMas); i++ {
+		otv = AdditionP(otv, SumMas[i])
+	}
+	return otv
+}
+
+func RemainderFromDivision(x1, x2 Polynomial) Polynomial {
+	var x, y, mid, res Polynomial
+	x, y = CopyP(x1), CopyP(x2)
+	mid = QuotientOfDivision(x1, x2)
+	res = SubstractionP(x, MultiplicationPol(mid, y))
 	return res
 }
