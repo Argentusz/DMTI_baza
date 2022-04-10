@@ -220,3 +220,64 @@ func OlderPoly(p Polynomial) uint32 {
 func OlderCoeffPoly(p Polynomial) rational.Rational {
 	return p.Coeff[0]
 }
+
+//Морозов никита
+//Вынесение НОД числителей и НОК знаменателей
+//Как работает функция:
+//Находим НОД числителей
+//Находим НОК знаменателей
+//Возвращаем результат как два натуральных числа: НОД и НОК
+func GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(polynom Polynomial) (natural.Natural, natural.Natural) {
+	//Объявляем переменные НОД (GCD) и НОК (LCM)
+	var GCD []natural.Natural
+	var LCM []natural.Natural
+
+	//Клонироуем все элементы числители в массив НОД
+	for i := 0; i < len(polynom.Coeff); i++ {
+		GCD = append(GCD, whole.Absolute(polynom.Coeff[i].Nominator))
+	}
+
+	//Клонируем все элементы знаменателя в массив НОК
+	for i := 0; i < len(polynom.Coeff); i++ {
+		LCM = append(LCM, polynom.Coeff[i].Denominator)
+	}
+
+	//Находим НОД
+	//Находим НОД от числителей под номерами 0 - 1, 1 - 2, 2 - 3... (n-1) - n
+	//Записываем в ячейки массива
+	//В конец последняя ячейка не изменится — её удаляем
+	//Повторяем пока массив не будет содержать только один элемент
+	//Пример: 
+	//Числители 3 6 9
+	//Находим НОД от 3 и 6: 3
+	//Находим НОД от 6 и 9: 3
+	//Записываем в массив: 3 меняется на 3, 6 меняется на 3, девять остаётся
+	//Измененённый массив: 3 3 9
+	//Удаляем 9
+	//Получается 3 3
+	//Находим НОД снова, получается массив 3 3
+	//Удаляем последнюю 3
+	//Ответ 3
+	//Итоговая пирамидка:
+	//3 6 9
+	//3 3 [9]
+	//3 3
+	//3 [3]
+	//3
+	for len(GCD) != 1 {
+		for i := 0; i < len(GCD)-1; i++ {
+			GCD[i] = natural.GreatestCommonDivisor(GCD[i], GCD[i+1])
+		}
+		GCD = GCD[:len(GCD)-1]
+	}
+
+	//Находим НОК по аналогии с НОД
+	for len(LCM) != 1 {
+		for i := 0; i < len(LCM)-1; i++ {
+			LCM[i] = natural.LeastCommonMultiple(LCM[i], LCM[i+1])
+		}
+		LCM = LCM[:len(LCM)-1]
+	}
+
+	return GCD[0], LCM[0]
+}
