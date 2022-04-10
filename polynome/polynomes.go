@@ -63,7 +63,7 @@ func AdditionP(p1Old Polynomial, p2Old Polynomial) Polynomial {
 		for i := 0; i < difference; i++ {
 			coeffsRes = append(coeffsRes, p1.Coeff[i])
 		}
-		for i := difference; i < int(p1.Older); i++ {
+		for i := difference; i <= int(p1.Older); i++ {
 			coeffsRes = append(coeffsRes, rational.Addition(p1.Coeff[i], p2.Coeff[i-difference]))
 		}
 		result.MakeP(coeffsRes)
@@ -74,7 +74,7 @@ func AdditionP(p1Old Polynomial, p2Old Polynomial) Polynomial {
 		for i := 0; i < difference; i++ {
 			coeffsRes = append(coeffsRes, p2.Coeff[i])
 		}
-		for i := difference; i < int(p2.Older); i++ {
+		for i := difference; i <= int(p2.Older); i++ {
 			coeffsRes = append(coeffsRes, rational.Addition(p2.Coeff[i], p1.Coeff[i-difference]))
 		}
 		result.MakeP(coeffsRes)
@@ -96,7 +96,7 @@ func SubstractionP(fromOld Polynomial, whatOld Polynomial) Polynomial {
 	}
 	if from.Older > what.Older { //если коэффициенты не равны - считаем разницу и в новый полином записываем все коэффициенты большего до разницы
 		difference := int(from.Older - what.Older)
-		for i := 0; i < difference; i++ {
+		for i := 0; i <= difference; i++ {
 			coeffsRes = append(coeffsRes, from.Coeff[i])
 		}
 		for i := difference; i < int(from.Older); i++ { //и вычитаем коэффициенты после разницы
@@ -114,7 +114,7 @@ func SubstractionP(fromOld Polynomial, whatOld Polynomial) Polynomial {
 			}
 			coeffsRes = append(coeffsRes, what.Coeff[i])
 		}
-		for i := difference; i < int(what.Older); i++ {
+		for i := difference; i <= int(what.Older); i++ {
 			coeffsRes = append(coeffsRes, rational.Subtraction(what.Coeff[i], from.Coeff[i-difference]))
 		}
 		result.MakeP(coeffsRes)
