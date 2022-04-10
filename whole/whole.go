@@ -113,7 +113,7 @@ func Multiplication(x, y Whole) Whole {
 	return res
 }
 
-//CopyW
+//CopyW Семёнов
 //Функция для копирования целого числа
 func CopyW(n Whole) Whole {
 	var i uint32
