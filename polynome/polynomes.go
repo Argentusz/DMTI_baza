@@ -45,6 +45,8 @@ func CopyP(p Polynomial) Polynomial {
 	}
 	return copyP
 }
+
+//Голубев Михаил - AdditionP сложение многочленов
 func AdditionP(p1 Polynomial, p2 Polynomial) Polynomial {
 	var result Polynomial
 	var coeffsRes []rational.Rational
