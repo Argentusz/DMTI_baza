@@ -45,20 +45,20 @@ Q-3 | Преобразование целого в дробное | WholeToFract
 Q-4 | Преобразование дробного в целое (если знаменатель равен 1) | FractionalToWhole (TRANS_Q_Z) | | Грунская
 Q-5 | Сложение дробей | Addition (ADD_QQ_Q) | LeastCommonMultiple Multiplication Addition | Комаровский
 Q-6 | Вычитание дробей | Subtraction (SUB_QQ_Q) | LeastCommonMultiple Multiplication Subtraction | Комаровский
-Q-7 | Умножение дробей | MUL_QQ_Q | Multiplication | Морозов
-Q-8 | Деление дробей (делитель отличен от нуля) | DIV_QQ_Q | Multiplication | Морозов
+Q-7 | Умножение дробей | Multiplication (MUL_QQ_Q) | Multiplication | Морозов
+Q-8 | Деление дробей (делитель отличен от нуля) | Division (DIV_QQ_Q) | Multiplication | Морозов
 
 Номер | Многочлен с рациональными коэффициентамиm – степень многочлена и массив C коэффициентов |   |   | Человек, ответственный за модуль
 -- | -- | -- | -- | --
 P-1 | Сложение многочленов | ADD_PP_P | Addition | Голубев
 P-2 | Вычитание многочленов | SUB_PP_P | Subtraction | Голубев
-P-3 | Умножение многочлена на рациональное число | MUL_PQ_P | MUL_QQ_Q | Семёнов
+P-3 | Умножение многочлена на рациональное число | MUL_PQ_P | Multiplication | Семёнов
 P-4 | Умножение многочлена на x^k | MUL_Pxk_P | | Голубев
 P-5 | Старший коэффициент многочлена | LED_P_Q | | Голубев
 P-6 | Степень многочлена | DEG_P_N | | Голубев
 P-7 | Вынесение из многочлена НОК знаменателей коэффициентов и НОД числителей | FAC_P_Q | Absolute FromWholeToNaturals LeastCommonMultiple GreatestCommonDivisor FromNaturalsToWhole WholeFromDivision | Морозов
 P-8 | Умножение многочленов | MUL_PP_P | MUL_PQ_PMUL_Pxk_PADD_PP_P | Грунская
-P-9 | Частное от деления многочлена на многочлен при делении с остатком | DIV_PP_P | DIV_QQ_QDEG_P_NMUL_Pxk_PSUB_PP_PADD_PP_P | Комаровский
+P-9 | Частное от деления многочлена на многочлен при делении с остатком | DIV_PP_P | Division DEG_P_NMUL_Pxk_PSUB_PP_PADD_PP_P | Комаровский
 P-10 | Остаток от деления многочлена на многочлен при делении с остатком | MOD_PP_P | DIV_PP_PMUL_PP_PSUB_PP_P | Комаровский
 P-11 | НОД многочленов | GCF_PP_P | DEG_P_NMOD_PP_P | Пименов
 P-12 | Производная многочлена | DER_P_P | | Тростин
