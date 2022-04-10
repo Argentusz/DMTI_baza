@@ -220,3 +220,15 @@ func OlderPoly(p Polynomial) uint32 {
 func OlderCoeffPoly(p Polynomial) rational.Rational {
 	return p.Coeff[0]
 }
+
+//MultiplicationRational Семёнов Максим
+//Умножение полинома на рациональное число
+func MultiplicationRational(a Polynomial, b rational.Rational) Polynomial {
+	var i uint32
+
+	for i = 0; i < a.Older; i++ { //прогоняем каждый член полинома(так можно говорить?) отдельно
+		a.Coeff[i] = rational.Multiplication(a.Coeff[i], b) // умножаем опред член на рациональное число
+	}
+
+	return a
+}
