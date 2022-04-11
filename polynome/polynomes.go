@@ -190,7 +190,7 @@ func Compare(num1, num2 Polynomial) int {
 func MultiplicationRational(a Polynomial, b rational.Rational) Polynomial {
 	var i uint32
 
-	for i = 0; i < a.Older; i++ { //прогоняем каждый член полинома(так можно говорить?) отдельно
+	for i = 0; i < a.Older+1; i++ { //прогоняем каждый член полинома(так можно говорить?) отдельно
 		a.Coeff[i] = rational.Multiplication(a.Coeff[i], b) // умножаем опред член на рациональное число
 	}
 
@@ -218,4 +218,53 @@ func (p *Polynomial) ToStringPol() string {
 		str = str[1:]
 	}
 	return str
+}
+
+// QuotientOfDivision Комаровский
+// Частное от деления полиномов
+func QuotientOfDivision(x1, x2 Polynomial) Polynomial {
+	var coef rational.Rational
+	var diff uint32
+	var x, y, mid, res Polynomial
+	var midcoef []rational.Rational
+	x, y = CopyP(x1), CopyP(x2)
+	for x.Older >= y.Older { // пока стрепень первого больше или равна второго
+		diff = x.Older - y.Older                         // разница их степеней
+		coef = rational.Division(x.Coeff[0], y.Coeff[0]) //деление старшего коэфицента первого и второго для определения коэфицента в частном
+		mid = MultiplicationXpowerK(y, int(diff))        //домножаем на степень
+		mid = MultiplicationRational(mid, coef)
+		x = SubstractionP(x, mid) // вычитаем, тем самым убирается старшая степень
+		midcoef = append(midcoef, coef)
+	}
+	res.MakeP(midcoef)
+	return res
+}
+
+//Грунская Умножение полиномов
+
+func MultiplicationPol(xOld, yOld Polynomial) Polynomial {
+	var x, y, otv Polynomial
+	var i uint32
+	var SumMas []Polynomial
+	x = CopyP(xOld) //делаем копии на всякий случай,чтобы не было казусов
+	y = CopyP(yOld)
+	for i = 0; i < y.Older+1; i++ {
+		k := MultiplicationXpowerK(x, int(i))              //умножаем на х^л
+		e := MultiplicationRational(k, y.Coeff[y.Older-i]) //умножаем на коэффициент
+		SumMas = append(SumMas, e)                         //заносим в массив для последующего сложения
+	}
+	otv = AdditionP(SumMas[0], SumMas[1]) //объявляет ответ как сумму двух первых
+	for i = 2; int(i) < len(SumMas); i++ {
+		otv = AdditionP(otv, SumMas[i]) // прибавляем
+	}
+	return otv
+}
+
+// Остаток от деления полиномов
+func RemainderFromDivision(x1, x2 Polynomial) Polynomial {
+	var x, y, mid, res Polynomial
+	x, y = CopyP(x1), CopyP(x2)
+	mid = QuotientOfDivision(x1, x2)                  // частное от деления
+	res = SubstractionP(x, MultiplicationPol(mid, y)) // разность Делимого и умножения делителя на частного
+	return res
 }
