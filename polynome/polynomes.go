@@ -237,19 +237,16 @@ func MultiplicationPol(xOld, yOld Polynomial) Polynomial {
 	var x, y, otv Polynomial
 	var i uint32
 	var SumMas []Polynomial
-	x = CopyP(xOld)
+	x = CopyP(xOld) //делаем копии на всякий случай,чтобы не было казусов😊😊😊
 	y = CopyP(yOld)
 	for i = 0; i < y.Older+1; i++ {
-		k := MultiplicationXpowerK(x, int(i))
-		e := MultiplicationRational(k, y.Coeff[y.Older-i])
-		SumMas = append(SumMas, e)
+		k := MultiplicationXpowerK(x, int(i)) //умножаем на х^л
+		e := MultiplicationRational(k, y.Coeff[y.Older-i]) //умножаем на коэффициент
+		SumMas = append(SumMas, e) //заносим в массив для последующего сложения
 	}
-	fmt.Println(SumMas[0])
-	fmt.Println(SumMas[1])
-	otv = AdditionP(SumMas[0], SumMas[1])
-	fmt.Println(otv)
+	otv = AdditionP(SumMas[0], SumMas[1]) //объявляет ответ как сумму двух первых
 	for i = 2; int(i) < len(SumMas); i++ {
-		otv = AdditionP(otv, SumMas[i])
+		otv = AdditionP(otv, SumMas[i]) // прибавляем
 	}
 	return otv
 
