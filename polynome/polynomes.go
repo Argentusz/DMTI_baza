@@ -237,7 +237,7 @@ func MultiplicationPol(xOld, yOld Polynomial) Polynomial {
 	var x, y, otv Polynomial
 	var i uint32
 	var SumMas []Polynomial
-	x = CopyP(xOld) //делаем копии на всякий случай,чтобы не было казусов😊😊😊
+	x = CopyP(xOld) //делаем копии на всякий случай,чтобы не было казусов
 	y = CopyP(yOld)
 	for i = 0; i < y.Older+1; i++ {
 		k := MultiplicationXpowerK(x, int(i)) //умножаем на х^л
