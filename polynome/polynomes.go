@@ -220,6 +220,7 @@ func (p *Polynomial) ToStringPol() string {
 	return str
 }
 
+
 // QuotientOfDivision Комаровский
 // Частное от деления полиномов
 func QuotientOfDivision(x1, x2 Polynomial) Polynomial {
@@ -274,7 +275,6 @@ func RemainderFromDivision(x1, x2 Polynomial) Polynomial {
 	mid = QuotientOfDivision(x1, x2)                  // частное от деления
 	res = SubstractionP(x, MultiplicationPol(mid, y)) // разность Делимого и умножения делителя на частного
 	return res
-}
 
 //Морозов никита
 //Вынесение НОД числителей и НОК знаменателей
@@ -338,4 +338,5 @@ func GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(polynom Polynomial)
 	}
 
 	return GCD[0], LCM[0]
+
 }
