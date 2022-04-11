@@ -26,9 +26,6 @@ func Zero() Rational {
 // Возвращает Rational как строку
 func ToStringR(r Rational) string {
 	var s string
-	if r.Nominator.Negative {
-		s += "-"
-	}
 	s += whole.ToStringW(r.Nominator)
 	s += fmt.Sprint("/")
 	s += natural.ToStringN(r.Denominator)

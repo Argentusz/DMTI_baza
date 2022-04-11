@@ -270,8 +270,8 @@ func inputWhole(s string) whole.Whole {
 	var negative = false
 	if s[0] == '-' {
 		negative = true
+		s = s[1:]
 	}
-	s = s[1:]
 	nums := inputNatural(s).Digits
 	var w whole.Whole
 	w.MakeW(negative, nums)
@@ -370,13 +370,15 @@ func polynomeGui(f int) {
 			}
 		}
 		p1 := inputPolynomes(s)
+		s = ""
 		fmt.Println("Степень сторого многочлена - ")
-		fmt.Scan(&power)
-		for i := 0; i <= power; i++ {
-			fmt.Println("Коэффициент при степени ", power-i, ":")
+		var pw int
+		fmt.Scan(&pw)
+		for i := 0; i <= pw; i++ {
+			fmt.Println("Коэффициент при степени ", pw-i, ":")
 			fmt.Scan(&sTemp)
 			s += sTemp
-			if i < power {
+			if i < pw {
 				s += ";"
 			}
 		}
@@ -387,6 +389,7 @@ func polynomeGui(f int) {
 		fmt.Println("Это функция вычитание многочленов")
 		fmt.Println("Степень уменьшаемого многочлена - ")
 		fmt.Scan(&power)
+		s = ""
 		for i := 0; i <= power; i++ {
 			fmt.Println("Коэффициент при степени ", power-i, ":")
 			fmt.Scan(&sTemp)
@@ -398,6 +401,7 @@ func polynomeGui(f int) {
 		from := inputPolynomes(s)
 		fmt.Println("Степень вычитаемого многочлена - ")
 		fmt.Scan(&power)
+		s = ""
 		for i := 0; i <= power; i++ {
 			fmt.Println("Коэффициент при степени ", power-i, ":")
 			fmt.Scan(&sTemp)
@@ -423,6 +427,7 @@ func polynomeGui(f int) {
 		}
 		p1 := inputPolynomes(s)
 		fmt.Println("Рациональное число множитель - ")
+		s = ""
 		fmt.Scan(&s)
 		r := inputRational(s)
 		res := polynome.MultiplicationRational(p1, r)
@@ -441,6 +446,7 @@ func polynomeGui(f int) {
 		}
 		p1 := inputPolynomes(s)
 		fmt.Println("Степень k=")
+		s = ""
 		fmt.Scan(&power)
 		res := polynome.MultiplicationXpowerK(p1, power)
 		fmt.Println(res.ToStringPol())
