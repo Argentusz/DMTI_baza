@@ -190,7 +190,7 @@ func Compare(num1, num2 Polynomial) int {
 func MultiplicationRational(a Polynomial, b rational.Rational) Polynomial {
 	var i uint32
 
-	for i = 0; i < a.Older+1; i++ { //прогоняем каждый член полинома(так можно говорить?) отдельно
+	for i = 0; i <= a.Older; i++ { //прогоняем каждый член полинома(так можно говорить?) отдельно
 		a.Coeff[i] = rational.Multiplication(a.Coeff[i], b) // умножаем опред член на рациональное число
 	}
 
@@ -227,7 +227,14 @@ func QuotientOfDivision(x1, x2 Polynomial) Polynomial {
 	var diff uint32
 	var x, y, mid, res Polynomial
 	var midcoef []rational.Rational
-	x, y = CopyP(x1), CopyP(x2)
+	x = CopyP(x1)
+	if x2.Older == 0 { //если нужно поделить просто на число
+		for i := 0; i <= int(x.Older); i++ {
+			x.Coeff[i] = rational.Division(x.Coeff[i], x2.Coeff[0])
+		}
+		return x
+	}
+	y = CopyP(x2)
 	for x.Older >= y.Older { // пока стрепень первого больше или равна второго
 		diff = x.Older - y.Older                         // разница их степеней
 		coef = rational.Division(x.Coeff[0], y.Coeff[0]) //деление старшего коэфицента первого и второго для определения коэфицента в частном
@@ -248,13 +255,13 @@ func MultiplicationPol(xOld, yOld Polynomial) Polynomial {
 	var SumMas []Polynomial
 	x = CopyP(xOld) //делаем копии на всякий случай,чтобы не было казусов
 	y = CopyP(yOld)
+	otv.MakeP([]rational.Rational{rational.Zero()})
 	for i = 0; i < y.Older+1; i++ {
 		k := MultiplicationXpowerK(x, int(i))              //умножаем на х^л
 		e := MultiplicationRational(k, y.Coeff[y.Older-i]) //умножаем на коэффициент
 		SumMas = append(SumMas, e)                         //заносим в массив для последующего сложения
 	}
-	otv = AdditionP(SumMas[0], SumMas[1]) //объявляет ответ как сумму двух первых
-	for i = 2; int(i) < len(SumMas); i++ {
+	for i = 0; int(i) < len(SumMas); i++ {
 		otv = AdditionP(otv, SumMas[i]) // прибавляем
 	}
 	return otv
