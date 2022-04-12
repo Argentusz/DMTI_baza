@@ -220,7 +220,6 @@ func (p *Polynomial) ToStringPol() string {
 	return str
 }
 
-
 // QuotientOfDivision Комаровский
 // Частное от деления полиномов
 func QuotientOfDivision(x1, x2 Polynomial) Polynomial {
@@ -268,13 +267,28 @@ func MultiplicationPol(xOld, yOld Polynomial) Polynomial {
 	return otv
 }
 
+// RemainderFromDivision Комаровский
 // Остаток от деления полиномов
 func RemainderFromDivision(x1, x2 Polynomial) Polynomial {
+	var coef rational.Rational
+	var diff uint32
 	var x, y, mid, res Polynomial
-	x, y = CopyP(x1), CopyP(x2)
-	mid = QuotientOfDivision(x1, x2)                  // частное от деления
-	res = SubstractionP(x, MultiplicationPol(mid, y)) // разность Делимого и умножения делителя на частного
-	return res
+	x = CopyP(x1)
+	if x2.Older == 0 { //если нужно поделить просто на число
+		res = Polynomial{Older: 0,
+			Coeff: []rational.Rational{rational.Zero()}}
+		return res
+	}
+	y = CopyP(x2)
+	for x.Older >= y.Older { // пока стрепень первого больше или равна второго
+		diff = x.Older - y.Older                         // разница их степеней
+		coef = rational.Division(x.Coeff[0], y.Coeff[0]) //деление старшего коэфицента первого и второго для определения коэфицента в частном
+		mid = MultiplicationXpowerK(y, int(diff))        //домножаем на степень
+		mid = MultiplicationRational(mid, coef)
+		x = SubstractionP(x, mid) // вычитаем, тем самым убирается старшая степень
+	}
+	return x
+}
 
 //Морозов никита
 //Вынесение НОД числителей и НОК знаменателей
