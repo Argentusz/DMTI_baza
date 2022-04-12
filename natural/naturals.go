@@ -249,10 +249,12 @@ func Addition(a, b Natural) Natural {
 
 // Subtraction Комаровский
 // Вычитание из первого большего натурального числа второго меньшего или равного
-func Subtraction(x1, x2 Natural) Natural {
-	var a, b, res Natural
+func Subtraction(origx1, origx2 Natural) Natural {
+	var a, b, res, x1, x2 Natural
 	var i, j, k int64
 	var mass []uint8
+	x1 = CopyN(origx1)
+	x2 = CopyN(origx2)
 	// опрределяем большее число
 	if Compare(x1, x2) == 0 { // если равны сразу возвращаем 0
 		mass = append(mass, 0)
