@@ -220,6 +220,36 @@ func (p *Polynomial) ToStringPol() string {
 	return str
 }
 
+// Пименов
+// НОД многочленов
+func GreatestCommonDivisor(aOriginal, bOriginal Polynomial) Polynomial {
+	var a, b Polynomial                        // Копии входных
+	var GCD Polynomial                         // Наибольший общий делитель (результат)
+	var nominator, denominator natural.Natural // Множитель и делитель для полученного многочлена
+	var multiplier rational.Rational           // Множитель для полученного многочлена
+	// Дело в том, что НОД для многочлена неоднозначен и может умножаться на C
+	a = CopyP(aOriginal)
+	b = CopyP(bOriginal)
+	// Применяем алгоритм Евклида
+	for !((a.Older == 0 && rational.Compare(a.Coeff[0], rational.Zero()) == 0) ||
+		(b.Older == 0 && rational.Compare(b.Coeff[0], rational.Zero()) == 0)) {
+		if a.Older >= b.Older {
+			a = RemainderFromDivision(a, b)
+		} else {
+			b = RemainderFromDivision(b, a)
+		}
+	}
+	GCD = AdditionP(a, b)
+
+	// Будем делить на НОД числителей и умножать на НОК знаменателей
+	denominator, nominator = GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(GCD)
+	multiplier.MakeR(whole.FromNaturalsToWhole(nominator), denominator)
+	if GCD.Coeff[0].Nominator.Negative == true { // Старший коэфф. делаем с плюсом для красоты
+		multiplier.Nominator.Negative = !multiplier.Nominator.Negative
+	}
+	GCD = MultiplicationRational(GCD, multiplier) // Умножаем на наш специальный множитель
+	return GCD
+}
 
 // QuotientOfDivision Комаровский
 // Частное от деления полиномов
@@ -275,6 +305,7 @@ func RemainderFromDivision(x1, x2 Polynomial) Polynomial {
 	mid = QuotientOfDivision(x1, x2)                  // частное от деления
 	res = SubstractionP(x, MultiplicationPol(mid, y)) // разность Делимого и умножения делителя на частного
 	return res
+}
 
 //Морозов никита
 //Вынесение НОД числителей и НОК знаменателей
@@ -338,5 +369,4 @@ func GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(polynom Polynomial)
 	}
 
 	return GCD[0], LCM[0]
-
 }
