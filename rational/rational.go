@@ -55,16 +55,10 @@ func (r *Rational) MakeR(nom whole.Whole, den natural.Natural) {
 // WholeToFractional Грунской Натальи
 // Функция перевода целого в дробное
 func WholeToFractional(x whole.Whole) Rational {
-	var one []uint8
 	var p Rational
-	one = append(one, 1) //делаем знаменатель 1
 
-	p.Nominator = whole.Whole{Num: natural.Natural{Digits: x.Num.Digits, //в числитель переносим массив цифр и знак
-		Older: uint32(len(x.Num.Digits))},
-		Negative: x.Negative}
-
-	p.Denominator = natural.Natural{Digits: one, //в знаменатель переносим единичку
-		Older: 0}
+	p.Nominator = whole.CopyW(x)
+	p.Denominator = natural.Natural{Digits: []uint8{1}, Older: 0}
 	return p
 }
 
