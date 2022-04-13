@@ -166,6 +166,9 @@ func MultiplicationNaturalNumber(g Natural, b uint8) Natural {
 // Умножение натурального числа на 10^k
 func MultiplicationBy10k(x Natural, k int) Natural {
 	var i int
+	if x.Digits[0] == 0 {
+		return Zero()
+	}
 	if k == 0 { //если степень равна нулю, то возвращаем изначальное значение числа
 		return x
 	} else { //иначе увеличваем число на k разрядов
