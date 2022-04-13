@@ -370,3 +370,9 @@ func GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(polynom Polynomial)
 
 	return GCD[0], LCM[0]
 }
+
+// SimplifyRoots Тростин Максим
+// Преобразование многочлена — кратные корни в простые
+func SimplifyRoots(p1 Polynomial) Polynomial {
+	return QuotientOfDivision(p1, GreatestCommonDivisor(p1, Derivative(p1)))
+}
