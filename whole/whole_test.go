@@ -1,236 +1,425 @@
 package whole
 
-import "testing"
+import (
+	"DMTI_baza/natural"
+	"fmt"
+	"testing"
+)
+
+func TestAbsolute(t *testing.T) {
+	var w1 Whole
+	var got, want natural.Natural
+	no := 1
+	w1 = IntToWhole(-1)
+	want = natural.IntToNat(1)
+	got = Absolute(w1)
+	if natural.Compare(want, got) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+	w1 = IntToWhole(1)
+	want = natural.IntToNat(1)
+	got = Absolute(w1)
+	if natural.Compare(want, got) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+}
+
+func TestPositivity(t *testing.T) {
+	var w1 Whole
+	var got, want int
+	no := 1
+	w1 = IntToWhole(-12)
+	want = 1
+	got = Positivity(w1)
+	if want != got {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+	w1 = IntToWhole(12)
+	want = 2
+	got = Positivity(w1)
+	if want != got {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+	w1 = IntToWhole(0)
+	want = 0
+	got = Positivity(w1)
+	if want != got {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+}
+
+func TestMultiplicationByNegativeOne(t *testing.T) {
+	var w1, got, want Whole
+	no := 1
+	w1 = IntToWhole(-12)
+	want = IntToWhole(12)
+	got = MultiplicationByNegativeOne(w1)
+	if Compare(got, want) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+	w1 = IntToWhole(12)
+	want = IntToWhole(-12)
+	got = MultiplicationByNegativeOne(w1)
+	if Compare(got, want) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+	w1 = IntToWhole(0)
+	want = IntToWhole(0)
+	got = MultiplicationByNegativeOne(w1)
+	if Compare(got, want) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+}
+
+func TestFromNaturalsToWhole(t *testing.T) {
+	var n1 natural.Natural
+	var got, want Whole
+	no := 1
+	n1 = natural.IntToNat(12)
+	want = IntToWhole(12)
+	got = FromNaturalsToWhole(n1)
+	if Compare(got, want) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+}
+
+func TestFromWholeToNaturals(t *testing.T) {
+	var w1 Whole
+	var got, want natural.Natural
+	no := 1
+	w1 = IntToWhole(12)
+	want = natural.IntToNat(12)
+	got = FromWholeToNaturals(w1)
+	if natural.Compare(got, want) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+}
+
+func TestIntToWhole(t *testing.T) {
+	var got, want Whole
+	var num int64
+	no := 1
+
+	num = 123
+	got = IntToWhole(num)
+	want.MakeW(false, []uint8{1, 2, 3})
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+	num = 0
+	got = IntToWhole(num)
+	want.MakeW(false, []uint8{0})
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+	num = -123
+	got = IntToWhole(num)
+	want.MakeW(true, []uint8{1, 2, 3})
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+}
+
+func TestWholeFromDivision(t *testing.T) {
+	var w1, w2 Whole
+	no := 1
+	w1.MakeW(false, []uint8{1, 2})
+	w2.MakeW(false, []uint8{1})
+	got := WholeFromDivision(w1, w2)
+	want := Whole{Num: natural.Natural{Digits: []uint8{1, 2}, Older: 1}, Negative: false}
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+	w1.MakeW(false, []uint8{1, 7})
+	w2.MakeW(true, []uint8{5})
+	got = WholeFromDivision(w1, w2)
+	want = Whole{Num: natural.Natural{Digits: []uint8{4}, Older: 0}, Negative: true}
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+	w1.MakeW(true, []uint8{4})
+	w2.MakeW(true, []uint8{2})
+	got = WholeFromDivision(w1, w2)
+	want = Whole{Num: natural.Natural{Digits: []uint8{2}, Older: 0}, Negative: false}
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+}
+
+func TestRemainderFromDivision(t *testing.T) {
+	var w1, w2 Whole
+	no := 1
+	w1.MakeW(false, []uint8{1, 2})
+	w2.MakeW(false, []uint8{1})
+	got := RemainderFromDivision(w1, w2)
+	want := Whole{Num: natural.Natural{Digits: []uint8{0}, Older: 0}, Negative: false}
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+	w1.MakeW(false, []uint8{1, 7})
+	w2.MakeW(true, []uint8{5})
+	got = RemainderFromDivision(w1, w2)
+	want = Whole{Num: natural.Natural{Digits: []uint8{3}, Older: 0}, Negative: false}
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+}
 
 func TestAddition(t *testing.T) {
-	var n1, n2 Whole
-	n1.MakeW(false, []uint8{5, 1, 3})
-	n2.MakeW(true, []uint8{5, 1, 4})
-	got := Addition(n1, n2)
-	want := []uint8{1}
-	wantb := true
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("1 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
+	var w1, w2, got, want Whole
+	no := 1
+	w1 = IntToWhole(-12)
+	w2 = IntToWhole(12)
+	want = Zero()
+	got = Addition(w1, w2)
+	if Compare(got, want) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 	}
-	n1.MakeW(true, []uint8{5, 1, 4})
-	n2.MakeW(true, []uint8{5, 1, 3})
-	got = Addition(n1, n2)
-	want = []uint8{1, 0, 2, 7}
-	wantb = true
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("2 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
+	fmt.Println(no, "Passed")
+	no++
+	w1 = IntToWhole(13)
+	w2 = IntToWhole(12)
+	want = IntToWhole(25)
+	got = Addition(w1, w2)
+	if Compare(got, want) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 	}
-	n1.MakeW(true, []uint8{5, 1, 3})
-	n2.MakeW(true, []uint8{5, 1, 4})
-	got = Addition(n1, n2)
-	want = []uint8{1, 0, 2, 7}
-	wantb = true
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("3 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
+	fmt.Println(no, "Passed")
+	no++
+	w1 = IntToWhole(-1)
+	w2 = IntToWhole(12)
+	want = IntToWhole(11)
+	got = Addition(w1, w2)
+	if Compare(got, want) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 	}
-	n1.MakeW(false, []uint8{5, 1, 3})
-	n2.MakeW(false, []uint8{5, 1, 4})
-	got = Addition(n1, n2)
-	want = []uint8{1, 0, 2, 7}
-	wantb = false
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("4 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
-	n1.MakeW(false, []uint8{4, 8, 7})
-	n2.MakeW(false, []uint8{1, 3})
-	got = Addition(n1, n2)
-	want = []uint8{5, 0, 0}
-	wantb = false
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("5 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
-	n1.MakeW(true, []uint8{4, 8, 7})
-	n2.MakeW(true, []uint8{1, 3})
-	got = Addition(n1, n2)
-	want = []uint8{5, 0, 0}
-	wantb = true
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("6 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
-	n1.MakeW(false, []uint8{5, 1, 3})
-	n2.MakeW(true, []uint8{5, 0, 0})
-	got = Addition(n1, n2)
-	want = []uint8{1, 3}
-	wantb = false
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("7 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
-	n1.MakeW(true, []uint8{5, 1, 3})
-	n2.MakeW(false, []uint8{5, 0, 0})
-	got = Addition(n1, n2)
-	want = []uint8{1, 3}
-	wantb = true
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("8 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
-	n1.MakeW(false, []uint8{5, 0, 0})
-	n2.MakeW(false, []uint8{8, 0, 0})
-	got = Addition(n1, n2)
-	want = []uint8{1, 3, 0, 0}
-	wantb = false
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("9 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
-	n1.MakeW(true, []uint8{5, 0, 0})
-	n2.MakeW(true, []uint8{8, 0, 0})
-	got = Addition(n1, n2)
-	want = []uint8{1, 3, 0, 0}
-	wantb = true
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("10 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
-}
-func TestMultiplicationByNegativeOne(t *testing.T) {
-	var n Whole
-	n.MakeW(false, []uint8{8})
-	got := MultiplicationByNegativeOne(n)
-	want := []uint8{8}
-	wantb := true
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("1 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
+	fmt.Println(no, "Passed")
+	no++
 }
 
 func TestSubtraction(t *testing.T) {
+	var w1, w2 Whole
+	no := 1
+	w1.MakeW(false, []uint8{1, 2})
+	w2.MakeW(false, []uint8{1})
+	got := Subtraction(w1, w2)
+	want := Whole{Num: natural.Natural{Digits: []uint8{1, 1}, Older: 1}, Negative: false}
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
 
-	var n1, n2 Whole
+	w1.MakeW(false, []uint8{1, 2})
+	w2.MakeW(true, []uint8{1})
+	got = Subtraction(w1, w2)
+	want = Whole{Num: natural.Natural{Digits: []uint8{1, 3}, Older: 1}, Negative: false}
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
 
-	n1.MakeW(false, []uint8{5, 1, 3})
-	n2.MakeW(true, []uint8{5, 1, 4})
-	got := Subtraction(n1, n2)
-	want := []uint8{1, 0, 2, 7}
-	wantb := false
+	w1.MakeW(false, []uint8{1, 2})
+	w2.MakeW(false, []uint8{1, 5})
+	got = Subtraction(w1, w2)
+	want = Whole{Num: natural.Natural{Digits: []uint8{3}, Older: 0}, Negative: true}
 	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("1 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 		}
 	}
-	n1.MakeW(true, []uint8{5, 1, 4})
-	n2.MakeW(true, []uint8{5, 1, 3})
-	got = Subtraction(n1, n2)
-	want = []uint8{1}
-	wantb = true
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("2 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 	}
-	n1.MakeW(true, []uint8{5, 1, 3})
-	n2.MakeW(true, []uint8{5, 1, 4})
-	got = Subtraction(n1, n2)
-	want = []uint8{1}
-	wantb = false
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("3 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
-	n1.MakeW(false, []uint8{5, 1, 3})
-	n2.MakeW(false, []uint8{5, 1, 4})
-	got = Subtraction(n1, n2)
-	want = []uint8{1}
-	wantb = true
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("4 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
-	n1.MakeW(false, []uint8{5, 1, 3})
-	n2.MakeW(false, []uint8{1, 3})
-	got = Subtraction(n1, n2)
-	want = []uint8{5, 0, 0}
-	wantb = false
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("5 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
-	n1.MakeW(true, []uint8{5, 1, 3})
-	n2.MakeW(true, []uint8{1, 3})
-	got = Subtraction(n1, n2)
-	want = []uint8{5, 0, 0}
-	wantb = true
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("6 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
-	n1.MakeW(false, []uint8{5, 1, 3})
-	n2.MakeW(false, []uint8{5, 0, 0})
-	got = Subtraction(n1, n2)
-	want = []uint8{1, 3}
-	wantb = false
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("7 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
-	n1.MakeW(true, []uint8{5, 1, 3})
-	n2.MakeW(true, []uint8{5, 0, 0})
-	got = Subtraction(n1, n2)
-	want = []uint8{1, 3}
-	wantb = true
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("8 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
-	n1.MakeW(false, []uint8{5, 0, 0})
-	n2.MakeW(false, []uint8{8, 0, 0})
-	got = Subtraction(n1, n2)
-	want = []uint8{3, 0, 0}
-	wantb = true
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("9 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
-	n1.MakeW(true, []uint8{5, 0, 0})
-	n2.MakeW(true, []uint8{8, 0, 0})
-	got = Subtraction(n1, n2)
-	want = []uint8{3, 0, 0}
-	wantb = false
-	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("10 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
-		}
-	}
+	fmt.Println(no, "Passed")
+	no++
 
-	n1.MakeW(false, []uint8{6, 4})
-	n2.MakeW(false, []uint8{7, 2})
-	got = Subtraction(n1, n2)
-	want = []uint8{8}
-	wantb = true
+	w1.MakeW(true, []uint8{1, 2})
+	w2.MakeW(false, []uint8{1, 5})
+	got = Subtraction(w1, w2)
+	want = Whole{Num: natural.Natural{Digits: []uint8{2, 7}, Older: 0}, Negative: true}
 	for i, v := range got.Num.Digits {
-		if v != want[i] || got.Negative != wantb {
-			t.Fatalf("11 - получили %+v, ожидалось %+v, %+v", got, want, wantb)
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 		}
 	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+}
+
+func TestMultiplication(t *testing.T) {
+	var w1, w2 Whole
+	no := 1
+	w1.MakeW(false, []uint8{1, 2})
+	w2.MakeW(false, []uint8{1})
+	got := Multiplication(w1, w2)
+	want := Whole{Num: natural.Natural{Digits: []uint8{1, 2}, Older: 1}, Negative: false}
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+	w1.MakeW(true, []uint8{1, 2})
+	w2.MakeW(false, []uint8{1})
+	got = Multiplication(w1, w2)
+	want = Whole{Num: natural.Natural{Digits: []uint8{1, 2}, Older: 1}, Negative: true}
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+	w1.MakeW(true, []uint8{1, 2})
+	w2.MakeW(true, []uint8{1})
+	got = Multiplication(w1, w2)
+	want.MakeW(false, []uint8{1, 2})
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+	w1.MakeW(true, []uint8{7, 2})
+	w2.MakeW(false, []uint8{1, 4, 8, 8})
+	got = Multiplication(w1, w2)
+	want.MakeW(true, []uint8{1, 0, 7, 1, 3, 6})
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+	w1.MakeW(false, []uint8{0})
+	w2.MakeW(true, []uint8{1, 4, 8, 8})
+	got = Multiplication(w1, w2)
+	want.MakeW(false, []uint8{0})
+	for i, v := range got.Num.Digits {
+		if v != want.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Negative != want.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
 }
