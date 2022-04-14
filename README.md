@@ -26,7 +26,7 @@ N-14 | НОК натуральных чисел | LeastCommonMultiple (LCM_NN_N)
 
 Номер | Целые числа (b, n; A[..]) - знак числа (1 — минус, 0 — плюс) номер старшей позиции и массив цифр |   |   | Человек, ответственный за модуль
 -- | -- | -- | -- | --
-Z-1 | Абсолютная величина числа, результат - натуральное | Absolute | | Тростин
+Z-1 | Абсолютная величина числа, результат - натуральное | Absolute (ABS_Z_N) | | Тростин
 Z-2 | Определение положительности числа (2 - положительное, 0 — равное нулю, 1 - отрицательное) | Positivity (POZ_Z_D) | | Турбина
 Z-3 | Умножение целого на (-1) | MultiplicationByNegativeOne (MUL_ZM_Z) | | Хвостовский
 Z-4 | Преобразование натурального в целое | FromNaturalsToWhole (TRANS_N_Z) | | Лицеванова
@@ -50,19 +50,19 @@ Q-8 | Деление дробей (делитель отличен от нуля
 
 Номер | Многочлен с рациональными коэффициентамиm – степень многочлена и массив C коэффициентов |   |   | Человек, ответственный за модуль
 -- | -- | -- | -- | --
-P-1 | Сложение многочленов | ADD_PP_P | Addition | Голубев
-P-2 | Вычитание многочленов | SUB_PP_P | Subtraction | Голубев
-P-3 | Умножение многочлена на рациональное число | MUL_PQ_P | Multiplication | Семёнов
-P-4 | Умножение многочлена на x^k | MUL_Pxk_P | | Голубев
-P-5 | Старший коэффициент многочлена | LED_P_Q | | Голубев
-P-6 | Степень многочлена | DEG_P_N | | Голубев
-P-7 | Вынесение из многочлена НОК знаменателей коэффициентов и НОД числителей | FAC_P_Q | Absolute FromWholeToNaturals LeastCommonMultiple GreatestCommonDivisor FromNaturalsToWhole WholeFromDivision | Морозов
-P-8 | Умножение многочленов | MUL_PP_P | MUL_PQ_PMUL_Pxk_PADD_PP_P | Грунская
-P-9 | Частное от деления многочлена на многочлен при делении с остатком | DIV_PP_P | Division DEG_P_NMUL_Pxk_PSUB_PP_PADD_PP_P | Комаровский
-P-10 | Остаток от деления многочлена на многочлен при делении с остатком | MOD_PP_P | DIV_PP_PMUL_PP_PSUB_PP_P | Комаровский
-P-11 | НОД многочленов | GCF_PP_P | DEG_P_NMOD_PP_P | Пименов
-P-12 | Производная многочлена | DER_P_P | | Тростин
-P-13 | Преобразование многочлена — кратные корни в простые | NMR_P_P | GCF_PP_PDER_P_PDIV_PP_P | Тростин
+P-1 | Сложение многочленов | AdditionP(ADD_PP_P) | Addition | Голубев
+P-2 | Вычитание многочленов | SubstractionP(SUB_PP_P) | Subtraction | Голубев
+P-3 | Умножение многочлена на рациональное число | MultiplicationRational(MUL_PQ_P) | Multiplication | Семёнов
+P-4 | Умножение многочлена на x^k | MultipilcationXpowerK(MUL_Pxk_P) | | Голубев
+P-5 | Старший коэффициент многочлена | OlderCoeffPoly(LED_P_Q) | | Голубев
+P-6 | Степень многочлена | OlderPoly(DEG_P_N) | | Голубев
+P-7 | Вынесение из многочлена НОК знаменателей коэффициентов и НОД числителей | GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(FAC_P_Q) | Absolute FromWholeToNaturals LeastCommonMultiple GreatestCommonDivisor FromNaturalsToWhole WholeFromDivision | Морозов
+P-8 | Умножение многочленов | MultiplicationPol(MUL_PP_P) | MUL_PQ_PMUL_Pxk_PADD_PP_P | Грунская
+P-9 | Частное от деления многочлена на многочлен при делении с остатком | QuotientOfDivision(DIV_PP_P) | Division DEG_P_NMUL_Pxk_PSUB_PP_PADD_PP_P | Комаровский
+P-10 | Остаток от деления многочлена на многочлен при делении с остатком | RemainderFromDivision(MOD_PP_P) | DIV_PP_PMUL_PP_PSUB_PP_P | Комаровский
+P-11 | НОД многочленов | GCF_PP_P | GreatestCommonDivisor(DEG_P_NMOD_PP_P) | Пименов
+P-12 | Производная многочлена | Derivative(DER_P_P) | | Тростин
+P-13 | Преобразование многочлена — кратные корни в простые | SimplifyRoots(NMR_P_P) | GCF_PP_PDER_P_PDIV_PP_P | Тростин
 
 Ответственные за графический интерфейс
 -- |
