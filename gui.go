@@ -1176,6 +1176,12 @@ func InputPolynomial(s string) (polynome.Polynomial, bool) {
 				if a[0] == "" {
 					a[0] = "1/1"
 				}
+				if res.Older < 1 {
+					res.Older = 1
+					for uint32(len(res.Coeff)) <= 1 {
+						res.Coeff = append([]rational.Rational{rational.Zero()}, res.Coeff...)
+					}
+				}
 				res.Coeff[res.Older-1], err = InputRational(a[0])
 				if err {
 					return polynome.Polynomial{Older: 0, Coeff: []rational.Rational{rational.Zero()}}, true
