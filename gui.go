@@ -108,10 +108,11 @@ func main() {
 	SelectedFun := "0"
 	// Result Text
 	result := widget.NewLabel("")
-
+	format := widget.NewLabel("Формат ввода полинома: <числитель>/<знаменатель>x^<степень>+(-) ...")
 	entry1.Hide()
 	entry2.Hide()
 	entry3.Hide()
+	format.Hide()
 	// Button to Calculate the Result
 	btnRes := widget.NewButton("Результат", func() {
 		switch SelectedFun {
@@ -372,13 +373,14 @@ func main() {
 	})
 	btnRes.Hide()
 	//result
-	resW := container.NewVBox(entry1, entry2, entry3, result, btnRes)
+	resW := container.NewVBox(format, entry1, entry2, entry3, result, btnRes)
 
 	btnNextFunc := widget.NewButton("К вводу", func() {
 		switch Selected {
 		case "0":
 			switch funcBoxN.Selected {
 			case funcsN[0]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -388,6 +390,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "0"
 			case funcsN[1]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -397,6 +400,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "1"
 			case funcsN[2]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -406,6 +410,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "2"
 			case funcsN[3]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -415,6 +420,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "3"
 			case funcsN[4]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -424,6 +430,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "4"
 			case funcsN[5]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -433,6 +440,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "5"
 			case funcsN[6]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -442,6 +450,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "6"
 			case funcsN[7]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -451,6 +460,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "7"
 			case funcsN[8]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -460,6 +470,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "8"
 			case funcsN[9]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -469,6 +480,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "9"
 			case funcsN[10]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -478,6 +490,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "A"
 			case funcsN[11]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -487,6 +500,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "B"
 			case funcsN[12]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -496,6 +510,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "C"
 			case funcsN[13]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -508,6 +523,7 @@ func main() {
 		case "1":
 			switch funcBoxWh.Selected {
 			case funcsWh[0]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -517,6 +533,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "0"
 			case funcsWh[1]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -526,6 +543,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "1"
 			case funcsWh[2]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -535,6 +553,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "2"
 			case funcsWh[3]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -544,6 +563,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "3"
 			case funcsWh[4]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -553,6 +573,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "4"
 			case funcsWh[5]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -562,6 +583,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "5"
 			case funcsWh[6]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -571,6 +593,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "6"
 			case funcsWh[7]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -580,6 +603,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "7"
 			case funcsWh[8]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -589,6 +613,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "8"
 			case funcsWh[9]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -601,6 +626,7 @@ func main() {
 		case "2":
 			switch funcBoxR.Selected {
 			case funcsR[0]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -610,6 +636,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "0"
 			case funcsR[1]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -619,6 +646,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "1"
 			case funcsR[2]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -628,6 +656,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "2"
 			case funcsR[3]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -637,6 +666,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "3"
 			case funcsR[4]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -646,6 +676,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "4"
 			case funcsR[5]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -655,6 +686,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "5"
 			case funcsR[6]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -664,6 +696,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "6"
 			case funcsR[7]:
+				format.Hide()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -676,6 +709,7 @@ func main() {
 		case "3":
 			switch funcBoxPol.Selected {
 			case funcsPol[0]:
+				format.Show()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -685,6 +719,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "0"
 			case funcsPol[1]:
+				format.Show()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -694,6 +729,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "1"
 			case funcsPol[2]:
+				format.Show()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -703,6 +739,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "2"
 			case funcsPol[3]:
+				format.Show()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -712,6 +749,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "3"
 			case funcsPol[4]:
+				format.Show()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -721,6 +759,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "4"
 			case funcsPol[5]:
+				format.Show()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -730,6 +769,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "5"
 			case funcsPol[6]:
+				format.Show()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -739,6 +779,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "6"
 			case funcsPol[7]:
+				format.Show()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -748,6 +789,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "7"
 			case funcsPol[8]:
+				format.Show()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -758,6 +800,7 @@ func main() {
 				SelectedFun = Selected + "8"
 
 			case funcsPol[9]:
+				format.Show()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -767,6 +810,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "9"
 			case funcsPol[10]:
+				format.Show()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -776,6 +820,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "A"
 			case funcsPol[11]:
+				format.Show()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
@@ -785,6 +830,7 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "B"
 			case funcsPol[12]:
+				format.Show()
 				result.SetText("")
 				entry1.SetText("")
 				entry2.SetText("")
