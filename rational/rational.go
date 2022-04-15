@@ -56,9 +56,9 @@ func (r *Rational) MakeR(nom whole.Whole, den natural.Natural) {
 // Функция перевода целого в дробное
 func WholeToFractional(x whole.Whole) Rational {
 	var p Rational
-
 	p.Nominator = whole.CopyW(x)
 	p.Denominator = natural.Natural{Digits: []uint8{1}, Older: 0}
+	SimplifyingFractions(p)
 	return p
 }
 
