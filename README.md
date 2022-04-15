@@ -60,7 +60,7 @@ P-7 | Вынесение из многочлена НОК знаменателе
 P-8 | Умножение многочленов | MultiplicationPol(MUL_PP_P) | MUL_PQ_PMUL_Pxk_PADD_PP_P | Грунская
 P-9 | Частное от деления многочлена на многочлен при делении с остатком | QuotientOfDivision(DIV_PP_P) | Division DEG_P_NMUL_Pxk_PSUB_PP_PADD_PP_P | Комаровский
 P-10 | Остаток от деления многочлена на многочлен при делении с остатком | RemainderFromDivision(MOD_PP_P) | DIV_PP_PMUL_PP_PSUB_PP_P | Комаровский
-P-11 | НОД многочленов | GCF_PP_P | GreatestCommonDivisor(DEG_P_NMOD_PP_P) | Пименов
+P-11 | НОД многочленов | GreatestCommonDivisor(GCF_PP_P) | GreatestCommonDivisor(DEG_P_NMOD_PP_P) | Пименов
 P-12 | Производная многочлена | Derivative(DER_P_P) | | Тростин
 P-13 | Преобразование многочлена — кратные корни в простые | SimplifyRoots(NMR_P_P) | GCF_PP_PDER_P_PDIV_PP_P | Тростин
 
