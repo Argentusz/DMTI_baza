@@ -208,7 +208,7 @@ func (p *Polynomial) ToStringPol() string {
 	var str string
 	var i uint32
 	if p.Older == 0 {
-		return fmt.Sprint(p.Coeff[0])
+		return fmt.Sprint(rational.ToStringR(p.Coeff[0]))
 	} else {
 		for i = 0; i <= p.Older; i++ {
 			if whole.Positivity(p.Coeff[i].Nominator) == 2 {

@@ -200,20 +200,32 @@ func main() {
 			// DivideOneIteration
 			n1 := InputNatural(entry1.Text)
 			n2 := InputNatural(entry2.Text)
-			res := natural.DivideOneIteration(n1, n2)
-			result.SetText(natural.ToStringN(res))
+			if natural.CheckNull(n2) {
+				result.SetText("Ошибка нулевой делитель: x09")
+			} else {
+				res := natural.DivideOneIteration(n1, n2)
+				result.SetText(natural.ToStringN(res))
+			}
 		case "0A":
 			// IntegerFromDivision
 			n1 := InputNatural(entry1.Text)
 			n2 := InputNatural(entry2.Text)
-			res := natural.IntegerFromDivision(n1, n2)
-			result.SetText(natural.ToStringN(res))
+			if natural.CheckNull(n2) {
+				result.SetText("Ошибка нулевой делитель: x0A")
+			} else {
+				res := natural.IntegerFromDivision(n1, n2)
+				result.SetText(natural.ToStringN(res))
+			}
 		case "0B":
 			// RemainderFromDivision
 			n1 := InputNatural(entry1.Text)
 			n2 := InputNatural(entry2.Text)
-			res := natural.RemainderFromDivision(n1, n2)
-			result.SetText(natural.ToStringN(res))
+			if natural.CheckNull(n2) {
+				result.SetText("Ошибка нулевой делитель: x09")
+			} else {
+				res := natural.RemainderFromDivision(n1, n2)
+				result.SetText(natural.ToStringN(res))
+			}
 		case "0C":
 			// GreatestCommonDivisor
 			n1 := InputNatural(entry1.Text)
@@ -243,136 +255,310 @@ func main() {
 			res := whole.MultiplicationByNegativeOne(w1)
 			result.SetText(whole.ToStringW(res))
 		case "13":
+			// FromNaturalsToWhole
 			n1 := InputNatural(entry1.Text)
 			res := whole.FromNaturalsToWhole(n1)
 			result.SetText(whole.ToStringW(res))
 		case "14":
+			// FromWholeToNaturals
 			w1 := InputWhole(entry1.Text)
 			res := whole.FromWholeToNaturals(w1)
 			result.SetText(natural.ToStringN(res))
 		case "15":
+			// Addition
 			w1 := InputWhole(entry1.Text)
 			w2 := InputWhole(entry2.Text)
 			res := whole.Addition(w1, w2)
 			result.SetText(whole.ToStringW(res))
 		case "16":
+			// Subtraction
 			w1 := InputWhole(entry1.Text)
 			w2 := InputWhole(entry2.Text)
 			res := whole.Subtraction(w1, w2)
 			result.SetText(whole.ToStringW(res))
 		case "17":
+			// Multiplication
 			w1 := InputWhole(entry1.Text)
 			w2 := InputWhole(entry2.Text)
 			res := whole.Multiplication(w1, w2)
 			result.SetText(whole.ToStringW(res))
 		case "18":
+			// WholeFromDivision
 			w1 := InputWhole(entry1.Text)
 			w2 := InputWhole(entry2.Text)
-			res := whole.WholeFromDivision(w1, w2)
-			result.SetText(whole.ToStringW(res))
-		case "19":
-			w1 := InputWhole(entry1.Text)
-			w2 := InputWhole(entry2.Text)
-			res := whole.RemainderFromDivision(w1, w2)
-			result.SetText(whole.ToStringW(res))
-		case "20":
-			r1 := InputRational(entry1.Text)
-			res := rational.SimplifyingFractions(r1)
-			result.SetText(rational.ToStringR(res))
-		case "21":
-			r1 := InputRational(entry1.Text)
-			res := rational.CheckingForWhole(r1)
-			if res {
-				result.SetText("Да")
+			if whole.Compare(w2, whole.IntToWhole(0)) == 0 {
+				result.SetText("Ошибка нулевого делителя: x18")
 			} else {
-				result.SetText("Нет")
+				res := whole.WholeFromDivision(w1, w2)
+				result.SetText(whole.ToStringW(res))
+			}
+		case "19":
+			// RemainderFromDivision
+			w1 := InputWhole(entry1.Text)
+			w2 := InputWhole(entry2.Text)
+			if whole.Compare(w2, whole.IntToWhole(0)) == 0 {
+				result.SetText("Ошибка нулевого делителя: x18")
+			} else {
+				res := whole.RemainderFromDivision(w1, w2)
+				result.SetText(whole.ToStringW(res))
+			}
+		case "20":
+			// SimplifyingFractions
+			r1, err := InputRational(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x20")
+			} else {
+				res := rational.SimplifyingFractions(r1)
+				result.SetText(rational.ToStringR(res))
+			}
+		case "21":
+			// CheckingForWhole
+			r1, err := InputRational(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x21")
+			} else {
+				res := rational.CheckingForWhole(r1)
+				if res {
+					result.SetText("Да")
+				} else {
+					result.SetText("Нет")
+				}
 			}
 		case "22":
+			// WholeToFractional
 			w1 := InputWhole(entry1.Text)
 			res := rational.WholeToFractional(w1)
 			result.SetText(rational.ToStringR(res))
 		case "23":
-			r1 := InputRational(entry1.Text)
-			res := rational.FractionalToWhole(r1)
-			result.SetText(whole.ToStringW(res))
+			// FractionalToWhole
+			r1, err := InputRational(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x23")
+			} else {
+				res := rational.FractionalToWhole(r1)
+				result.SetText(whole.ToStringW(res))
+			}
 		case "24":
-			r1 := InputRational(entry1.Text)
-			r2 := InputRational(entry2.Text)
-			res := rational.Addition(r1, r2)
-			result.SetText(rational.ToStringR(res))
+			// Addition
+			r1, err := InputRational(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x24")
+			} else {
+				r2, err := InputRational(entry2.Text)
+				if err {
+					result.SetText("Ошибка нулевого знаменателя: x24")
+				} else {
+					res := rational.Addition(r1, r2)
+					result.SetText(rational.ToStringR(res))
+				}
+			}
 		case "25":
-			r1 := InputRational(entry1.Text)
-			r2 := InputRational(entry2.Text)
-			res := rational.Subtraction(r1, r2)
-			result.SetText(rational.ToStringR(res))
+			// Subtraction
+			r1, err := InputRational(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x25")
+			} else {
+				r2, err := InputRational(entry2.Text)
+				if err {
+					result.SetText("Ошибка нулевого знаменателя: x25")
+				} else {
+					res := rational.Subtraction(r1, r2)
+					result.SetText(rational.ToStringR(res))
+				}
+			}
 		case "26":
-			r1 := InputRational(entry1.Text)
-			r2 := InputRational(entry2.Text)
-			res := rational.Multiplication(r1, r2)
-			result.SetText(rational.ToStringR(res))
+			// Multiplication
+			r1, err := InputRational(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x26")
+			} else {
+				r2, err := InputRational(entry2.Text)
+				if err {
+					result.SetText("Ошибка нулевого знаменателя: x26")
+				} else {
+					res := rational.Multiplication(r1, r2)
+					result.SetText(rational.ToStringR(res))
+				}
+			}
 		case "27":
-			r1 := InputRational(entry1.Text)
-			r2 := InputRational(entry2.Text)
-			res := rational.Division(r1, r2)
-			result.SetText(rational.ToStringR(res))
+			// Division
+			r1, err := InputRational(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x27")
+			} else {
+				r2, err := InputRational(entry2.Text)
+				if err {
+					result.SetText("Ошибка нулевого знаменателя: x27")
+				} else if entry2.Text == "" || entry2.Text == "0" {
+					result.SetText("Ошибка нулевого делителя: x27")
+				} else {
+					res := rational.Division(r1, r2)
+					result.SetText(rational.ToStringR(res))
+				}
+			}
 		case "30":
-			p1 := InputPolynomes(entry1.Text)
-			p2 := InputPolynomes(entry2.Text)
-			res := polynome.AdditionP(p1, p2)
-			result.SetText(res.ToStringPol())
+			// AdditionP
+			p1, err := InputPolynomial(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x30")
+			} else {
+				p2, err := InputPolynomial(entry2.Text)
+				if err {
+					result.SetText("Ошибка нулевого знаменателя: x30")
+				} else {
+					res := polynome.AdditionP(p1, p2)
+					result.SetText(res.ToStringPol())
+				}
+			}
 		case "31":
-			p1 := InputPolynomes(entry1.Text)
-			p2 := InputPolynomes(entry2.Text)
-			res := polynome.SubtractionP(p1, p2)
-			result.SetText(res.ToStringPol())
+			// SubtractionP
+			p1, err := InputPolynomial(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x31")
+			} else {
+				p2, err := InputPolynomial(entry2.Text)
+				if err {
+					result.SetText("Ошибка нулевого знаменателя: x31")
+				} else {
+					res := polynome.SubtractionP(p1, p2)
+					result.SetText(res.ToStringPol())
+				}
+			}
 		case "32":
-			p := InputPolynomes(entry1.Text)
-			r := InputRational(entry2.Text)
-			res := polynome.MultiplicationRational(p, r)
-			result.SetText(res.ToStringPol())
+			// MultiplicationRational
+			p, err := InputPolynomial(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x32")
+			} else {
+				r, err := InputRational(entry2.Text)
+				if err {
+					result.SetText("Ошибка нулевого знаменателя: x32")
+				} else {
+					res := polynome.MultiplicationRational(p, r)
+					result.SetText(res.ToStringPol())
+				}
+			}
 		case "33":
-			p := InputPolynomes(entry1.Text)
-			k, _ := strconv.Atoi(entry2.Text)
-			res := polynome.MultiplicationXpowerK(p, k)
-			result.SetText(res.ToStringPol())
+			// MultiplicationXpowerK
+			p, err := InputPolynomial(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x33")
+			} else {
+				k, _ := strconv.Atoi(entry2.Text)
+				res := polynome.MultiplicationXpowerK(p, k)
+				result.SetText(res.ToStringPol())
+			}
 		case "34":
-			p := InputPolynomes(entry1.Text)
-			result.SetText(rational.ToStringR(polynome.OlderCoeffPoly(p)))
+			// OlderCoeffPoly
+			p, err := InputPolynomial(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x30")
+			} else {
+				result.SetText(rational.ToStringR(polynome.OlderCoeffPoly(p)))
+			}
 		case "35":
-			p := InputPolynomes(entry1.Text)
-			result.SetText(strconv.Itoa(int(polynome.OlderPoly(p))))
+			// OlderPoly
+			p, err := InputPolynomial(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x30")
+			} else {
+				result.SetText(strconv.Itoa(int(polynome.OlderPoly(p))))
+			}
 		case "36":
-			p := InputPolynomes(entry1.Text)
-			n1, n2 := polynome.GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(p)
-			result.SetText("НОД: " + natural.ToStringN(n1) + ", " + "НОК: " + natural.ToStringN(n2))
+			// Greatest... (what the hell?)
+			p, err := InputPolynomial(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x30")
+			} else {
+				n1, n2 := polynome.GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(p)
+				result.SetText("НОД: " + natural.ToStringN(n1) + ", " + "НОК: " + natural.ToStringN(n2))
+			}
 		case "37":
-			p1, p2 := InputPolynomes(entry1.Text), InputPolynomes(entry2.Text)
-			res := polynome.MultiplicationPol(p1, p2)
-			result.SetText(res.ToStringPol())
+			// MultiplicationPol
+			p1, err := InputPolynomial(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x37")
+			} else {
+				p2, err := InputPolynomial(entry2.Text)
+				if err {
+					result.SetText("Ошибка нулевого знаменателя: x37")
+				} else {
+					res := polynome.MultiplicationPol(p1, p2)
+					result.SetText(res.ToStringPol())
+				}
+			}
 		case "38":
-			p1, p2 := InputPolynomes(entry1.Text), InputPolynomes(entry2.Text)
-			res := polynome.QuotientOfDivision(p1, p2)
-			result.SetText(res.ToStringPol())
+			// QuotientOfDivision
+			p1, err := InputPolynomial(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x38")
+			} else {
+				p2, err := InputPolynomial(entry2.Text)
+				if err {
+					result.SetText("Ошибка нулевого знаменателя: x38")
+				} else {
+					if entry2.Text == "0" {
+						result.SetText("Ошибка нулевого делителя: x38")
+					} else {
+						res := polynome.QuotientOfDivision(p1, p2)
+						result.SetText(res.ToStringPol())
+					}
+				}
+			}
 		case "39":
-			p1, p2 := InputPolynomes(entry1.Text), InputPolynomes(entry2.Text)
-			res := polynome.RemainderFromDivision(p1, p2)
-			result.SetText(res.ToStringPol())
+			// RemainderFromDivision
+			p1, err := InputPolynomial(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x39")
+			} else {
+				p2, err := InputPolynomial(entry2.Text)
+				if err {
+					result.SetText("Ошибка нулевого знаменателя: x39")
+				} else {
+					if entry2.Text == "0" {
+						result.SetText("Ошибка нулевого делителя: x39")
+					} else {
+						res := polynome.RemainderFromDivision(p1, p2)
+						result.SetText(res.ToStringPol())
+					}
+				}
+			}
 		case "3A":
-			p1, p2 := InputPolynomes(entry1.Text), InputPolynomes(entry2.Text)
-			res := polynome.GreatestCommonDivisor(p1, p2)
-			result.SetText(res.ToStringPol())
+			// GreatestCommonDivisor
+			p1, err := InputPolynomial(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x3A")
+			} else {
+				p2, err := InputPolynomial(entry2.Text)
+				if err {
+					result.SetText("Ошибка нулевого знаменателя: x3A")
+				} else {
+					res := polynome.GreatestCommonDivisor(p1, p2)
+					result.SetText(res.ToStringPol())
+				}
+			}
 		case "3B":
-			p := InputPolynomes(entry1.Text)
-			res := polynome.Derivative(p)
-			result.SetText(res.ToStringPol())
+			// Derivative
+			p, err := InputPolynomial(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x3B")
+			} else {
+				res := polynome.Derivative(p)
+				result.SetText(res.ToStringPol())
+			}
 		case "3C":
-			p := InputPolynomes(entry1.Text)
-			res := polynome.SimplifyRoots(p)
-			result.SetText(res.ToStringPol())
+			// SimplifyRoots
+			p, err := InputPolynomial(entry1.Text)
+			if err {
+				result.SetText("Ошибка нулевого знаменателя: x3C")
+			} else {
+				res := polynome.SimplifyRoots(p)
+				result.SetText(res.ToStringPol())
+			}
 		}
 	})
 	btnRes.Hide()
-	//result
+	// Result box
 	resW := container.NewVBox(format, entry1, entry2, entry3, result, btnRes)
 
 	btnNextFunc := widget.NewButton("К вводу", func() {
@@ -880,6 +1066,9 @@ func main() {
 }
 
 func InputNatural(s string) natural.Natural {
+	if s == "" {
+		s = "0"
+	}
 	nat := strings.Split(s, "")
 	var natur []uint8
 	for _, v := range nat {
@@ -893,6 +1082,9 @@ func InputNatural(s string) natural.Natural {
 
 func InputWhole(s string) whole.Whole {
 	var negative = false
+	if s == "" {
+		s = "0"
+	}
 	if s[0] == '-' {
 		negative = true
 		s = s[1:]
@@ -903,19 +1095,34 @@ func InputWhole(s string) whole.Whole {
 	return w
 }
 
-func InputRational(s string) rational.Rational {
+func InputRational(s string) (rational.Rational, bool) {
+	if s == "" {
+		s = "0"
+	}
 	arr := strings.Split(s, "/")
+	if len(arr) == 1 {
+		arr = append(arr, "1")
+	}
+	if arr[1] == "0" {
+		return rational.Zero(), true
+	}
 	nom := InputWhole(arr[0])
 	denom := InputNatural(arr[1])
 	var r rational.Rational
 	r.MakeR(nom, denom)
-	return r
+	return r, false
 }
 
-func InputPolynomial(s string) polynome.Polynomial {
+func InputPolynomial(s string) (polynome.Polynomial, bool) {
 	var arr1 []string
 	var res polynome.Polynomial
 	var NextNegative, ThisNegative bool
+	var err bool
+	if s == "" {
+		return polynome.Polynomial{Older: 0, Coeff: []rational.Rational{rational.Zero()}}, false
+	}
+	res.Coeff = append([]rational.Rational{rational.Zero()}, res.Coeff...)
+
 	// Split string on + -
 	arr0 := strings.SplitAfter(s, "+")
 	for i := 0; i < len(arr0); i++ {
@@ -923,6 +1130,16 @@ func InputPolynomial(s string) polynome.Polynomial {
 		for j := 0; j < len(a); j++ {
 			arr1 = append(arr1, a[j])
 		}
+	}
+	// Handle Case with one number
+	if len(arr0) == 1 && strings.Count(arr0[0], "x") == 0 {
+		res.Older = 0
+		temp, err := InputRational(arr0[0])
+		if err {
+			return polynome.Polynomial{Older: 0, Coeff: []rational.Rational{rational.Zero()}}, true
+		}
+		res.Coeff = []rational.Rational{temp}
+		return res, false
 	}
 	// Determine first sign
 	if arr1[0][0] == '-' {
@@ -943,38 +1160,35 @@ func InputPolynomial(s string) polynome.Polynomial {
 		ThisNegative = NextNegative
 		NextNegative = false
 		if len(a) == 1 {
-			if a[0][len(a[0])-1] == '+' || a[0][len(a[0])-1] == '-' || a[0][len(a[0])-1] == 'x' {
+			if strings.Count(a[0], "x") != 0 {
 				// x^1 case
+				// Deleting sign char
 				if a[0][len(a[0])-1] == '-' {
 					NextNegative = true
+					a[0] = a[0][0 : len(a[0])-1]
 				}
+				if a[0][len(a[0])-1] == '+' {
+					a[0] = a[0][0 : len(a[0])-1]
+				}
+				// Deleting 'x'
 				a[0] = a[0][0 : len(a[0])-1]
+				// Handle 'x' case
 				if a[0] == "" {
 					a[0] = "1/1"
 				}
-				if a[0][len(a[0])-1] == 'x' {
-					a[0] = a[0][0 : len(a[0])-1]
+				res.Coeff[res.Older-1], err = InputRational(a[0])
+				if err {
+					return polynome.Polynomial{Older: 0, Coeff: []rational.Rational{rational.Zero()}}, true
 				}
-
-				// If coeff has no / -> coeff is a whole
-				if strings.Count(a[0], "/") == 0 {
-					a[0] = a[0] + "/1"
-				}
-				res.Coeff[res.Older-1] = InputRational(a[0])
 				res.Coeff[res.Older-1].Nominator.Negative = ThisNegative
 			} else {
-				// x^0 case
-				if strings.Count(a[0], "/") == 0 {
-					a[0] = a[0] + "/1"
+				res.Coeff[res.Older], err = InputRational(a[0])
+				if err {
+					return polynome.Polynomial{Older: 0, Coeff: []rational.Rational{rational.Zero()}}, true
 				}
-				res.Coeff[res.Older] = InputRational(a[0])
 				res.Coeff[res.Older].Nominator.Negative = ThisNegative
 			}
 		} else {
-			// If coeff has no / -> coeff is a whole
-			if strings.Count(a[0], "/") == 0 {
-				a[0] = a[0] + "/1"
-			}
 			// Determine next sign
 			if a[1][len(a[1])-1] == '-' {
 				NextNegative = true
@@ -993,104 +1207,12 @@ func InputPolynomial(s string) polynome.Polynomial {
 				}
 			}
 			// Handling Coeff
-			res.Coeff[res.Older-pow] = InputRational(a[0])
+			res.Coeff[res.Older-pow], err = InputRational(a[0])
+			if err {
+				return polynome.Polynomial{Older: 0, Coeff: []rational.Rational{rational.Zero()}}, true
+			}
 			res.Coeff[res.Older-pow].Nominator.Negative = ThisNegative
 		}
 	}
-	return res
-}
-
-//func InputPolynomes(s string) polynome.Polynomial {
-//	arrayRationalsStr := strings.Split(s, " ")
-//	var coeffs []rational.Rational
-//	for i, _ := range arrayRationalsStr {
-//		coeffs = append(coeffs, InputRational(arrayRationalsStr[i]))
-//	}
-//	var p polynome.Polynomial
-//	p.MakeP(coeffs)
-//	return p
-//}
-
-func InputPolynomes(s string) polynome.Polynomial {
-	var arr1 []string
-	var res polynome.Polynomial
-	var NextNegative, ThisNegative bool
-	// Split string on + -
-	arr0 := strings.SplitAfter(s, "+")
-	for i := 0; i < len(arr0); i++ {
-		a := strings.SplitAfter(arr0[i], "-")
-		for j := 0; j < len(a); j++ {
-			arr1 = append(arr1, a[j])
-		}
-	}
-	// Determine first sign
-	if arr1[0][0] == '-' {
-		NextNegative = true
-		arr1[0] = arr1[0][1:]
-	}
-	if arr1[0] == "" {
-		arr1 = arr1[1:]
-	}
-	for i := 0; i < len(arr1); i++ {
-		a := strings.Split(arr1[i], "x^")
-		// If no coeff -> coeff = 1/1
-		if a[0] == "" {
-			a[0] = "1/1"
-		}
-
-		// NextNegative was determined in previous loop
-		ThisNegative = NextNegative
-		NextNegative = false
-		if len(a) == 1 {
-			if a[0][len(a[0])-1] == '+' || a[0][len(a[0])-1] == '-' || a[0][len(a[0])-1] == 'x' {
-				// x^1 case
-				if a[0][len(a[0])-1] == '-' {
-					NextNegative = true
-				}
-				a[0] = a[0][0 : len(a[0])-1]
-				if a[0][len(a[0])-1] == 'x' {
-					a[0] = a[0][0 : len(a[0])-1]
-				}
-				// If coeff has no / -> coeff is a whole
-				if strings.Count(a[0], "/") == 0 {
-					a[0] = a[0] + "/1"
-				}
-				res.Coeff[res.Older-1] = InputRational(a[0])
-				res.Coeff[res.Older-1].Nominator.Negative = ThisNegative
-			} else {
-				// x^0 case
-				if strings.Count(a[0], "/") == 0 {
-					a[0] = a[0] + "/1"
-				}
-				res.Coeff[res.Older] = InputRational(a[0])
-				res.Coeff[res.Older].Nominator.Negative = ThisNegative
-			}
-		} else {
-			// If coeff has no / -> coeff is a whole
-			if strings.Count(a[0], "/") == 0 {
-				a[0] = a[0] + "/1"
-			}
-			// Determine next sign
-			if a[1][len(a[1])-1] == '-' {
-				NextNegative = true
-				a[1] = a[1][0 : len(a[1])-1]
-			} else if a[1][len(a[1])-1] == '+' {
-				a[1] = a[1][0 : len(a[1])-1]
-			}
-			// Power of this
-			powI, _ := strconv.Atoi(a[1])
-			pow := uint32(powI)
-			// Power is more that we have now -> we need to expand coeff array
-			if res.Older < pow {
-				res.Older = pow
-				for uint32(len(res.Coeff)) <= pow {
-					res.Coeff = append([]rational.Rational{rational.Zero()}, res.Coeff...)
-				}
-			}
-			// Handling Coeff
-			res.Coeff[res.Older-pow] = InputRational(a[0])
-			res.Coeff[res.Older-pow].Nominator.Negative = ThisNegative
-		}
-	}
-	return res
+	return res, false
 }
