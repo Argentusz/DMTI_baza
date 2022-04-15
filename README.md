@@ -57,13 +57,13 @@ P-4 | Умножение многочлена на x^k | MultipilcationXpowerK(M
 P-5 | Старший коэффициент многочлена | OlderCoeffPoly(LED_P_Q) | | Голубев
 P-6 | Степень многочлена | OlderPoly(DEG_P_N) | | Голубев
 P-7 | Вынесение из многочлена НОК знаменателей коэффициентов и НОД числителей | GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(FAC_P_Q) | Absolute FromWholeToNaturals LeastCommonMultiple GreatestCommonDivisor FromNaturalsToWhole WholeFromDivision | Морозов
-P-8 | Умножение многочленов | MultiplicationPol(MUL_PP_P) | MUL_PQ_PMUL_Pxk_PADD_PP_P | Грунская
-P-9 | Частное от деления многочлена на многочлен при делении с остатком | QuotientOfDivision(DIV_PP_P) | Division DEG_P_NMUL_Pxk_PSUB_PP_PADD_PP_P | Комаровский
-P-10 | Остаток от деления многочлена на многочлен при делении с остатком | RemainderFromDivision(MOD_PP_P) | DIV_PP_PMUL_PP_PSUB_PP_P | Комаровский
-P-11 | НОД многочленов | GreatestCommonDivisor(GCF_PP_P) | GreatestCommonDivisor(DEG_P_NMOD_PP_P) | Пименов
+P-8 | Умножение многочленов | MultiplicationPol(MUL_PP_P) | MultiplicationRational MultipilcationXpowerK AdditionP | Грунская
+P-9 | Частное от деления многочлена на многочлен при делении с остатком | QuotientOfDivision(DIV_PP_P) | Division OlderPoly MultipilcationXpowerK SubstractionP AdditionP | Комаровский
+P-10 | Остаток от деления многочлена на многочлен при делении с остатком | RemainderFromDivision(MOD_PP_P) | QuotientOfDivision MultiplicationPol SubstractionP | Комаровский
+P-11 | НОД многочленов | GreatestCommonDivisor(GCF_PP_P) | OlderPoly RemainderFromDivision | Пименов
 P-12 | Производная многочлена | Derivative(DER_P_P) | | Тростин
-P-13 | Преобразование многочлена — кратные корни в простые | SimplifyRoots(NMR_P_P) | GCF_PP_PDER_P_PDIV_PP_P | Тростин
+P-13 | Преобразование многочлена — кратные корни в простые | SimplifyRoots(NMR_P_P) | GreatestCommonDivisor Derivative QuotientOfDivision | Тростин
 
 Ответственные за графический интерфейс
 -- |
-Пименов Голубев Тростин
+Голубев Тростин
