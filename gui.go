@@ -108,7 +108,7 @@ func main() {
 	SelectedFun := "0"
 	// Result Text
 	result := widget.NewLabel("")
-	format := widget.NewLabel("Формат ввода полинома: <числитель>/<знаменатель>x^<степень>+(-) ...")
+	format := widget.NewLabel("Пример ввода: 4/3x^4+2/1x^2+1/1x")
 	entry1.Hide()
 	entry2.Hide()
 	entry3.Hide()
