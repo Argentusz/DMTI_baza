@@ -6,14 +6,14 @@ import (
 	"fmt"
 )
 
-// Rational
+// Rational Тростин Максим
 // Структура рационального числа
 type Rational struct {
 	Nominator   whole.Whole
 	Denominator natural.Natural
 }
 
-// Zero
+// Zero Тростин Максим.
 // Возвращает рациональный нуль
 func Zero() Rational {
 	var zero Rational
@@ -22,7 +22,7 @@ func Zero() Rational {
 	return zero
 }
 
-// ToStringR
+// ToStringR Тростин Максим.
 // Возвращает Rational как строку
 func ToStringR(r Rational) string {
 	var s string
@@ -32,8 +32,8 @@ func ToStringR(r Rational) string {
 	return s
 }
 
-// IntToRational Максим Тростин
-// Конвертирует int в Rational
+// IntToRational Тростин Максим
+// Конвертирует int64 в Rational
 func IntToRational(n, d int64) Rational {
 	var r Rational
 	r.Nominator = whole.IntToWhole(n)
@@ -45,14 +45,14 @@ func IntToRational(n, d int64) Rational {
 	return r
 }
 
-// MakeR
+// MakeR Тростин Максим
 // Метод для создания рационального числа
 func (r *Rational) MakeR(nom whole.Whole, den natural.Natural) {
 	r.Nominator = nom
 	r.Denominator = den
 }
 
-// WholeToFractional Грунской Натальи
+// WholeToFractional (TRANS_Z_Q) Грунская Наталья
 // Функция перевода целого в дробное
 func WholeToFractional(x whole.Whole) Rational {
 	var p Rational
@@ -61,17 +61,16 @@ func WholeToFractional(x whole.Whole) Rational {
 	return p
 }
 
-// FractionalToWhole Грунской Натальи
+// FractionalToWhole (TRANS_Q_Z) Грунская Наталья
 // Функция перевода дробного числа в целое
 func FractionalToWhole(xold Rational) whole.Whole {
 	x := SimplifyingFractions(CopyR(xold))
 	p := whole.Whole{Num: x.Nominator.Num, //переносим только числитель т.к. знаменатель 1
 		Negative: x.Nominator.Negative} //переносим знак числителя
-
 	return p
 }
 
-// CheckingForWhole Комаровский
+// CheckingForWhole (INT_Q_B) Комаровский Михаил
 // Проверка рационального числа на целое
 func CheckingForWhole(x Rational) bool {
 	var res Rational
@@ -81,8 +80,8 @@ func CheckingForWhole(x Rational) bool {
 
 }
 
-// CopyR Семёнов
-//Функция для копирования целого числа
+// CopyR Семёнов Максим
+// Функция для копирования целого числа
 func CopyR(n Rational) Rational {
 	var i uint32
 	var x Rational
@@ -98,78 +97,64 @@ func CopyR(n Rational) Rational {
 	return x
 }
 
-//SimplifyingFractions Семёнов
-//Функция скоращения дробей
+// SimplifyingFractions (RED_Q_Q) Семёнов Максим
+// Функция сокращения дробей
 func SimplifyingFractions(a Rational) Rational {
 	var NOD natural.Natural
 	var Copy Rational
 	DigEd := []uint8{1}
 	ed := natural.Natural{DigEd, 0}
-	Copy = CopyR(a) //делаю копию
-
+	Copy = CopyR(a)                                                           //делаю копию
 	if Copy.Nominator.Num.Digits[0] == 0 || Copy.Denominator.Digits[0] == 0 { // если в знаменателе//числителе 0, то возвращаем функцию, которую мне сказали возвращать, простите
 		return Zero()
 	}
-
 	NOD = natural.GreatestCommonDivisor(Copy.Nominator.Num, Copy.Denominator) // нахожу наибольший общий делитель
-
-	if natural.Compare(ed, NOD) == 0 { // если NOD == 1, то возврашаю дробь, не деля её
+	if natural.Compare(ed, NOD) == 0 {                                        // если NOD == 1, то возврашаю дробь, не деля её
 		return Copy
 	} else { // если нет, то делю
 		Copy.Denominator = natural.IntegerFromDivision(Copy.Denominator, NOD)     // делю на НОД числитель
 		Copy.Nominator.Num = natural.IntegerFromDivision(Copy.Nominator.Num, NOD) // делю на НОД знаменатель
 	}
-
 	return Copy
 }
 
-//Морозов Никита
-//Умножение дробей
+// Multiplication (MUL_QQ_Q) Морозов Никита
+// Умножение дробей
 func Multiplication(num1, num2 Rational) Rational {
-	//Объявялем резульятат
 	var result Rational
-
 	//Перемножаем числители
 	result.Nominator = whole.Multiplication(num1.Nominator, num2.Nominator)
-
 	//Перемножаем знаменатели
 	result.Denominator = natural.Multiplication(num1.Denominator, num2.Denominator)
-
 	//Сокращаем результат
 	result = SimplifyingFractions(result)
-
 	return result
 }
 
-//Морозов Никита
-//Деление дробей
-//На вход: Дробь num1, Дробь num2
+// Division (DIV_QQ_Q) Морозов Никита
+// Деление дробей
+// На вход: Дробь num1, Дробь num2
 func Division(num1, num2 Rational) Rational {
 	var result Rational
-
-	//Сразу определяем знак
-	//Сравниваем знаки числителей
-	//Если они равны, то дробь точно положительна
+	// Сразу определяем знак,
+	// Сравниваем знаки числителей
+	// Если они равны, то дробь точно положительна
 	if whole.Positivity(num1.Nominator) == whole.Positivity(num2.Nominator) {
 		result.Nominator.Negative = false
 	} else {
 		result.Nominator.Negative = true
 	}
-
 	//Перемножаем числитель первого и знаменатель второго
 	result.Nominator.Num = natural.Multiplication(whole.Absolute(num1.Nominator), num2.Denominator)
-
 	//Перемножаем числитель второго и знаменатель первого
 	result.Denominator = natural.Multiplication(whole.Absolute(num2.Nominator), num1.Denominator)
-
 	//Сокращаем результат
 	result = SimplifyingFractions(result)
-
 	return result
 }
 
-// Addition Комаровский
-//Сложение дробей
+// Addition (ADD_QQ_Q) Комаровский Михаил
+// Сложение дробей
 func Addition(x1, x2 Rational) Rational {
 	var res, a, b Rational
 	var nod, d1, d2 natural.Natural // d1,d2 множители необходимы для приведению к общему знаменателю
@@ -191,7 +176,7 @@ func Addition(x1, x2 Rational) Rational {
 	return res
 }
 
-// Subtraction Комаровский
+// Subtraction (SUB_QQ_Q) Комаровский Михаил
 // Вычитание дробей
 func Subtraction(x1, x2 Rational) Rational {
 	var res, a, b Rational
@@ -215,7 +200,7 @@ func Subtraction(x1, x2 Rational) Rational {
 
 }
 
-//Compare Турбина
+// Compare Турбина Надежда
 // Сравнение рациональных: 2 - если первое больше второго, 0, если равно, 1 иначе.
 func Compare(num1, num2 Rational) int {
 	var a, b Rational

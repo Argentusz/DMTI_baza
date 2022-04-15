@@ -323,7 +323,7 @@ func main() {
 		case "31":
 			p1 := InputPolynomes(entry1.Text)
 			p2 := InputPolynomes(entry2.Text)
-			res := polynome.SubstractionP(p1, p2)
+			res := polynome.SubtractionP(p1, p2)
 			result.SetText(res.ToStringPol())
 		case "32":
 			p := InputPolynomes(entry1.Text)
@@ -910,6 +910,94 @@ func InputRational(s string) rational.Rational {
 	var r rational.Rational
 	r.MakeR(nom, denom)
 	return r
+}
+
+func InputPolynomial(s string) polynome.Polynomial {
+	var arr1 []string
+	var res polynome.Polynomial
+	var NextNegative, ThisNegative bool
+	// Split string on + -
+	arr0 := strings.SplitAfter(s, "+")
+	for i := 0; i < len(arr0); i++ {
+		a := strings.SplitAfter(arr0[i], "-")
+		for j := 0; j < len(a); j++ {
+			arr1 = append(arr1, a[j])
+		}
+	}
+	// Determine first sign
+	if arr1[0][0] == '-' {
+		NextNegative = true
+		arr1[0] = arr1[0][1:]
+	}
+	if arr1[0] == "" {
+		arr1 = arr1[1:]
+	}
+	for i := 0; i < len(arr1); i++ {
+		a := strings.Split(arr1[i], "x^")
+		// If no coeff -> coeff = 1/1
+		if a[0] == "" {
+			a[0] = "1/1"
+		}
+
+		// NextNegative was determined in previous loop
+		ThisNegative = NextNegative
+		NextNegative = false
+		if len(a) == 1 {
+			if a[0][len(a[0])-1] == '+' || a[0][len(a[0])-1] == '-' || a[0][len(a[0])-1] == 'x' {
+				// x^1 case
+				if a[0][len(a[0])-1] == '-' {
+					NextNegative = true
+				}
+				a[0] = a[0][0 : len(a[0])-1]
+				if a[0] == "" {
+					a[0] = "1/1"
+				}
+				if a[0][len(a[0])-1] == 'x' {
+					a[0] = a[0][0 : len(a[0])-1]
+				}
+
+				// If coeff has no / -> coeff is a whole
+				if strings.Count(a[0], "/") == 0 {
+					a[0] = a[0] + "/1"
+				}
+				res.Coeff[res.Older-1] = InputRational(a[0])
+				res.Coeff[res.Older-1].Nominator.Negative = ThisNegative
+			} else {
+				// x^0 case
+				if strings.Count(a[0], "/") == 0 {
+					a[0] = a[0] + "/1"
+				}
+				res.Coeff[res.Older] = InputRational(a[0])
+				res.Coeff[res.Older].Nominator.Negative = ThisNegative
+			}
+		} else {
+			// If coeff has no / -> coeff is a whole
+			if strings.Count(a[0], "/") == 0 {
+				a[0] = a[0] + "/1"
+			}
+			// Determine next sign
+			if a[1][len(a[1])-1] == '-' {
+				NextNegative = true
+				a[1] = a[1][0 : len(a[1])-1]
+			} else if a[1][len(a[1])-1] == '+' {
+				a[1] = a[1][0 : len(a[1])-1]
+			}
+			// Power of this
+			powI, _ := strconv.Atoi(a[1])
+			pow := uint32(powI)
+			// Power is more that we have now -> we need to expand coeff array
+			if res.Older < pow {
+				res.Older = pow
+				for uint32(len(res.Coeff)) <= pow {
+					res.Coeff = append([]rational.Rational{rational.Zero()}, res.Coeff...)
+				}
+			}
+			// Handling Coeff
+			res.Coeff[res.Older-pow] = InputRational(a[0])
+			res.Coeff[res.Older-pow].Nominator.Negative = ThisNegative
+		}
+	}
+	return res
 }
 
 //func InputPolynomes(s string) polynome.Polynomial {
