@@ -3,6 +3,7 @@ package main
 // GUI Михаил Голубев & Максим Тростин
 import (
 	"DMTI_baza/natural"
+	"DMTI_baza/polynome"
 	"DMTI_baza/rational"
 	"DMTI_baza/whole"
 	"fyne.io/fyne/v2"
@@ -313,6 +314,60 @@ func main() {
 			r2 := InputRational(entry2.Text)
 			res := rational.Division(r1, r2)
 			result.SetText(rational.ToStringR(res))
+		case "30":
+			p1 := InputPolynomes(entry1.Text)
+			p2 := InputPolynomes(entry2.Text)
+			res := polynome.AdditionP(p1, p2)
+			result.SetText(res.ToStringPol())
+		case "31":
+			p1 := InputPolynomes(entry1.Text)
+			p2 := InputPolynomes(entry2.Text)
+			res := polynome.SubstractionP(p1, p2)
+			result.SetText(res.ToStringPol())
+		case "32":
+			p := InputPolynomes(entry1.Text)
+			r := InputRational(entry2.Text)
+			res := polynome.MultiplicationRational(p, r)
+			result.SetText(res.ToStringPol())
+		case "33":
+			p := InputPolynomes(entry1.Text)
+			k, _ := strconv.Atoi(entry2.Text)
+			res := polynome.MultiplicationXpowerK(p, k)
+			result.SetText(res.ToStringPol())
+		case "34":
+			p := InputPolynomes(entry1.Text)
+			result.SetText(rational.ToStringR(polynome.OlderCoeffPoly(p)))
+		case "35":
+			p := InputPolynomes(entry1.Text)
+			result.SetText(strconv.Itoa(int(polynome.OlderPoly(p))))
+		case "36":
+			p := InputPolynomes(entry1.Text)
+			n1, n2 := polynome.GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(p)
+			result.SetText("НОД: " + natural.ToStringN(n1) + ", " + "НОК: " + natural.ToStringN(n2))
+		case "37":
+			p1, p2 := InputPolynomes(entry1.Text), InputPolynomes(entry2.Text)
+			res := polynome.MultiplicationPol(p1, p2)
+			result.SetText(res.ToStringPol())
+		case "38":
+			p1, p2 := InputPolynomes(entry1.Text), InputPolynomes(entry2.Text)
+			res := polynome.QuotientOfDivision(p1, p2)
+			result.SetText(res.ToStringPol())
+		case "39":
+			p1, p2 := InputPolynomes(entry1.Text), InputPolynomes(entry2.Text)
+			res := polynome.RemainderFromDivision(p1, p2)
+			result.SetText(res.ToStringPol())
+		case "3A":
+			p1, p2 := InputPolynomes(entry1.Text), InputPolynomes(entry2.Text)
+			res := polynome.GreatestCommonDivisor(p1, p2)
+			result.SetText(res.ToStringPol())
+		case "3B":
+			p := InputPolynomes(entry1.Text)
+			res := polynome.Derivative(p)
+			result.SetText(res.ToStringPol())
+		case "3C":
+			p := InputPolynomes(entry1.Text)
+			res := polynome.SimplifyRoots(p)
+			result.SetText(res.ToStringPol())
 		}
 	})
 	btnRes.Hide()
@@ -618,6 +673,127 @@ func main() {
 				btnRes.Show()
 				SelectedFun = Selected + "7"
 			}
+		case "3":
+			switch funcBoxPol.Selected {
+			case funcsPol[0]:
+				result.SetText("")
+				entry1.SetText("")
+				entry2.SetText("")
+				entry1.Show()
+				entry2.Show()
+				entry3.Hide()
+				btnRes.Show()
+				SelectedFun = Selected + "0"
+			case funcsPol[1]:
+				result.SetText("")
+				entry1.SetText("")
+				entry2.SetText("")
+				entry1.Show()
+				entry2.Show()
+				entry3.Hide()
+				btnRes.Show()
+				SelectedFun = Selected + "1"
+			case funcsPol[2]:
+				result.SetText("")
+				entry1.SetText("")
+				entry2.SetText("")
+				entry1.Show()
+				entry2.Show()
+				entry3.Hide()
+				btnRes.Show()
+				SelectedFun = Selected + "2"
+			case funcsPol[3]:
+				result.SetText("")
+				entry1.SetText("")
+				entry2.SetText("")
+				entry1.Show()
+				entry2.Show()
+				entry3.Hide()
+				btnRes.Show()
+				SelectedFun = Selected + "3"
+			case funcsPol[4]:
+				result.SetText("")
+				entry1.SetText("")
+				entry2.SetText("")
+				entry1.Show()
+				entry2.Hide()
+				entry3.Hide()
+				btnRes.Show()
+				SelectedFun = Selected + "4"
+			case funcsPol[5]:
+				result.SetText("")
+				entry1.SetText("")
+				entry2.SetText("")
+				entry1.Show()
+				entry2.Hide()
+				entry3.Hide()
+				btnRes.Show()
+				SelectedFun = Selected + "5"
+			case funcsPol[6]:
+				result.SetText("")
+				entry1.SetText("")
+				entry2.SetText("")
+				entry1.Show()
+				entry2.Hide()
+				entry3.Hide()
+				btnRes.Show()
+				SelectedFun = Selected + "6"
+			case funcsPol[7]:
+				result.SetText("")
+				entry1.SetText("")
+				entry2.SetText("")
+				entry1.Show()
+				entry2.Show()
+				entry3.Hide()
+				btnRes.Show()
+				SelectedFun = Selected + "7"
+			case funcsPol[8]:
+				result.SetText("")
+				entry1.SetText("")
+				entry2.SetText("")
+				entry1.Show()
+				entry2.Show()
+				entry3.Hide()
+				btnRes.Show()
+				SelectedFun = Selected + "8"
+
+			case funcsPol[9]:
+				result.SetText("")
+				entry1.SetText("")
+				entry2.SetText("")
+				entry1.Show()
+				entry2.Show()
+				entry3.Hide()
+				btnRes.Show()
+				SelectedFun = Selected + "9"
+			case funcsPol[10]:
+				result.SetText("")
+				entry1.SetText("")
+				entry2.SetText("")
+				entry1.Show()
+				entry2.Show()
+				entry3.Hide()
+				btnRes.Show()
+				SelectedFun = Selected + "A"
+			case funcsPol[11]:
+				result.SetText("")
+				entry1.SetText("")
+				entry2.SetText("")
+				entry1.Show()
+				entry2.Hide()
+				entry3.Hide()
+				btnRes.Show()
+				SelectedFun = Selected + "B"
+			case funcsPol[12]:
+				result.SetText("")
+				entry1.SetText("")
+				entry2.SetText("")
+				entry1.Show()
+				entry2.Hide()
+				entry3.Hide()
+				btnRes.Show()
+				SelectedFun = Selected + "C"
+			}
 		}
 
 	})
@@ -688,4 +864,99 @@ func InputRational(s string) rational.Rational {
 	var r rational.Rational
 	r.MakeR(nom, denom)
 	return r
+}
+
+//func InputPolynomes(s string) polynome.Polynomial {
+//	arrayRationalsStr := strings.Split(s, " ")
+//	var coeffs []rational.Rational
+//	for i, _ := range arrayRationalsStr {
+//		coeffs = append(coeffs, InputRational(arrayRationalsStr[i]))
+//	}
+//	var p polynome.Polynomial
+//	p.MakeP(coeffs)
+//	return p
+//}
+
+func InputPolynomes(s string) polynome.Polynomial {
+	var arr1 []string
+	var res polynome.Polynomial
+	var NextNegative, ThisNegative bool
+	// Split string on + -
+	arr0 := strings.SplitAfter(s, "+")
+	for i := 0; i < len(arr0); i++ {
+		a := strings.SplitAfter(arr0[i], "-")
+		for j := 0; j < len(a); j++ {
+			arr1 = append(arr1, a[j])
+		}
+	}
+	// Determine first sign
+	if arr1[0][0] == '-' {
+		NextNegative = true
+		arr1[0] = arr1[0][1:]
+	}
+	if arr1[0] == "" {
+		arr1 = arr1[1:]
+	}
+	for i := 0; i < len(arr1); i++ {
+		a := strings.Split(arr1[i], "x^")
+		// If no coeff -> coeff = 1/1
+		if a[0] == "" {
+			a[0] = "1/1"
+		}
+
+		// NextNegative was determined in previous loop
+		ThisNegative = NextNegative
+		NextNegative = false
+		if len(a) == 1 {
+			if a[0][len(a[0])-1] == '+' || a[0][len(a[0])-1] == '-' || a[0][len(a[0])-1] == 'x' {
+				// x^1 case
+				if a[0][len(a[0])-1] == '-' {
+					NextNegative = true
+				}
+				a[0] = a[0][0 : len(a[0])-1]
+				if a[0][len(a[0])-1] == 'x' {
+					a[0] = a[0][0 : len(a[0])-1]
+				}
+				// If coeff has no / -> coeff is a whole
+				if strings.Count(a[0], "/") == 0 {
+					a[0] = a[0] + "/1"
+				}
+				res.Coeff[res.Older-1] = InputRational(a[0])
+				res.Coeff[res.Older-1].Nominator.Negative = ThisNegative
+			} else {
+				// x^0 case
+				if strings.Count(a[0], "/") == 0 {
+					a[0] = a[0] + "/1"
+				}
+				res.Coeff[res.Older] = InputRational(a[0])
+				res.Coeff[res.Older].Nominator.Negative = ThisNegative
+			}
+		} else {
+			// If coeff has no / -> coeff is a whole
+			if strings.Count(a[0], "/") == 0 {
+				a[0] = a[0] + "/1"
+			}
+			// Determine next sign
+			if a[1][len(a[1])-1] == '-' {
+				NextNegative = true
+				a[1] = a[1][0 : len(a[1])-1]
+			} else if a[1][len(a[1])-1] == '+' {
+				a[1] = a[1][0 : len(a[1])-1]
+			}
+			// Power of this
+			powI, _ := strconv.Atoi(a[1])
+			pow := uint32(powI)
+			// Power is more that we have now -> we need to expand coeff array
+			if res.Older < pow {
+				res.Older = pow
+				for uint32(len(res.Coeff)) <= pow {
+					res.Coeff = append([]rational.Rational{rational.Zero()}, res.Coeff...)
+				}
+			}
+			// Handling Coeff
+			res.Coeff[res.Older-pow] = InputRational(a[0])
+			res.Coeff[res.Older-pow].Nominator.Negative = ThisNegative
+		}
+	}
+	return res
 }

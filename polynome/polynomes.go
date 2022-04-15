@@ -99,7 +99,7 @@ func SubstractionP(fromOld Polynomial, whatOld Polynomial) Polynomial {
 		for i := 0; i <= difference; i++ {
 			coeffsRes = append(coeffsRes, from.Coeff[i])
 		}
-		for i := difference; i < int(from.Older); i++ { //и вычитаем коэффициенты после разницы
+		for i := difference; i <= int(from.Older); i++ { //и вычитаем коэффициенты после разницы
 			coeffsRes = append(coeffsRes, rational.Subtraction(from.Coeff[i], what.Coeff[i-difference]))
 		}
 		result.MakeP(coeffsRes)
