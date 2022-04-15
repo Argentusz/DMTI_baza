@@ -57,7 +57,7 @@ func CopyN(n Natural) Natural {
 	return x
 }
 
-// IntToNat Тростин Максима
+// IntToNat Тростин Максим
 // Переводит uin64 в Natural
 func IntToNat(n uint64) Natural {
 	var x Natural
@@ -74,7 +74,7 @@ func IntToNat(n uint64) Natural {
 	return x
 }
 
-// Compare Турбина
+// Compare (COM_NN_D) Турбина Надежда
 // Сравнение натуральных чисел: 2 - если первое больше второго, 0, если равно, 1 иначе.
 func Compare(a, b Natural) int {
 	var i uint32
@@ -97,7 +97,7 @@ func Compare(a, b Natural) int {
 	return 0
 }
 
-// CheckNull Турбина
+// CheckNull (NZER_N_B) Турбина Надежда
 // Проверка на ноль: если число не равно нулю, то «да» иначе «нет»
 func CheckNull(x Natural) bool {
 
@@ -109,7 +109,7 @@ func CheckNull(x Natural) bool {
 	return false
 }
 
-// Addition1 Хвостовский
+// Addition1 (ADD_1N_N) Хвостовский Фёдор
 // Добавление 1 к натуральному числу
 func Addition1(x Natural) Natural {
 	var i int
@@ -133,9 +133,8 @@ func Addition1(x Natural) Natural {
 	return x
 }
 
-// MultiplicationNaturalNumber Хвостовский
+// MultiplicationNaturalNumber (MUL_ND_N) Хвостовский Фёдор
 // Умножение натурального числа на цифру
-
 func MultiplicationNaturalNumber(g Natural, b uint8) Natural {
 	var c uint8
 	var i int
@@ -162,7 +161,7 @@ func MultiplicationNaturalNumber(g Natural, b uint8) Natural {
 	return x
 }
 
-// MultiplicationBy10k Хвостовский
+// MultiplicationBy10k (MUL_Nk_N) Хвостовский Фёдор
 // Умножение натурального числа на 10^k
 func MultiplicationBy10k(x Natural, k int) Natural {
 	var i int
@@ -180,7 +179,7 @@ func MultiplicationBy10k(x Natural, k int) Natural {
 	}
 }
 
-// DivideOneIteration Тростин Максим
+// DivideOneIteration (DIV_NN_Dk) Тростин Максим
 // Вычисление первой цифры деления большего натурального на меньшее,
 // домноженное на 10^k,где k - номер позиции этой цифры
 // (номер считается с нуля)
@@ -219,8 +218,8 @@ func DivideOneIteration(x, y Natural) Natural {
 	return res
 }
 
-// Addition Семёнов
-// Сложение двух наутральных чисел
+// Addition (ADD_NN_N) Семёнов Максим
+// Сложение двух натуральных чисел
 func Addition(a, b Natural) Natural {
 	var i uint32
 	var r, t, buffer Natural
@@ -250,7 +249,7 @@ func Addition(a, b Natural) Natural {
 	return r
 }
 
-// Subtraction Комаровский
+// Subtraction (SUB_NN_N) Комаровский Михаил
 // Вычитание из первого большего натурального числа второго меньшего или равного
 func Subtraction(origx1, origx2 Natural) Natural {
 	var a, b, res, x1, x2 Natural
@@ -305,7 +304,7 @@ func Subtraction(origx1, origx2 Natural) Natural {
 	return res
 }
 
-// DifferenceOfNaturals Комаровский
+// DifferenceOfNaturals (SUN_NDN_N) Комаровский Михаил
 // Вычитание из натурального другого натурального, умноженного на цифру для случая с неотрицательным результатом
 func DifferenceOfNaturals(x1, x2 Natural, k uint8) Natural {
 	var a, b, res Natural
@@ -328,8 +327,8 @@ func DifferenceOfNaturals(x1, x2 Natural, k uint8) Natural {
 
 }
 
-//Грунская Умножение натуральных чисел
-
+// Multiplication (MUL_NN_N) Грунская Наталья
+// Умножение натуральных чисел
 func Multiplication(x Natural, y Natural) Natural {
 	var otv Natural //структура для ответа
 	var i uint32
@@ -372,7 +371,7 @@ func Multiplication(x Natural, y Natural) Natural {
 	return otv
 }
 
-// Пименов
+// IntegerFromDivision (DIV_NN_N) Пименов Глеб
 // Частное от деления большего натурального числа на меньшее или равное натуральное с остатком
 // (делитель отличен от нуля)
 func IntegerFromDivision(num1, num2 Natural) Natural {
@@ -397,7 +396,7 @@ func IntegerFromDivision(num1, num2 Natural) Natural {
 	return result
 }
 
-// Пименов
+// RemainderFromDivision (MOD_NN_N) Пименов Глеб
 // Остаток от деления большего натурального числа на меньшее или равное натуральное с остатком
 // (делитель отличен от нуля)
 func RemainderFromDivision(num1, num2 Natural) Natural {
@@ -415,8 +414,8 @@ func RemainderFromDivision(num1, num2 Natural) Natural {
 	return result
 }
 
-//Турбина
-//НОД натуральных чисел
+// GreatestCommonDivisor (GCF_NN_N) Турбина Надежда
+// НОД натуральных чисел
 func GreatestCommonDivisor(num1, num2 Natural) Natural {
 	if CheckNull(num1) || CheckNull(num2) {
 		return Zero()
@@ -435,8 +434,8 @@ func GreatestCommonDivisor(num1, num2 Natural) Natural {
 	}
 }
 
-// Турбина
-//НОК натуральных чисел
+// LeastCommonMultiple (LCM_NN_N) Турбина Надежда
+// НОК натуральных чисел
 func LeastCommonMultiple(num1, num2 Natural) Natural {
 	//Произведение двух чисел делим на их НОД
 	if CheckNull(num1) || (CheckNull(num2)) {
