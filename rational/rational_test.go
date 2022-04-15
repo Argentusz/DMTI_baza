@@ -3,468 +3,317 @@ package rational
 import (
 	"DMTI_baza/natural"
 	"DMTI_baza/whole"
+	"fmt"
 	"testing"
 )
 
-// Пименов
-func TestAddition(t *testing.T) {
-	var n1, n2, got, want Rational
-	var nom1, nom2, wantn whole.Whole
-	var den1, den2, wantd natural.Natural
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{1, 3})
-	den1.MakeN([]uint8{1, 3})
-
-	nom2.MakeW(false, []uint8{1, 3})
-	den2.MakeN([]uint8{1, 3})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Addition(n1, n2)
-	wantn.MakeW(false, []uint8{2})
-	wantd.MakeN([]uint8{1})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+func TestIntToRational(t *testing.T) {
+	var want, got Rational
+	no := 1
+	got = IntToRational(2, -5)
+	want = Rational{
+		Nominator: whole.Whole{
+			Num: natural.Natural{
+				Digits: []uint8{2},
+				Older:  0,
+			}, Negative: true,
+		},
+		Denominator: natural.Natural{
+			Digits: []uint8{5},
+			Older:  0,
+		},
 	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{2, 6})
-	den1.MakeN([]uint8{1, 3})
-
-	nom2.MakeW(false, []uint8{1, 3})
-	den2.MakeN([]uint8{1, 3})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Addition(n1, n2)
-	wantn.MakeW(false, []uint8{3})
-	wantd.MakeN([]uint8{1})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("2 - получили %+v, ожидалось %+v", got, want)
+	for i, v := range got.Nominator.Num.Digits {
+		if v != want.Nominator.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
 	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{7})
-	den1.MakeN([]uint8{1, 3})
-
-	nom2.MakeW(false, []uint8{1, 1})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Addition(n1, n2)
-	wantn.MakeW(false, []uint8{2, 7, 6})
-	wantd.MakeN([]uint8{2, 4, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("2 - получили %+v, ожидалось %+v", got, want)
+	if got.Nominator.Negative != want.Nominator.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{1, 3})
-	den1.MakeN([]uint8{7})
-
-	nom2.MakeW(false, []uint8{1, 9})
-	den2.MakeN([]uint8{1, 1})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Addition(n1, n2)
-	wantn.MakeW(false, []uint8{2, 7, 6})
-	wantd.MakeN([]uint8{7, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("3 - получили %+v, ожидалось %+v", got, want)
+	for i, v := range got.Denominator.Digits {
+		if v != want.Denominator.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
 	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{7})
-	den1.MakeN([]uint8{1, 3})
-
-	nom2.MakeW(false, []uint8{5})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Addition(n1, n2)
-	wantn.MakeW(false, []uint8{1, 9, 8})
-	wantd.MakeN([]uint8{2, 4, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("4 - получили %+v, ожидалось %+v", got, want)
-	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{7})
-	den1.MakeN([]uint8{1, 3})
-
-	nom2.MakeW(true, []uint8{1, 1})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Addition(n1, n2)
-	wantn.MakeW(true, []uint8{1, 0})
-	wantd.MakeN([]uint8{2, 4, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("5 - получили %+v, ожидалось %+v", got, want)
-	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{1, 3})
-	den1.MakeN([]uint8{7})
-
-	nom2.MakeW(true, []uint8{1, 9})
-	den2.MakeN([]uint8{1, 1})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Addition(n1, n2)
-	wantn.MakeW(false, []uint8{1, 0})
-	wantd.MakeN([]uint8{7, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("6 - получили %+v, ожидалось %+v", got, want)
-	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{7})
-	den1.MakeN([]uint8{1, 3})
-
-	nom2.MakeW(true, []uint8{5})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Addition(n1, n2)
-	wantn.MakeW(false, []uint8{6, 8})
-	wantd.MakeN([]uint8{2, 4, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("7 - получили %+v, ожидалось %+v", got, want)
-	}
-	////////////////////////////////////////
-	nom1.MakeW(true, []uint8{7})
-	den1.MakeN([]uint8{1, 3})
-
-	nom2.MakeW(true, []uint8{1, 1})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Addition(n1, n2)
-	wantn.MakeW(true, []uint8{2, 7, 6})
-	wantd.MakeN([]uint8{2, 4, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("8 - получили %+v, ожидалось %+v", got, want)
-	}
+	fmt.Println(no, "Passed")
+	no++
 }
 
-// Пименов
-func TestSubtraction(t *testing.T) {
-	var n1, n2, got, want Rational
-	var nom1, nom2, wantn whole.Whole
-	var den1, den2, wantd natural.Natural
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{1, 3})
-	den1.MakeN([]uint8{1, 3})
-
-	nom2.MakeW(false, []uint8{1, 3})
-	den2.MakeN([]uint8{1, 3})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Subtraction(n1, n2)
-	wantn.MakeW(false, []uint8{0})
-	wantd.MakeN([]uint8{1})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+func TestWholeToFractional(t *testing.T) {
+	var w1 whole.Whole
+	var got, want Rational
+	no := 1
+	w1 = whole.IntToWhole(-12)
+	want = IntToRational(-12, 1)
+	got = WholeToFractional(w1)
+	if Compare(want, got) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{2, 6})
-	den1.MakeN([]uint8{1, 3})
-
-	nom2.MakeW(false, []uint8{1, 3})
-	den2.MakeN([]uint8{1, 3})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Subtraction(n1, n2)
-	wantn.MakeW(false, []uint8{1})
-	wantd.MakeN([]uint8{1})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("2 - получили %+v, ожидалось %+v", got, want)
+	fmt.Println(no, "Passed")
+	no++
+	w1 = whole.IntToWhole(12)
+	want = IntToRational(12, 1)
+	got = WholeToFractional(w1)
+	if Compare(want, got) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{7})
-	den1.MakeN([]uint8{1, 3})
-
-	nom2.MakeW(false, []uint8{1, 1})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Subtraction(n1, n2)
-	wantn.MakeW(true, []uint8{1, 0})
-	wantd.MakeN([]uint8{2, 4, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("2 - получили %+v, ожидалось %+v", got, want)
-	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{1, 3})
-	den1.MakeN([]uint8{7})
-
-	nom2.MakeW(false, []uint8{1, 9})
-	den2.MakeN([]uint8{1, 1})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Subtraction(n1, n2)
-	wantn.MakeW(false, []uint8{1, 0})
-	wantd.MakeN([]uint8{7, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("3 - получили %+v, ожидалось %+v", got, want)
-	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{7})
-	den1.MakeN([]uint8{1, 3})
-
-	nom2.MakeW(false, []uint8{5})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Subtraction(n1, n2)
-	wantn.MakeW(false, []uint8{6, 8})
-	wantd.MakeN([]uint8{2, 4, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("4 - получили %+v, ожидалось %+v", got, want)
-	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{7})
-	den1.MakeN([]uint8{1, 3})
-
-	nom2.MakeW(true, []uint8{1, 1})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Subtraction(n1, n2)
-	wantn.MakeW(false, []uint8{2, 7, 6})
-	wantd.MakeN([]uint8{2, 4, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("5 - получили %+v, ожидалось %+v", got, want)
-	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{1, 3})
-	den1.MakeN([]uint8{7})
-
-	nom2.MakeW(true, []uint8{1, 9})
-	den2.MakeN([]uint8{1, 1})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Subtraction(n1, n2)
-	wantn.MakeW(false, []uint8{2, 7, 6})
-	wantd.MakeN([]uint8{7, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("6 - получили %+v, ожидалось %+v", got, want)
-	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{7})
-	den1.MakeN([]uint8{1, 3})
-
-	nom2.MakeW(true, []uint8{5})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Subtraction(n1, n2)
-	wantn.MakeW(false, []uint8{1, 9, 8})
-	wantd.MakeN([]uint8{2, 4, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("7 - получили %+v, ожидалось %+v", got, want)
-	}
-	////////////////////////////////////////
-	nom1.MakeW(true, []uint8{7})
-	den1.MakeN([]uint8{1, 3})
-
-	nom2.MakeW(true, []uint8{1, 1})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Subtraction(n1, n2)
-	wantn.MakeW(false, []uint8{1, 0})
-	wantd.MakeN([]uint8{2, 4, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("8 - получили %+v, ожидалось %+v", got, want)
-	}
-	////////////////////////////////////////
-	nom1.MakeW(false, []uint8{6, 4})
-	den1.MakeN([]uint8{1})
-
-	nom2.MakeW(false, []uint8{7, 2})
-	den2.MakeN([]uint8{1})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Subtraction(n1, n2)
-	wantn.MakeW(true, []uint8{8})
-	wantd.MakeN([]uint8{1})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("8 - получили %+v, ожидалось %+v", got, want)
-	}
+	fmt.Println(no, "Passed")
+	no++
 }
 
-// Пименов
+func TestFractionalToWhole(t *testing.T) {
+	var r1 Rational
+	var got, want whole.Whole
+	no := 1
+	r1 = IntToRational(12, 1)
+	want = whole.IntToWhole(12)
+	got = FractionalToWhole(r1)
+	if whole.Compare(want, got) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+	r1 = IntToRational(-12, 1)
+	want = whole.IntToWhole(-12)
+	got = FractionalToWhole(r1)
+	if whole.Compare(want, got) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+}
+
+func TestCheckingForWhole(t *testing.T) {
+	var r1 Rational
+	var got, want bool
+	no := 1
+	r1 = IntToRational(12, 5)
+	want = false
+	got = CheckingForWhole(r1)
+	if want != got {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+	r1 = IntToRational(12, 1)
+	want = true
+	got = CheckingForWhole(r1)
+	if want != got {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+}
+
+func TestSimplifyingFractions(t *testing.T) {
+	var r1, want, got Rational
+	no := 1
+	r1 = IntToRational(12, 6)
+	want = IntToRational(2, 1)
+	got = SimplifyingFractions(r1)
+	if Compare(want, got) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+	r1 = IntToRational(12, 10)
+	want = IntToRational(6, 5)
+	got = SimplifyingFractions(r1)
+	if Compare(want, got) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+	r1 = IntToRational(12, 7)
+	want = IntToRational(12, 7)
+	got = SimplifyingFractions(r1)
+	if Compare(want, got) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+}
+
 func TestMultiplication(t *testing.T) {
-	var n1, n2, got, want Rational
-	var nom1, nom2, wantn whole.Whole
-	var den1, den2, wantd natural.Natural
-	//////////////////////////////////////
-	nom1.MakeW(false, []uint8{0})
-	den1.MakeN([]uint8{1})
-
-	nom2.MakeW(false, []uint8{5})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Multiplication(n1, n2)
-	wantn.MakeW(false, []uint8{0})
-	wantd.MakeN([]uint8{1})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("1 - получили %+v, ожидалось %+v", got, want)
+	var r1, r2, want, got Rational
+	no := 1
+	r1 = IntToRational(2, 1)
+	r2 = IntToRational(3, 1)
+	want = IntToRational(6, 1)
+	got = Multiplication(r1, r2)
+	if Compare(want, got) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 	}
-	//////////////////////////////////////
-	nom1.MakeW(false, []uint8{0})
-	den1.MakeN([]uint8{3, 4})
-
-	nom2.MakeW(false, []uint8{5})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Multiplication(n1, n2)
-	wantn.MakeW(false, []uint8{0})
-	wantd.MakeN([]uint8{1})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("2 - получили %+v, ожидалось %+v", got, want)
+	fmt.Println(no, "Passed")
+	no++
+	r1 = IntToRational(2, 1)
+	r2 = IntToRational(0, 1)
+	want = IntToRational(0, 1)
+	got = Multiplication(r1, r2)
+	if Compare(want, got) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 	}
-	//////////////////////////////////////
-	nom1.MakeW(false, []uint8{5})
-	den1.MakeN([]uint8{5})
-
-	nom2.MakeW(false, []uint8{5})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Multiplication(n1, n2)
-	wantn.MakeW(false, []uint8{5})
-	wantd.MakeN([]uint8{1, 9})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("3 - получили %+v, ожидалось %+v", got, want)
+	fmt.Println(no, "Passed")
+	no++
+	r1 = IntToRational(3, 5)
+	r2 = IntToRational(5, 3)
+	want = IntToRational(1, 1)
+	got = Multiplication(r1, r2)
+	if Compare(want, got) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 	}
-	//////////////////////////////////////
-	nom1.MakeW(false, []uint8{1, 7})
-	den1.MakeN([]uint8{1, 9})
+	fmt.Println(no, "Passed")
+	no++
 
-	nom2.MakeW(false, []uint8{5})
-	den2.MakeN([]uint8{1, 9})
+}
 
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Multiplication(n1, n2)
-	wantn.MakeW(false, []uint8{8, 5})
-	wantd.MakeN([]uint8{3, 6, 1})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("4 - получили %+v, ожидалось %+v", got, want)
+func TestDivision(t *testing.T) {
+	var r1, r2, want, got Rational
+	no := 1
+	r1 = IntToRational(6, 1)
+	r2 = IntToRational(2, 1)
+	want = IntToRational(3, 1)
+	got = Division(r1, r2)
+	if Compare(want, got) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 	}
-	//////////////////////////////////////
-	nom1.MakeW(false, []uint8{4, 6})
-	den1.MakeN([]uint8{5})
-
-	nom2.MakeW(true, []uint8{8, 2})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Multiplication(n1, n2)
-	wantn.MakeW(true, []uint8{3, 7, 7, 2})
-	wantd.MakeN([]uint8{9, 5})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("5 - получили %+v, ожидалось %+v", got, want)
+	fmt.Println(no, "Passed")
+	no++
+	r1 = IntToRational(3, 5)
+	r2 = IntToRational(3, 5)
+	want = IntToRational(1, 1)
+	got = Division(r1, r2)
+	if Compare(want, got) != 0 {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 	}
-	//////////////////////////////////////
-	nom1.MakeW(true, []uint8{5, 6})
-	den1.MakeN([]uint8{3})
+	fmt.Println(no, "Passed")
+	no++
 
-	nom2.MakeW(true, []uint8{5})
-	den2.MakeN([]uint8{1, 9})
+}
 
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
+func TestSubtraction(t *testing.T) {
+	var r1, r2 Rational
+	var denom1, denom2, denomw natural.Natural
+	var nom1, nom2, nomw whole.Whole
+	var want, got Rational
+	no := 1
 
-	got = Multiplication(n1, n2)
-	wantn.MakeW(false, []uint8{2, 8, 0})
-	wantd.MakeN([]uint8{5, 7})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("6 - получили %+v, ожидалось %+v", got, want)
+	nom1.MakeW(false, []uint8{1})
+	denom1.MakeN([]uint8{7})
+	nom2.MakeW(false, []uint8{8})
+	denom2.MakeN([]uint8{2, 9})
+	nomw.MakeW(true, []uint8{2, 7})
+	denomw.MakeN([]uint8{2, 0, 3})
+	r1.MakeR(nom1, denom1)
+	r2.MakeR(nom2, denom2)
+	want.MakeR(nomw, denomw)
+	fmt.Println(r1, "-", r2, "=", want)
+	got = Subtraction(r1, r2)
+	fmt.Println(got)
+	for i, v := range got.Nominator.Num.Digits {
+		if v != want.Nominator.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
 	}
-	//////////////////////////////////////
-	nom1.MakeW(true, []uint8{2})
-	den1.MakeN([]uint8{2})
-
-	nom2.MakeW(false, []uint8{5})
-	den2.MakeN([]uint8{1, 9})
-
-	n1.MakeR(nom1, den1)
-	n2.MakeR(nom2, den2)
-
-	got = Multiplication(n1, n2)
-	wantn.MakeW(true, []uint8{5})
-	wantd.MakeN([]uint8{1, 9})
-	want.MakeR(wantn, wantd)
-	if natural.Compare(wantd, got.Denominator) != 0 || natural.Compare(wantn.Num, got.Nominator.Num) != 0 || wantn.Negative != got.Nominator.Negative {
-		t.Fatalf("7 - получили %+v, ожидалось %+v", got, want)
+	if got.Nominator.Negative != want.Nominator.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
 	}
+	for i, v := range got.Denominator.Digits {
+		if v != want.Denominator.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	fmt.Println(no, "Passed")
+	no++
+}
+
+func TestAddition(t *testing.T) {
+	var r1, r2 Rational
+	var denom1, denom2, denomw natural.Natural
+	var nom1, nom2, nomw whole.Whole
+	var want, got Rational
+	no := 1
+	nom1.MakeW(false, []uint8{1})
+	denom1.MakeN([]uint8{7})
+	nom2.MakeW(false, []uint8{8})
+	denom2.MakeN([]uint8{2, 9})
+	nomw.MakeW(false, []uint8{8, 5})
+	denomw.MakeN([]uint8{2, 0, 3})
+	r1.MakeR(nom1, denom1)
+	r2.MakeR(nom2, denom2)
+	want.MakeR(nomw, denomw)
+	fmt.Println(r1, "+", r2, "=", want)
+	got = Addition(r1, r2)
+	fmt.Println(got)
+	for i, v := range got.Nominator.Num.Digits {
+		if v != want.Nominator.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Nominator.Negative != want.Nominator.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	for i, v := range got.Denominator.Digits {
+		if v != want.Denominator.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+	nom1.MakeW(false, []uint8{8})
+	denom1.MakeN([]uint8{2, 9})
+	nom2.MakeW(false, []uint8{0})
+	denom2.MakeN([]uint8{1})
+	nomw.MakeW(false, []uint8{8})
+	denomw.MakeN([]uint8{2, 9})
+	r1.MakeR(nom1, denom1)
+	r2.MakeR(nom2, denom2)
+	want.MakeR(nomw, denomw)
+	fmt.Println(r1, "+", r2, "=", want)
+	got = Addition(r1, r2)
+	fmt.Println(got)
+	for i, v := range got.Nominator.Num.Digits {
+		if v != want.Nominator.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Nominator.Negative != want.Nominator.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	for i, v := range got.Denominator.Digits {
+		if v != want.Denominator.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	fmt.Println(no, "Passed")
+	no++
+
+	nom1.MakeW(false, []uint8{1, 4, 5})
+	denom1.MakeN([]uint8{1, 7, 7})
+	nom2.MakeW(true, []uint8{9, 1, 3})
+	denom2.MakeN([]uint8{7})
+	nomw.MakeW(true, []uint8{1, 6, 0, 5, 8, 6})
+	denomw.MakeN([]uint8{1, 2, 3, 9})
+	r1.MakeR(nom1, denom1)
+	r2.MakeR(nom2, denom2)
+	want.MakeR(nomw, denomw)
+	fmt.Println(r1, "+", r2, "=", want)
+	got = Addition(r1, r2)
+	fmt.Println(got)
+	for i, v := range got.Nominator.Num.Digits {
+		if v != want.Nominator.Num.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	if got.Nominator.Negative != want.Nominator.Negative {
+		t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+	}
+	for i, v := range got.Denominator.Digits {
+		if v != want.Denominator.Digits[i] {
+			t.Fatalf("%d - получили %+v, ожидалось %+v", no, got, want)
+		}
+	}
+	fmt.Println(no, "Passed")
+	no++
 }

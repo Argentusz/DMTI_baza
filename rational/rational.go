@@ -26,9 +26,6 @@ func Zero() Rational {
 // Возвращает Rational как строку
 func ToStringR(r Rational) string {
 	var s string
-	if r.Nominator.Negative {
-		s += "-"
-	}
 	s += whole.ToStringW(r.Nominator)
 	s += fmt.Sprint("/")
 	s += natural.ToStringN(r.Denominator)
@@ -58,23 +55,16 @@ func (r *Rational) MakeR(nom whole.Whole, den natural.Natural) {
 // WholeToFractional Грунской Натальи
 // Функция перевода целого в дробное
 func WholeToFractional(x whole.Whole) Rational {
-	var one []uint8
 	var p Rational
-	one = append(one, 1) //делаем знаменатель 1
-
-	p.Nominator = whole.Whole{Num: natural.Natural{Digits: x.Num.Digits, //в числитель переносим массив цифр и знак
-		Older: uint32(len(x.Num.Digits))},
-		Negative: x.Negative}
-
-	p.Denominator = natural.Natural{Digits: one, //в знаменатель переносим единичку
-		Older: 0}
+	p.Nominator = whole.CopyW(x)
+	p.Denominator = natural.Natural{Digits: []uint8{1}, Older: 0}
 	return p
 }
 
 // FractionalToWhole Грунской Натальи
 // Функция перевода дробного числа в целое
-func FractionalToWhole(x Rational) whole.Whole {
-
+func FractionalToWhole(xold Rational) whole.Whole {
+	x := SimplifyingFractions(CopyR(xold))
 	p := whole.Whole{Num: x.Nominator.Num, //переносим только числитель т.к. знаменатель 1
 		Negative: x.Nominator.Negative} //переносим знак числителя
 

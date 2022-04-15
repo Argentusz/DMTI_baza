@@ -99,7 +99,7 @@ func SubstractionP(fromOld Polynomial, whatOld Polynomial) Polynomial {
 		for i := 0; i <= difference; i++ {
 			coeffsRes = append(coeffsRes, from.Coeff[i])
 		}
-		for i := difference; i < int(from.Older); i++ { //и вычитаем коэффициенты после разницы
+		for i := difference; i <= int(from.Older); i++ { //и вычитаем коэффициенты после разницы
 			coeffsRes = append(coeffsRes, rational.Subtraction(from.Coeff[i], what.Coeff[i-difference]))
 		}
 		result.MakeP(coeffsRes)
@@ -205,7 +205,7 @@ func (p *Polynomial) ToStringPol() string {
 	if p.Older == 0 {
 		return fmt.Sprint(p.Coeff[0])
 	} else {
-		for i = 0; i < p.Older; i++ {
+		for i = 0; i <= p.Older; i++ {
 			if whole.Positivity(p.Coeff[i].Nominator) == 2 {
 				str += "+" + rational.ToStringR(p.Coeff[i]) + "x" + "^" + strconv.FormatUint(uint64(p.Older-i), 10)
 			} else if whole.Positivity(p.Coeff[i].Nominator) == 1 {
@@ -332,41 +332,20 @@ func GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(polynom Polynomial)
 	}
 
 	//Находим НОД
-	//Находим НОД от числителей под номерами 0 - 1, 1 - 2, 2 - 3... (n-1) - n
-	//Записываем в ячейки массива
-	//В конец последняя ячейка не изменится — её удаляем
-	//Повторяем пока массив не будет содержать только один элемент
-	//Пример:
-	//Числители 3 6 9
-	//Находим НОД от 3 и 6: 3
-	//Находим НОД от 6 и 9: 3
-	//Записываем в массив: 3 меняется на 3, 6 меняется на 3, девять остаётся
-	//Измененённый массив: 3 3 9
-	//Удаляем 9
-	//Получается 3 3
-	//Находим НОД снова, получается массив 3 3
-	//Удаляем последнюю 3
-	//Ответ 3
-	//Итоговая пирамидка:
-	//3 6 9
-	//3 3 [9]
-	//3 3
-	//3 [3]
-	//3
-	for len(GCD) != 1 {
-		for i := 0; i < len(GCD)-1; i++ {
-			GCD[i] = natural.GreatestCommonDivisor(GCD[i], GCD[i+1])
-		}
-		GCD = GCD[:len(GCD)-1]
+	for i := 1; i < len(GCD); i++ {
+		GCD[0] = natural.GreatestCommonDivisor(GCD[0], GCD[i])
 	}
 
 	//Находим НОК по аналогии с НОД
-	for len(LCM) != 1 {
-		for i := 0; i < len(LCM)-1; i++ {
-			LCM[i] = natural.LeastCommonMultiple(LCM[i], LCM[i+1])
-		}
-		LCM = LCM[:len(LCM)-1]
+	for i := 1; i < len(LCM); i++ {
+		LCM[0] = natural.LeastCommonMultiple(LCM[0], LCM[i])
 	}
 
 	return GCD[0], LCM[0]
+}
+
+// SimplifyRoots Тростин Максим
+// Преобразование многочлена — кратные корни в простые
+func SimplifyRoots(p1 Polynomial) Polynomial {
+	return QuotientOfDivision(p1, GreatestCommonDivisor(p1, Derivative(p1)))
 }

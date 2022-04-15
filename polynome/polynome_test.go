@@ -8,7 +8,7 @@ import (
 )
 
 // Пименов
-func TestDerivative(t *testing.T) {
+func TestDerivative2(t *testing.T) {
 	var pol, got Polynomial
 	var a0, a1, a2, a3 rational.Rational
 	var a0n, a1n, a2n, a3n whole.Whole
@@ -60,7 +60,7 @@ func TestDerivative(t *testing.T) {
 }
 
 // Пименов
-func TestQuotientOfDivision(t *testing.T) {
+func TestQuotientOfDivision2(t *testing.T) {
 	var pol1, pol2, want, got Polynomial
 
 	pol1.MakeP([]rational.Rational{rational.IntToRational(1, 1), rational.IntToRational(2, 1), rational.IntToRational(4, 1)})
@@ -122,7 +122,7 @@ func TestQuotientOfDivision(t *testing.T) {
 }
 
 // Пименов
-func TestRemainderFromDivision(t *testing.T) {
+func TestRemainderFromDivision2(t *testing.T) {
 	var pol1, pol2, want, got Polynomial
 
 	pol1.MakeP([]rational.Rational{rational.IntToRational(1, 1), rational.IntToRational(2, 1), rational.IntToRational(4, 1)})
@@ -191,7 +191,7 @@ func TestRemainderFromDivision(t *testing.T) {
 }
 
 // Пименов
-func TestMultiplicationPol(t *testing.T) {
+func TestMultiplicationPol2(t *testing.T) {
 	var pol1, pol2, want, got Polynomial
 
 	pol1.MakeP([]rational.Rational{rational.IntToRational(1, 4), rational.IntToRational(3, 4)})
@@ -218,7 +218,7 @@ func TestSubstractionP(t *testing.T) {
 }
 
 // Пименов
-func TestGreatestCommonDivisor(t *testing.T) {
+func TestGreatestCommonDivisor2(t *testing.T) {
 	var pol1, pol2, want, got Polynomial
 
 	pol1.MakeP([]rational.Rational{rational.IntToRational(1, 1), rational.IntToRational(2, 1), rational.IntToRational(4, 1)})
