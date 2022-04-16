@@ -98,7 +98,7 @@ func SubtractionP(fromOld Polynomial, whatOld Polynomial) Polynomial {
 	}
 	if from.Older > what.Older { //если коэффициенты не равны - считаем разницу и в новый полином записываем все коэффициенты большего до разницы
 		difference := int(from.Older - what.Older)
-		for i := 0; i <= difference; i++ {
+		for i := 0; i < difference; i++ {
 			coeffsRes = append(coeffsRes, from.Coeff[i])
 		}
 		for i := difference; i <= int(from.Older); i++ { //и вычитаем коэффициенты после разницы
