@@ -108,7 +108,7 @@ func main() {
 	SelectedFun := "0"
 	// Result Text
 	result := widget.NewLabel("")
-	format := widget.NewLabel("Пример ввода: 4/3x^4+2/1x^2+1/1x")
+	format := widget.NewLabel("Пример ввода: 4/3 2 1")
 	entry1.Hide()
 	entry2.Hide()
 	entry3.Hide()
@@ -903,106 +903,44 @@ func InputWhole(s string) whole.Whole {
 	return w
 }
 
-func InputRational(s string) rational.Rational {
-	arr := strings.Split(s, "/")
-	nom := InputWhole(arr[0])
-	denom := InputNatural(arr[1])
-	var r rational.Rational
-	r.MakeR(nom, denom)
-	return r
+// Пименов
+// Функция для преобразования строки в рациональное число
+func InputRational(inputText string) rational.Rational {
+	var result rational.Rational    // Рациональное число (результат)
+	var separatedInputText []string // Текст разделённый на числитель и знаменатель
+	var numerator whole.Whole       // Числитель в целом виде
+	var denominator natural.Natural // Знаменатель в натуральном виде
+
+	separatedInputText = strings.Split(inputText, "/") // Разделение
+
+	if len(separatedInputText) == 2 { // Если в строке указан и числитель и знаменатель
+		numerator = InputWhole(separatedInputText[0])
+		denominator = InputNatural(separatedInputText[1])
+	} else if len(separatedInputText) == 1 { // Если в строке указан только числитель
+		numerator = InputWhole(separatedInputText[0])
+		denominator.MakeN([]uint8{1}) // Тогда знаменатель = 1
+	}
+
+	result.MakeR(numerator, denominator) // Формируем результат
+
+	return result
 }
 
-//func InputPolynomes(s string) polynome.Polynomial {
-//	arrayRationalsStr := strings.Split(s, " ")
-//	var coeffs []rational.Rational
-//	for i, _ := range arrayRationalsStr {
-//		coeffs = append(coeffs, InputRational(arrayRationalsStr[i]))
-//	}
-//	var p polynome.Polynomial
-//	p.MakeP(coeffs)
-//	return p
-//}
+// Пименов
+// Функция для преобразования строки в многочлен
+// Ввод многочлена в виде: 9 8 7 6 5 4 3 2 1, где число - коэфф. i члена (i = 0 для самого левого числа)
+func InputPolynomes(inputText string) polynome.Polynomial {
+	var result polynome.Polynomial       // Конечный результат в виде строки
+	var separatedInputText []string      // Разделённая по пробелам входная строка
+	var coefficients []rational.Rational // Входная строка, где каждый коэфф. преобразован в рациональное число
 
-func InputPolynomes(s string) polynome.Polynomial {
-	var arr1 []string
-	var res polynome.Polynomial
-	var NextNegative, ThisNegative bool
-	// Split string on + -
-	arr0 := strings.SplitAfter(s, "+")
-	for i := 0; i < len(arr0); i++ {
-		a := strings.SplitAfter(arr0[i], "-")
-		for j := 0; j < len(a); j++ {
-			arr1 = append(arr1, a[j])
-		}
-	}
-	// Determine first sign
-	if arr1[0][0] == '-' {
-		NextNegative = true
-		arr1[0] = arr1[0][1:]
-	}
-	if arr1[0] == "" {
-		arr1 = arr1[1:]
-	}
-	for i := 0; i < len(arr1); i++ {
-		a := strings.Split(arr1[i], "x^")
-		// If no coeff -> coeff = 1/1
-		if a[0] == "" {
-			a[0] = "1/1"
-		}
+	separatedInputText = strings.Split(inputText, " ") // Сколько цифр - столько коэфф.
 
-		// NextNegative was determined in previous loop
-		ThisNegative = NextNegative
-		NextNegative = false
-		if len(a) == 1 {
-			if a[0][len(a[0])-1] == '+' || a[0][len(a[0])-1] == '-' || a[0][len(a[0])-1] == 'x' {
-				// x^1 case
-				if a[0][len(a[0])-1] == '-' {
-					NextNegative = true
-				}
-				a[0] = a[0][0 : len(a[0])-1]
-				if a[0][len(a[0])-1] == 'x' {
-					a[0] = a[0][0 : len(a[0])-1]
-				}
-				// If coeff has no / -> coeff is a whole
-				if strings.Count(a[0], "/") == 0 {
-					a[0] = a[0] + "/1"
-				}
-				res.Coeff[res.Older-1] = InputRational(a[0])
-				res.Coeff[res.Older-1].Nominator.Negative = ThisNegative
-			} else {
-				// x^0 case
-				if strings.Count(a[0], "/") == 0 {
-					a[0] = a[0] + "/1"
-				}
-				res.Coeff[res.Older] = InputRational(a[0])
-				res.Coeff[res.Older].Nominator.Negative = ThisNegative
-			}
-		} else {
-			// If coeff has no / -> coeff is a whole
-			if strings.Count(a[0], "/") == 0 {
-				a[0] = a[0] + "/1"
-			}
-			// Determine next sign
-			if a[1][len(a[1])-1] == '-' {
-				NextNegative = true
-				a[1] = a[1][0 : len(a[1])-1]
-			} else if a[1][len(a[1])-1] == '+' {
-				a[1] = a[1][0 : len(a[1])-1]
-			}
-			// Power of this
-			powI, _ := strconv.Atoi(a[1])
-			pow := uint32(powI)
-			// Power is more that we have now -> we need to expand coeff array
-			if res.Older < pow {
-				res.Older = pow
-				for uint32(len(res.Coeff)) <= pow {
-					res.Coeff = append([]rational.Rational{rational.Zero()}, res.Coeff...)
-				}
-			}
-			// Handling Coeff
-			res.Coeff[res.Older-pow] = InputRational(a[0])
-			res.Coeff[res.Older-pow].Nominator.Negative = ThisNegative
-		}
+	for i := 0; i < len(separatedInputText); i++ {
+		coefficients = append(coefficients, InputRational(separatedInputText[i])) // Преобразование в рациональные числа по отдельности
 	}
-	return res
+
+	result.MakeP(coefficients) // Создаём многочлен из полученных рациональных чисел
+
+	return result
 }
