@@ -1,9 +1,22 @@
-Ссылка на первоисточник задания: https://docs.google.com/document/u/0/d/1Dv_6AIhxg_3ezu6VMcEnMpyfRzgym9l8PmE4ULGfjgM/mobilebasic
+**[Ссылка на первоисточник задания](https://docs.google.com/document/u/0/d/1Dv_6AIhxg_3ezu6VMcEnMpyfRzgym9l8PmE4ULGfjgM/mobilebasic)**  
 
-Примечания:
-В Digits в Naturals цифры идут слева направо, то есть нулевой элемент - старший разряд
+## Команда
+*Михаил Голубев - архитектор  
+Глеб Пименов - отв. за упр. к-вом  
+Максим Тростин - комиссар  
+Максим Семёнов  
+Михаил Комаровский  
+Никита Морозов  
+Наталья Грунская  
+Фёдор Хвостовский  
+Надежда Турбина  
+Милана Лицеванова* 
 
-Naturals - натуральные с нулём
+*Группа 1307*
+
+## Примечания: 
+- *В Digits в Naturals цифры идут слева направо, то есть нулевой элемент - старший разряд*
+- *Naturals - натуральные с нулём*
 
 # Распределение заданий
 
@@ -56,7 +69,7 @@ P-3 | Умножение многочлена на рациональное чи
 P-4 | Умножение многочлена на x^k | MultipilcationXpowerK(MUL_Pxk_P) | | Голубев
 P-5 | Старший коэффициент многочлена | OlderCoeffPoly(LED_P_Q) | | Голубев
 P-6 | Степень многочлена | OlderPoly(DEG_P_N) | | Голубев
-P-7 | Вынесение из многочлена НОК знаменателей коэффициентов и НОД числителей | GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(FAC_P_Q) | Absolute FromWholeToNaturals LeastCommonMultiple GreatestCommonDivisor FromNaturalsToWhole WholeFromDivision | Морозов
+P-7 | Вынесение из многочлена НОК знаменателей коэффициентов и НОД числителей | GreatestCommonDivisorAnd  LeastCommonMultipleOfPolynomial(FAC_P_Q) | Absolute FromWholeToNaturals LeastCommonMultiple GreatestCommonDivisor FromNaturalsToWhole WholeFromDivision | Морозов
 P-8 | Умножение многочленов | MultiplicationPol(MUL_PP_P) | MultiplicationRational MultipilcationXpowerK AdditionP | Грунская
 P-9 | Частное от деления многочлена на многочлен при делении с остатком | QuotientOfDivision(DIV_PP_P) | Division OlderPoly MultipilcationXpowerK SubstractionP AdditionP | Комаровский
 P-10 | Остаток от деления многочлена на многочлен при делении с остатком | RemainderFromDivision(MOD_PP_P) | QuotientOfDivision MultiplicationPol SubstractionP | Комаровский
@@ -64,11 +77,14 @@ P-11 | НОД многочленов | GreatestCommonDivisor(GCF_PP_P) | OlderPo
 P-12 | Производная многочлена | Derivative(DER_P_P) | | Тростин
 P-13 | Преобразование многочлена — кратные корни в простые | SimplifyRoots(NMR_P_P) | GreatestCommonDivisor Derivative QuotientOfDivision | Тростин
 
-Ответственные за графический интерфейс
--- |
-Голубев Тростин
+| Ответственные за графический интерфейс |
+| -------------------------------------- |
+| Голубев Михаил                         | 
+| Тростин Максим                         |
 
-# Расход времени в модуле полиномов
+
+# Расход времени в модуле полиномов  
+*Ответственный за бенчмарки - Пименов Глеб*  
 
 ![cpu-1](https://user-images.githubusercontent.com/75137969/163630229-fa3d1a74-1073-41d6-9de6-ac183fb27823.png)
 
