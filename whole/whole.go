@@ -29,8 +29,8 @@ func ToStringW(w Whole) string {
 	return s
 }
 
-// IntToWhole Максим Тростин
-// Конвертирует int в Whole
+// IntToWhole Тростин Максим
+// Конвертирует int64 в Whole
 func IntToWhole(n int64) Whole {
 	var w Whole
 	w.Negative = false
@@ -60,7 +60,7 @@ func (w *Whole) MakeW(Negative bool, digits []uint8) {
 	w.Negative = Negative
 }
 
-// Absolute Тростин Максим.
+// Absolute (ABS_Z_N) Тростин Максим.
 // Возвращает модуль целого числа как натуральное
 func Absolute(w Whole) natural.Natural {
 	var n natural.Natural
@@ -68,7 +68,7 @@ func Absolute(w Whole) natural.Natural {
 	return n
 }
 
-// Positivity Турбина
+// Positivity (POZ_Z_D) Турбина Надежда
 // Определение положительности числа (2 - положительное, 0 — равное нулю, 1 - отрицательное)
 func Positivity(x Whole) int {
 	switch {
@@ -81,7 +81,7 @@ func Positivity(x Whole) int {
 	}
 }
 
-// MultiplicationByNegativeOne Хвостовский
+// MultiplicationByNegativeOne (MUL_ZM_Z) Хвостовский Фёдор
 // Умножение целого на (-1)
 func MultiplicationByNegativeOne(xold Whole) Whole {
 	x := CopyW(xold)
@@ -91,7 +91,7 @@ func MultiplicationByNegativeOne(xold Whole) Whole {
 	return x
 }
 
-// FromNaturalsToWhole Комаровский
+// FromNaturalsToWhole (TRANS_N_Z) Комаровский Михаил
 // Преобразование из натурального в целое
 func FromNaturalsToWhole(nat natural.Natural) Whole {
 	var res Whole
@@ -100,7 +100,7 @@ func FromNaturalsToWhole(nat natural.Natural) Whole {
 	return res
 }
 
-// FromWholeToNaturals Комаровский
+// FromWholeToNaturals (TRANS_Z_N) Комаровский Михаил
 // Преобразование из неотрицательного целого в натуральное
 func FromWholeToNaturals(wh Whole) natural.Natural {
 	var res natural.Natural
@@ -109,7 +109,7 @@ func FromWholeToNaturals(wh Whole) natural.Natural {
 
 }
 
-// Multiplication Тростин Максим
+// Multiplication (MUL_ZZ_Z) Тростин Максим
 // Умножение целых
 func Multiplication(x, y Whole) Whole {
 	// Если хотя бы один ноль, то возвращаем ноль
@@ -129,8 +129,8 @@ func Multiplication(x, y Whole) Whole {
 	return res
 }
 
-//CopyW Семёнов
-//Функция для копирования целого числа
+// CopyW Семёнов Максим
+// Функция для копирования целого числа
 func CopyW(n Whole) Whole {
 	var i uint32
 	var x Whole
@@ -142,8 +142,8 @@ func CopyW(n Whole) Whole {
 	return x
 }
 
-//Addition Семёнов
-//Сложение двух целых чисел
+// Addition (ADD_ZZ_Z) Семёнов Максим
+// Сложение двух целых чисел
 func Addition(a, b Whole) Whole {
 	var fl1, fl2 uint32
 	var r, t, res Whole
@@ -173,8 +173,8 @@ func Addition(a, b Whole) Whole {
 	return res
 }
 
-//Subtraction Семёнов
-//Вычитание двух целых чисел
+// Subtraction (SUB_ZZ_Z) Семёнов
+// Вычитание двух целых чисел
 func Subtraction(a, b Whole) Whole {
 	var fl1, fl2 uint32
 	var r, t, res Whole
@@ -201,20 +201,15 @@ func Subtraction(a, b Whole) Whole {
 	return res
 }
 
-//Морозов Никита
-//Остаток от деления целого на целое (делитель отличен от нуля)
-//На вход: Делимое num1, Делитель num2
+// RemainderFromDivision (MOD_ZZ_Z) Морозов Никита
+// Остаток от деления целого на целое (делитель отличен от нуля)
+// На вход: Делимое num1, Делитель num2
 func RemainderFromDivision(num1, num2 Whole) Whole {
-
-	//Объявляем результат
 	var result Whole
-
 	//Сразу делаем остаток положительным
 	result.Negative = false
-
 	//Находим остаток вне зависимости от знаков
 	result.Num = natural.RemainderFromDivision(Absolute(num1), Absolute(num2))
-
 	//Если остаток не равен нулю
 	if natural.CheckNull(result.Num) == false {
 		//Если хотя бы одно число отрицательно, то действуем по формуле
@@ -223,27 +218,22 @@ func RemainderFromDivision(num1, num2 Whole) Whole {
 			result.Num = natural.Subtraction(Absolute(num2), Absolute(result))
 		}
 	}
-
 	return result
 }
 
-//Морозов Никита
-//Частное от деления целого на целое
-//На вход: Делмое num1, Делитель num2
+// WholeFromDivision (DIV_ZZ_Z) Морозов Никита
+// Частное от деления целого на целое
+// На вход: Делимое num1, Делитель num2
 func WholeFromDivision(num1, num2 Whole) Whole {
-	//Объявляем результат
 	var result Whole
-
 	//Находим частное вне зависимости от знаков
 	result.Num = natural.IntegerFromDivision(Absolute(num2), Absolute(num1))
-
 	//Если хотя бы один знак отрицателен, прибавялем к частному 1
 	if Positivity(num1) == 1 || Positivity(num2) == 1 {
 		//Если остаток не равен нулю, то действуем
 		if natural.CheckNull(RemainderFromDivision(num1, num2).Num) == false {
 			result.Num = natural.Addition1(result.Num)
 		}
-
 		//Если отрицательно только одно число, делаем частное отрицательным
 		if Positivity(num1) == 1 && Positivity(num2) == 1 {
 			result.Negative = false
@@ -251,12 +241,11 @@ func WholeFromDivision(num1, num2 Whole) Whole {
 			result.Negative = true
 		}
 	}
-
 	return result
 }
 
-//Compare Турбина
-//Сравнение целых: 2 - если первое больше второго, 0, если равно, 1 иначе.
+// Compare Турбина Надежда
+// Сравнение целых: 2 - если первое больше второго, 0, если равно, 1 иначе.
 func Compare(num1, num2 Whole) int {
 	switch {
 	case num1.Negative == true && num2.Negative == false:

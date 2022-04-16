@@ -103,7 +103,7 @@ func TestSubstractionP(t *testing.T) {
 			rational.IntToRational(0, 1),
 		},
 	}
-	got = SubstractionP(pol1, pol2)
+	got = SubtractionP(pol1, pol2)
 	if Compare(got, want) != 0 {
 		t.Fatalf("%d - получили %+v, \nожидалось %+v", no, got, want)
 	}
@@ -134,7 +134,7 @@ func TestSubstractionP(t *testing.T) {
 			rational.IntToRational(13, 1),
 		},
 	}
-	got = SubstractionP(pol1, pol2)
+	got = SubtractionP(pol1, pol2)
 	if Compare(got, want) != 0 {
 		t.Fatalf("%d - получили %+v, \nожидалось %+v", no, got, want)
 	}

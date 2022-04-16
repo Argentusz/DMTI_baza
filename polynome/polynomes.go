@@ -8,14 +8,14 @@ import (
 	"strconv"
 )
 
-// Polynomial Максим Тростин
+// Polynomial Тростин Максим
 // Структура Полиномов
 type Polynomial struct {
 	Older uint32
 	Coeff []rational.Rational
 }
 
-// MakeP Тростин Максим/Голубев Михаил
+// MakeP Тростин Максим & Голубев Михаил
 // Метод создания полинома
 func (p *Polynomial) MakeP(coeffs []rational.Rational) {
 	for _, v := range coeffs {
@@ -46,7 +46,8 @@ func CopyP(p Polynomial) Polynomial {
 	return copyP
 }
 
-//Голубев Михаил - AdditionP сложение многочленов
+// AdditionP (ADD_PP_P) Голубев Михаил
+// Сложение многочленов
 func AdditionP(p1Old Polynomial, p2Old Polynomial) Polynomial {
 	var result Polynomial
 	var coeffsRes []rational.Rational
@@ -82,8 +83,9 @@ func AdditionP(p1Old Polynomial, p2Old Polynomial) Polynomial {
 	return result
 }
 
-//Голубев Михаил - SubstractionPol вычитание многочленов
-func SubstractionP(fromOld Polynomial, whatOld Polynomial) Polynomial {
+// SubtractionP (SUB_PP_P) Голубев Михаил
+// Вычитание многочленов
+func SubtractionP(fromOld Polynomial, whatOld Polynomial) Polynomial {
 	var result Polynomial
 	var coeffsRes []rational.Rational
 	from, what := CopyP(fromOld), CopyP(whatOld)
@@ -96,7 +98,7 @@ func SubstractionP(fromOld Polynomial, whatOld Polynomial) Polynomial {
 	}
 	if from.Older > what.Older { //если коэффициенты не равны - считаем разницу и в новый полином записываем все коэффициенты большего до разницы
 		difference := int(from.Older - what.Older)
-		for i := 0; i <= difference; i++ {
+		for i := 0; i < difference; i++ {
 			coeffsRes = append(coeffsRes, from.Coeff[i])
 		}
 		for i := difference; i <= int(from.Older); i++ { //и вычитаем коэффициенты после разницы
@@ -122,7 +124,8 @@ func SubstractionP(fromOld Polynomial, whatOld Polynomial) Polynomial {
 	return result
 }
 
-//Голубев Михаил - MultiplicationXpowerK функция умножения многочлена на x^k
+// MultiplicationXpowerK (MUL_Pxk_P) Голубев Михаил
+// Функция умножения многочлена на x^k
 func MultiplicationXpowerK(polynome Polynomial, k int) Polynomial {
 	nullCoeff := rational.Rational{Nominator: whole.Whole{Num: natural.Natural{Digits: []uint8{0}, Older: 0},
 		Negative: false}, Denominator: natural.Natural{Digits: []uint8{1}, Older: 0}} //создаем коэффициент вида 0/1
@@ -136,17 +139,19 @@ func MultiplicationXpowerK(polynome Polynomial, k int) Polynomial {
 	return result
 }
 
-// Голубев Михаил OlderPoly Степень многочлена
+// OlderPoly (DEG_P_N) Голубев Михаил
+// Степень многочлена
 func OlderPoly(p Polynomial) uint32 {
 	return p.Older
 }
 
-// Голубев Михаил OlderCoeffPoly Старший коэффициент многочлена
+// OlderCoeffPoly (LEAD_P_Q) Голубев Михаил
+// Старший коэффициент многочлена
 func OlderCoeffPoly(p Polynomial) rational.Rational {
 	return p.Coeff[0]
 }
 
-// Derivative Максим Тростин
+// Derivative (DER_P_P) Максим Тростин
 // Производная многочлена
 func Derivative(p0 Polynomial) Polynomial {
 	var i uint32
@@ -164,8 +169,8 @@ func Derivative(p0 Polynomial) Polynomial {
 	return p
 }
 
-//Compare Турбина
-//Сравнение полиномов: 0, если равно, 1 иначе.
+// Compare Турбина Надежда
+// Сравнение полиномов: 0, если равно, 1 иначе.
 func Compare(num1, num2 Polynomial) int {
 	var i uint32
 	switch {
@@ -185,8 +190,8 @@ func Compare(num1, num2 Polynomial) int {
 	return 0
 }
 
-//MultiplicationRational Семёнов Максим
-//Умножение полинома на рациональное число
+// MultiplicationRational (MUL_PQ_P) Семёнов Максим
+// Умножение полинома на рациональное число
 func MultiplicationRational(a Polynomial, b rational.Rational) Polynomial {
 	var i uint32
 
@@ -203,7 +208,7 @@ func (p *Polynomial) ToStringPol() string {
 	var str string
 	var i uint32
 	if p.Older == 0 {
-		return fmt.Sprint(p.Coeff[0])
+		return fmt.Sprint(rational.ToStringR(p.Coeff[0]))
 	} else {
 		for i = 0; i <= p.Older; i++ {
 			if whole.Positivity(p.Coeff[i].Nominator) == 2 {
@@ -220,7 +225,7 @@ func (p *Polynomial) ToStringPol() string {
 	return str
 }
 
-// Пименов
+// GreatestCommonDivisor (GCF_PP_P) Пименов Глеб
 // НОД многочленов
 func GreatestCommonDivisor(aOriginal, bOriginal Polynomial) Polynomial {
 	var a, b Polynomial                        // Копии входных
@@ -251,7 +256,7 @@ func GreatestCommonDivisor(aOriginal, bOriginal Polynomial) Polynomial {
 	return GCD
 }
 
-// QuotientOfDivision Комаровский
+// QuotientOfDivision (DIV_PP_P) Комаровский Михаил
 // Частное от деления полиномов
 func QuotientOfDivision(x1, x2 Polynomial) Polynomial {
 	var coef rational.Rational
@@ -271,15 +276,15 @@ func QuotientOfDivision(x1, x2 Polynomial) Polynomial {
 		coef = rational.Division(x.Coeff[0], y.Coeff[0]) //деление старшего коэфицента первого и второго для определения коэфицента в частном
 		mid = MultiplicationXpowerK(y, int(diff))        //домножаем на степень
 		mid = MultiplicationRational(mid, coef)
-		x = SubstractionP(x, mid) // вычитаем, тем самым убирается старшая степень
+		x = SubtractionP(x, mid) // вычитаем, тем самым убирается старшая степень
 		midcoef = append(midcoef, coef)
 	}
 	res.MakeP(midcoef)
 	return res
 }
 
-//Грунская Умножение полиномов
-
+// MultiplicationPol (MUL_PP_P) Грунская Наталья
+// Умножение полиномов
 func MultiplicationPol(xOld, yOld Polynomial) Polynomial {
 	var x, y, otv Polynomial
 	var i uint32
@@ -298,53 +303,49 @@ func MultiplicationPol(xOld, yOld Polynomial) Polynomial {
 	return otv
 }
 
+// RemainderFromDivision (MOD_PP_P) Комаровский Михаил
 // Остаток от деления полиномов
 func RemainderFromDivision(x1, x2 Polynomial) Polynomial {
 	var x, y, mid, res Polynomial
 	x, y = CopyP(x1), CopyP(x2)
-	mid = QuotientOfDivision(x1, x2)                  // частное от деления
-	res = SubstractionP(x, MultiplicationPol(mid, y)) // разность Делимого и умножения делителя на частного
+	mid = QuotientOfDivision(x1, x2)                 // частное от деления
+	res = SubtractionP(x, MultiplicationPol(mid, y)) // разность Делимого и умножения делителя на частного
 	return res
 }
 
-//Морозов никита
-//Вынесение НОД числителей и НОК знаменателей
-//Как работает функция:
-//Находим НОД числителей
-//Находим НОК знаменателей
-//Возвращаем результат как два натуральных числа: НОД и НОК
+// GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial (FAC_P_Q) Морозов Никита (спасибо за название)
+// Вынесение НОД числителей и НОК знаменателей
+// Как работает функция:
+// Находим НОД числителей
+// Находим НОК знаменателей
+// Возвращаем результат как два натуральных числа: НОД и НОК
 func GreatestCommonDivisorAndLeastCommonMultipleOfPolynomial(polynom Polynomial) (natural.Natural, natural.Natural) {
-	//Объявляем переменные НОД (GCD) и НОК (LCM)
+	// НОД (GCD) и НОК (LCM)
 	var GCD []natural.Natural
 	var LCM []natural.Natural
-
-	//Клонироуем все элементы числители в массив НОД
+	// Клонируем все элементы-числители в массив НОД
 	for i := 0; i < len(polynom.Coeff); i++ {
 		//Исключаем нулевые коэффициенты
 		if natural.CheckNull(whole.Absolute(polynom.Coeff[i].Nominator)) == false {
 			GCD = append(GCD, whole.Absolute(polynom.Coeff[i].Nominator))
 		}
 	}
-
-	//Клонируем все элементы знаменателя в массив НОК
+	// Клонируем все элементы-знаменатели в массив НОК
 	for i := 0; i < len(polynom.Coeff); i++ {
 		LCM = append(LCM, polynom.Coeff[i].Denominator)
 	}
-
 	//Находим НОД
 	for i := 1; i < len(GCD); i++ {
 		GCD[0] = natural.GreatestCommonDivisor(GCD[0], GCD[i])
 	}
-
 	//Находим НОК по аналогии с НОД
 	for i := 1; i < len(LCM); i++ {
 		LCM[0] = natural.LeastCommonMultiple(LCM[0], LCM[i])
 	}
-
 	return GCD[0], LCM[0]
 }
 
-// SimplifyRoots Тростин Максим
+// SimplifyRoots (NMR_P_P) Тростин Максим
 // Преобразование многочлена — кратные корни в простые
 func SimplifyRoots(p1 Polynomial) Polynomial {
 	return QuotientOfDivision(p1, GreatestCommonDivisor(p1, Derivative(p1)))
