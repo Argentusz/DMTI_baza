@@ -87,40 +87,9 @@ func AdditionP(p1Old Polynomial, p2Old Polynomial) Polynomial {
 // Вычитание многочленов
 func SubtractionP(fromOld Polynomial, whatOld Polynomial) Polynomial {
 	var result Polynomial
-	var coeffsRes []rational.Rational
 	from, what := CopyP(fromOld), CopyP(whatOld)
-	if from.Older == what.Older { //если степени равны - просто вычитаем коэффициенты
-		for i, v := range from.Coeff {
-			coeffsRes = append(coeffsRes, rational.Subtraction(v, what.Coeff[i]))
-		}
-		result.MakeP(coeffsRes)
-		return result
-	}
-	if from.Older > what.Older { //если коэффициенты не равны - считаем разницу и в новый полином записываем все коэффициенты большего до разницы
-		difference := int(from.Older - what.Older)
-		for i := 0; i < difference; i++ {
-			coeffsRes = append(coeffsRes, from.Coeff[i])
-		}
-		for i := difference; i <= int(from.Older); i++ { //и вычитаем коэффициенты после разницы
-			coeffsRes = append(coeffsRes, rational.Subtraction(from.Coeff[i], what.Coeff[i-difference]))
-		}
-		result.MakeP(coeffsRes)
-	}
-	if from.Older < what.Older {
-		difference := int(what.Older - from.Older)
-		for i := 0; i < difference; i++ {
-			if what.Coeff[i].Nominator.Negative != true {
-				what.Coeff[i].Nominator.Negative = true
-			} else {
-				what.Coeff[i].Nominator.Negative = false
-			}
-			coeffsRes = append(coeffsRes, what.Coeff[i])
-		}
-		for i := difference; i <= int(what.Older); i++ {
-			coeffsRes = append(coeffsRes, rational.Subtraction(what.Coeff[i], from.Coeff[i-difference]))
-		}
-		result.MakeP(coeffsRes)
-	}
+	what = MultiplicationRational(what, rational.IntToRational(-1, 1))
+	result = AdditionP(from, what)
 	return result
 }
 
